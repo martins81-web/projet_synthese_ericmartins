@@ -42,12 +42,12 @@ export const Wrapper = styled.div`
         text-transform: none;
     }
     .actionbutton1{
-    color: dodgerblue;
-    background-color: white;
+        color: dodgerblue;
+        background-color: white;
    }
    .actionbutton2{
-    color: white;
-    background-color: dodgerblue;
+        color: white;
+        background-color: dodgerblue;
    }
 
 

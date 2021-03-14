@@ -11,9 +11,9 @@ type Props = {
 const OffresVedettes: React.FC<Props> =()=>{
     return(
         <Wrapper>
-            <Grid container  justify='center'>
+            <Grid container  justify='center' >
                 <Grid item>
-                    <Typography variant='h2' className='title'>Offres de stage en vedette</Typography>
+                    <Typography variant='h3' className='title'>Offres de stage en vedette</Typography>
                 </Grid>
             </Grid>
             <Grid container justify='center'>
@@ -34,13 +34,15 @@ const OffresVedettes: React.FC<Props> =()=>{
 export default OffresVedettes;
 
 export const Wrapper = styled.div`
-    background-color: goldenrod;
+    background-color: #4d6d81;
     padding-bottom: 50px;
     
     .title{
-        color: white;
+        color: #e1e1e1;
         font-weight: bold;
         padding-top: 50px;
         padding-bottom: 50px;
+        text-transform: uppercase;
+        text-align: center;
     }
 `

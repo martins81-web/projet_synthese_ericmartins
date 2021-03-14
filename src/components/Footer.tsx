@@ -1,27 +1,37 @@
-import { Grid, Link, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAuth from './auth/useAuth';
 
 type Props = {
     
 };
 
 const Footer: React.FC<Props> =()=>{
+    const location = useLocation(); 
+
+    const auth = useAuth();
     return(
-        <Wrapper>
+        <Wrapper location={location}>
             <Grid container
                 direction='row'
                 justify="space-between"
             >
                 <Grid item>
-                    <Typography>© 2021 <Link href="accueil" style={{color: 'blue'}}>eStage</Link> - Projet de Synthèse - Eric Martins</Typography>  
+                    <Typography>© 2021 <Link to="/accueil" className='eStage'>eStage</Link> - Projet de Synthèse - Eric Martins</Typography>  
                 </Grid>
                 <Grid item>
                     <Grid container spacing={4}>
-                        <Grid item><Link href="accueil">Accueil</Link></Grid>
-                        <Grid item><Link href="apropos">À propos</Link></Grid>
-                        <Grid item><Link href="confidentialite">Confidentialité</Link></Grid>
-                        <Grid item><Link href="contact">Nous Joindre</Link></Grid>
+                        <Grid item><Link to="/accueil">Accueil</Link></Grid>
+                        <Grid item><Link to="/apropos">À propos</Link></Grid>
+                        <Grid item><Link to="/confidentialite">Confidentialité</Link></Grid>
+                        <Grid item><Link to="/contact">Nous Joindre</Link></Grid>
+                        {
+                        location.pathname !== "/dashboard" && 
+                            <Grid item>{auth?.user !== null ? <Link to="/dashboard" style={{color: 'dodgerblue'}}>Dashboard</Link> :null}</Grid>
+                        }
                     </Grid>
                 </Grid>
             </Grid>
@@ -32,7 +42,7 @@ const Footer: React.FC<Props> =()=>{
 export default Footer;
 
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{location: any}>`
     padding: 30px 100px 30px 100px;
     background-color: WhiteSmoke;
     a{
@@ -42,4 +52,18 @@ export const Wrapper = styled.div`
         font-weight: bold;
         text-decoration: none;
     }
+    .eStage{
+        color:  #3e99df;
+    }
+    ${({ location }) => location.pathname === "/dashboard" && `
+    background: #3e99df;
+    color: white;
+    a{
+        color: white
+    }
+    .eStage{
+        color:  black;
+    }
+  `}
+    
 `

@@ -1,14 +1,32 @@
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Grid, InputBase, Typography } from '@material-ui/core';
+import Cookies from 'js-cookie';
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+
+import useAuth from './auth/useAuth';
 
 
 type Props = {
-    imageURL: string,
-    imgSize: number
+    imageURL: string;
+    imgSize: number;
 }
 
+
 const Header: React.FC<Props> =({imageURL,imgSize})=>{
-  
+    const auth = useAuth();
+    const history= useHistory();
+
+    const handleLogin =()=>{
+        auth?.signIn('Eric');
+        Cookies.set('Eric', 'connected');
+        history.push('/dashboard');
+    }
+
+    const handleLogout =()=>{
+        auth?.signOut('Eric');
+    }
+
     return(
     <Wrapper backgroundUrl={imageURL}>
         <div className='filter'  style={{height: imgSize+'px' }}>
@@ -17,21 +35,21 @@ const Header: React.FC<Props> =({imageURL,imgSize})=>{
                     alignItems="center"
                     className="topBlock"
             >
-                <Grid item xs={3} style={{textAlign: 'center'}} >
-                    <Typography variant="h3"  style={{color:'white'}}>eStage</Typography>
+                <Grid item xl={3} lg={2} md={12} sm={12} xs={12}  style={{textAlign: 'center'}} >
+                    <Typography variant="h3" style={{color:'white'}}>eStage</Typography>
                 </Grid>
-                <Grid item xs={6}>
-                    <Grid container
+                <Grid item xl={6} lg={5} md={6} sm={7} xs={12}  style={{marginTop: '10px'}}>
+                    <Grid container style={{marginLeft: '10px', marginRight: '10px'}}
                             direction="row"
-                            justify="flex-start"
-                            alignItems="center"
+                            justify="center"
+                            spacing={1}
                     >
-                        <Grid item >
+                        <Grid item>
                             <Button variant="contained" size="medium" style={{backgroundColor: 'limegreen', color: 'white', textTransform: 'none'}}>
                                 Trouvez votre stage
                             </Button>
                         </Grid>
-                        <Grid item style={{marginLeft: '10px'}}>
+                        <Grid item >
                             <Button variant="contained" size="medium"  style={{backgroundColor: 'limegreen', color: 'white', textTransform: 'none'}}>
                                 Trouvez votre futur stagiaire
                             </Button>
@@ -39,18 +57,49 @@ const Header: React.FC<Props> =({imageURL,imgSize})=>{
                     </Grid>
                 </Grid>
             
-                <Grid item xs={3}>
+                <Grid item xl={3} lg={5} md={6} sm={5} xs={12} style={{marginTop: '10px'}}>
                     <Grid container
                                 direction="row"
                                 justify="center"
                                 alignItems="center"
+                               
                         >
                             <Grid item >
-                                <Button variant="contained" size="medium"  style={{backgroundColor: 'white', color: 'dimgray', textTransform: 'none'}}>
+                                {auth?.user !== null ?
+                                (<>
+                                <Grid container spacing={1}  alignItems="center">
+                                    <Grid item>
+                                        <Typography style={{color: 'red', fontSize: '1rem'}}>Salut {auth?.user}!</Typography>
+                                        <Link to="/dashboard" style={{color: 'dodgerblue', fontSize: '1rem'}}>Dashboard</Link>
+                                    </Grid>
+                                    
+                                    <Grid item>
+                                        <Button variant="contained" 
+                                                size="medium"  
+                                                style={{textTransform: 'none'}}
+                                                color='secondary'
+                                                onClick={handleLogout}
+                                        >
+                                            Déconnexion
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                                </>
+                                ) 
+                                :
+                                <Button variant="contained" 
+                                        size="medium"  
+                                        style={{backgroundColor: 'white', color: 'dimgray', textTransform: 'none'}}
+                                        onClick={handleLogin}
+                                >
                                     Connexion
                                 </Button>
+                                }
+                                
+                                
                             </Grid>
-                            <Grid item style={{marginLeft: '10px'}}>
+                            <Grid item style={{marginLeft: '10px', marginRight: '10px'}}>
+                                
                                 <Button variant="contained" size="medium"  style={{backgroundColor: 'dimgray', color: 'white', textTransform: 'none'}}>
                                     Inscription
                                 </Button>
@@ -59,27 +108,36 @@ const Header: React.FC<Props> =({imageURL,imgSize})=>{
                 </Grid>
             </Grid>
             <Grid container justify="center"  className="centerBlock">
-                <Grid item>
+                <Grid item >
                     <Grid container  
                         direction="column"
                         alignItems="center"
                         spacing={5}
                     >
                         <Grid item>
-                            <Typography variant="h3" style={{color:'white'}}>Trouvez votre stage!</Typography>
+                            <Typography variant="h3" style={{color:'white', textAlign:'center'}}>Trouvez votre stage!</Typography>
                         </Grid>
                         <Grid item>
-                            <div className="input-group" style={{padding: '3px', backgroundColor: 'white', width: '40vw'}}>
-                                <input type="text" className="form-control" placeholder="Mot clé" aria-label="recherche" aria-describedby="basic-addon2" style={{border: 'none'}}/>
-                                <div className="input-group-append">
-                                    <button className="btn btn-primary" type="button" style={{borderRadius: '0', width: '150px'}}>Rechercher</button>
-                                </div>
-                            </div>
+                                <Grid container  alignItems="center" 
+                                style={{borderRadius: '0',textTransform: 'none', backgroundColor: 'white', padding: '5px', width: '50vw'}}>
+                                    <Grid item xl={9} lg={8} md={8} sm={7} xs={12}>
+                                        <InputBase 
+                                            fullWidth
+                                            placeholder="Mot clé"
+                                        />
+                                    </Grid>
+                                    <Grid item xl={3} lg={4} md={4} sm={5} xs={12}>
+                                        <Button fullWidth variant="contained" color="primary" style={{borderRadius: '0',textTransform: 'none'}}>
+                                            Rechercher
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
         </div>
+    
     </Wrapper>
     )
 }

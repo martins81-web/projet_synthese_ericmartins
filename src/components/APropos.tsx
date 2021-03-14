@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 
 
 type Props = {
@@ -7,7 +8,7 @@ type Props = {
 const APropos: React.FC<Props> =()=>{
     return(
         <>
-            À Propos!
+            <Typography variant='h1'>À Propos! </Typography>
         </>
     )
 }

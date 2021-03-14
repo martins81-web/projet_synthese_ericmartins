@@ -3,8 +3,8 @@ import Image from 'react-bootstrap/Image';
 import styled from 'styled-components';
 
 import { Appel } from '../App';
-import imgDemande from '../images/demande.png';
-import imgOffre from '../images/offre.png';
+import imgDemande from '../images/demande.jpg';
+import imgOffre from '../images/offre.jpg';
 
 
 type Props = {
@@ -18,13 +18,13 @@ const AppelAction: React.FC<Props> =({type})=>{
         <Wrapper>
         <Grid container>
             {type===Appel.OFFRE ?  
-            <Grid item xs={6} style={{backgroundColor: 'Gainsboro'}} className='zoneText'>
+            <Grid item xs={6} style={{backgroundColor: '#4d6d81'}} className='zoneText'>
                 <Grid container spacing={3} direction='column' >
                     <Grid item>
-                        <Typography variant="h2" style={{fontWeight: 'bold'}}>Pourquoi publier une offre de stage?</Typography>
+                        <Typography variant="h2" style={{fontWeight: 'bold', color: 'white'}}>Pourquoi publier une offre de stage?</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography style={{color: 'gray'}}>Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Typography>
+                        <Typography style={{color: 'Gainsboro'}}>Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Typography>
                     </Grid>
                     <Grid item>
                         <li><span>Lorem Ipsum dolor sit amet</span></li>
@@ -32,7 +32,7 @@ const AppelAction: React.FC<Props> =({type})=>{
                         <li><span>Ut enim ad minim veniam</span></li>
                     </Grid>
                     <Grid item>
-                        <Button variant="contained" size="medium" color="primary" style={{borderRadius: '0',textTransform: 'none'}}>
+                        <Button variant="contained" size="medium"  style={{borderRadius: '0',textTransform: 'none'}}>
                                 Publier une offre de stage maintenant!
                         </Button>
                     </Grid>
@@ -48,13 +48,13 @@ const AppelAction: React.FC<Props> =({type})=>{
             }
             </Grid>
             {type===Appel.DEMANDE ?  
-            <Grid item xs={6} style={{backgroundColor: 'Gainsboro'}} className='zoneText'>
+            <Grid item xs={6} style={{backgroundColor: '#4d6d81'}} className='zoneText'>
                 <Grid container spacing={3} direction='column' >
                     <Grid item>
-                        <Typography variant="h2" style={{fontWeight: 'bold'}}>Pourquoi publier une demande de stage?</Typography>
+                        <Typography variant="h2" style={{fontWeight: 'bold', color: 'white'}}>Pourquoi publier une demande de stage?</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography style={{color: 'gray'}}>Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Typography>
+                        <Typography style={{color: 'Gainsboro'}}>Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Typography>
                     </Grid>
                     <Grid item>
                         <li><span>Lorem Ipsum dolor sit amet</span></li>
@@ -62,7 +62,7 @@ const AppelAction: React.FC<Props> =({type})=>{
                         <li><span>Ut enim ad minim veniam</span></li>
                     </Grid>
                     <Grid item>
-                        <Button variant="contained" size="medium" color="primary" style={{borderRadius: '0',textTransform: 'none'}}>
+                        <Button variant="contained" size="medium" style={{borderRadius: '0',textTransform: 'none'}}>
                                 Publier une demande de stage maintenant!
                         </Button>
                     </Grid>
@@ -87,6 +87,15 @@ export const Wrapper = styled.div`
 }
 
 li { color: dodgerblue; } /* bullet */
-li span { color: black; } /* text */
+li span { color: white; } /* text */
+
+button{
+    background-color: dodgerblue;
+    color: white;
+}
+
+button:hover{
+    color: black;
+}
     
 `

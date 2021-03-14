@@ -5,15 +5,19 @@ import { useLocation } from 'react-router-dom';
 
 import Accueil from './components/Accueil';
 import APropos from './components/APropos';
+import PrivateRoute from './components/auth/PrivateRoute';
+import ProtectedLogin from './components/auth/ProtectedLogin';
 import Confidentialite from './components/Confidentialite';
+import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import Login from './components/Login';
 import NousJoindre from './components/NousJoindre';
-import BGImage from './images/accueil.png';
+import BGImage from './images/accueil.jpg';
 
 
 export enum Size {
-  SMALL = 400,
+  SMALL = 300,
   BIG = 800
 }
 
@@ -31,23 +35,33 @@ function App() {
     return BGImage;
     else return BGImage;
   }
-
+  
   return (
     <>
-    <Header imageURL={getImage()} 
-            imgSize={location.pathname === "/accueil" ? Size.BIG : Size.SMALL}
-    />
-    <Switch>
-      <Redirect exact from="/" to="/accueil" />
-      <Route path="/" exact component={Accueil}/>
-      <Route path="/accueil" component={Accueil}/>
-      <Route path="/contact" component={NousJoindre}/>
-      <Route path="/confidentialite" component={Confidentialite}/>
-      <Route path="/apropos" component={APropos}/>
-    </Switch>
-    <Footer/>
+      {
+      location.pathname !== "/dashboard" &&
+      <Header imageURL={getImage()} 
+              imgSize={location.pathname === "/accueil" ? Size.BIG : Size.SMALL}
+      />
+      }
+      
+      <Switch>
+        <Redirect exact from="/" to="/accueil" />
+        <Route path="/accueil" component={Accueil}/>
+        <Route path="/contact" component={NousJoindre}/>
+        <Route path="/confidentialite" component={Confidentialite}/>
+        <Route path="/apropos" component={APropos}/>
+        <PrivateRoute path="/dashboard"  component={Dashboard} />
+        <PrivateRoute path="/dashboard/:id"  component={Dashboard} />
+        <ProtectedLogin path="/login"  component={Login} />
+      </Switch>
+      {
+      location.pathname !== "/dashboard" && < Footer/>
+      }
+      
     </>
   );
 }
 export default App;
+
 

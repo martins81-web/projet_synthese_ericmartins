@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 
 
 type Props = {
@@ -7,7 +8,7 @@ type Props = {
 const Confidentialite: React.FC<Props> =()=>{
     return(
         <>
-            Confidentialite!
+            <Typography variant='h1'>Confidentialite!</Typography>  
         </>
     )
 }
