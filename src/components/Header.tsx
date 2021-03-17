@@ -1,31 +1,28 @@
-import { Button, Grid, InputBase, Typography } from '@material-ui/core';
+import { Button, Grid, IconButton, InputBase, Typography } from '@material-ui/core';
+import GestureIcon from '@material-ui/icons/Gesture';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useAuth from './auth/useAuth';
+
 
 
 type Props = {
     imageURL: string;
     imgSize: number;
+    logout: () => void;
 }
 
 
-const Header: React.FC<Props> =({imageURL,imgSize})=>{
-    const auth = useAuth();
+const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
     const history= useHistory();
 
     const handleLogin =()=>{
-        auth?.signIn('Eric');
-        Cookies.set('Eric', 'connected');
-        history.push('/dashboard');
+            history.push('/login');
     }
 
-    const handleLogout =()=>{
-        auth?.signOut('Eric');
-    }
+    const token = Cookies.get('connected');
+
 
     return(
     <Wrapper backgroundUrl={imageURL}>
@@ -35,8 +32,17 @@ const Header: React.FC<Props> =({imageURL,imgSize})=>{
                     alignItems="center"
                     className="topBlock"
             >
-                <Grid item xl={3} lg={2} md={12} sm={12} xs={12}  style={{textAlign: 'center'}} >
-                    <Typography variant="h3" style={{color:'white'}}>eStage</Typography>
+                <Grid item xl={3} lg={2} md={12} sm={12} xs={12}  style={{textAlign: 'center'}}>
+                    <Grid container justify='center' spacing={2} alignItems='center' >
+                        <IconButton onClick={()=>history.push('/accueil')}>
+                            <Grid item>
+                                <GestureIcon style={{color: 'white', fontSize: '3rem'}}/>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="h3" style={{color:'white'}}>eStage</Typography>
+                            </Grid>
+                        </IconButton>
+                    </Grid>
                 </Grid>
                 <Grid item xl={6} lg={5} md={6} sm={7} xs={12}  style={{marginTop: '10px'}}>
                     <Grid container style={{marginLeft: '10px', marginRight: '10px'}}
@@ -65,20 +71,20 @@ const Header: React.FC<Props> =({imageURL,imgSize})=>{
                                
                         >
                             <Grid item >
-                                {auth?.user !== null ?
+                                {token ?
                                 (<>
                                 <Grid container spacing={1}  alignItems="center">
-                                    <Grid item>
+                                    {/* <Grid item>
                                         <Typography style={{color: 'red', fontSize: '1rem'}}>Salut {auth?.user}!</Typography>
                                         <Link to="/dashboard" style={{color: 'dodgerblue', fontSize: '1rem'}}>Dashboard</Link>
-                                    </Grid>
+                                    </Grid> */}
                                     
                                     <Grid item>
                                         <Button variant="contained" 
                                                 size="medium"  
                                                 style={{textTransform: 'none'}}
                                                 color='secondary'
-                                                onClick={handleLogout}
+                                                onClick={logout}
                                         >
                                             Déconnexion
                                         </Button>
@@ -87,6 +93,7 @@ const Header: React.FC<Props> =({imageURL,imgSize})=>{
                                 </>
                                 ) 
                                 :
+                                
                                 <Button variant="contained" 
                                         size="medium"  
                                         style={{backgroundColor: 'white', color: 'dimgray', textTransform: 'none'}}

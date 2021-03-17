@@ -1,31 +1,22 @@
 import { faLevelDownAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Grid, Typography } from '@material-ui/core';
+import { Redirect, Route } from 'react-router-dom';
 
-import { Menu } from './Dashboard';
+import useAuth from './auth/useAuth';
+import DashboardAccueil from './DashboardAccueil';
+import DashBoardUsers from './DashBoardUsers';
 
- 
+
 
 type Props = {
     menuItemSelected: string;
 };
 
 const DashboardContent: React.FC<Props> =({menuItemSelected})=>{
+    const auth = useAuth();
 
-    const renderMenuItem =(menuItem: string)=>{
-        let menuItemRendered;
 
-        menuItemRendered = menuItem === Menu.accueil ? renderAccueil(menuItem) :  
-                           menuItem === Menu.offres ? renderOffres(menuItem) : 
-                           menuItem === Menu.demandes ? renderDemandes(menuItem) : 
-                           menuItem === Menu.candidats ? renderCandidats(menuItem) : 
-                           menuItem === Menu.entreprises ? renderEntreprises(menuItem) : 
-                           menuItem === Menu.profil ? renderProfil(menuItem) : null;
-
-        console.log('menuItemSelected;', menuItem);
-        console.log('menu a rendre;', menuItemRendered);
-        return menuItemRendered;
-    }
 
 
     const renderMenuTitleArrow = (subtitle: string, variant: any, iconsize : any) => {
@@ -49,7 +40,7 @@ const DashboardContent: React.FC<Props> =({menuItemSelected})=>{
             <Grid container>
                 <Grid item xs={12}>
                     <Typography variant='h3'> 
-                        En attende de validation
+                        En attende de validation 
                     </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -104,7 +95,13 @@ const DashboardContent: React.FC<Props> =({menuItemSelected})=>{
 
     return(
         <>
-            {renderMenuItem(menuItemSelected)}
+            
+            <Route path="/dashboard/accueil"><DashboardAccueil/></Route>
+            <Route path="/dashboard/offres">{renderOffres(menuItemSelected)}</Route>
+            <Route path="/dashboard/demandes">{renderDemandes(menuItemSelected)}</Route>
+            <Route path="/dashboard/candidats"><DashBoardUsers usersType='candidats'/></Route>
+            <Route path="/dashboard/entreprises"><DashBoardUsers usersType='entreprises'/></Route>
+            <Route path="/dashboard/profil">{renderProfil(menuItemSelected)}</Route>
         </>
     )
 }

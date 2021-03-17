@@ -2,7 +2,7 @@ import { Button, Grid, Typography } from '@material-ui/core';
 import Image from 'react-bootstrap/Image';
 import styled from 'styled-components';
 
-import { Appel } from '../App';
+import { Appel } from '../Enum';
 import imgDemande from '../images/demande.jpg';
 import imgOffre from '../images/offre.jpg';
 

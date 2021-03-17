@@ -1,7 +1,7 @@
 import { Button, Grid, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
-import { Appel } from '../App';
+import { Appel } from '../Enum';
 import CardDernieresAnnonces from './CardDernieresAnnonces';
 
 

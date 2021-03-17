@@ -1,4 +1,5 @@
 import { Grid, Typography } from '@material-ui/core';
+import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
@@ -11,6 +12,7 @@ type Props = {
 
 const Footer: React.FC<Props> =()=>{
     const location = useLocation(); 
+    const token = Cookies.get('connected');
 
     const auth = useAuth();
     return(
@@ -29,7 +31,7 @@ const Footer: React.FC<Props> =()=>{
                         <Grid item><Link to="/confidentialite">Confidentialité</Link></Grid>
                         <Grid item><Link to="/contact">Nous Joindre</Link></Grid>
                         {
-                        location.pathname !== "/dashboard" && 
+                        !location.pathname.includes("/dashboard") && token &&
                             <Grid item>{auth?.user !== null ? <Link to="/dashboard" style={{color: 'dodgerblue'}}>Dashboard</Link> :null}</Grid>
                         }
                     </Grid>
@@ -55,7 +57,7 @@ export const Wrapper = styled.div<{location: any}>`
     .eStage{
         color:  #3e99df;
     }
-    ${({ location }) => location.pathname === "/dashboard" && `
+    ${({ location }) => location.pathname.includes("/dashboard") && `
     background: #3e99df;
     color: white;
     a{

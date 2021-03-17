@@ -1,4 +1,4 @@
-import { Appel } from '../App';
+import { Appel } from '../Enum';
 import AppelAction from './AppelAction';
 import DerniersAnnonces from './DerniersAnnonces';
 import OffresVedettes from './OffresVedettes';

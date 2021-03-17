@@ -1,7 +1,7 @@
 import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
-import { Appel } from '../App';
+import { Appel } from '../Enum';
 
 
 type Props = {

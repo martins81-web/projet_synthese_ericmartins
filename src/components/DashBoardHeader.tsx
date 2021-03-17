@@ -15,6 +15,9 @@ import {
 } from '@material-ui/core';
 import { useState } from 'react';
 
+import { AccessLevel } from '../Enum';
+import useAuth from './auth/useAuth';
+
 
 type Props = {
     logout: () => void;
@@ -23,7 +26,7 @@ type Props = {
 
 const DashboardHeader: React.FC<Props> =({logout,profil})=>{
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
+    const auth = useAuth();
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget);
     };
@@ -36,6 +39,27 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
         handleClose();
         profil();
       };
+
+    const getUserName =()=> {
+        return auth?.user?.Prenom+ ' ' + auth?.user?.Nom;
+    }
+
+    const getAccessLevel =()=> {
+        const userAccessLevel = auth?.user?.NiveauAcces;
+        if(userAccessLevel === AccessLevel.admin)
+            return 'Admin';
+        else if (userAccessLevel === AccessLevel.entreprise)
+            return 'Entreprise';
+            else if (userAccessLevel === AccessLevel.stagiaire)
+            return 'Étudiant';
+     }
+
+     const getInitials =()=> {
+        const initialePrenom = auth?.user?.Prenom !== undefined ? auth?.user?.Prenom.charAt(0) : "";
+        const initialeNom = auth?.user?.Nom !== undefined ? auth?.user?.Nom.charAt(0) : "";
+
+        return initialePrenom + initialeNom;
+    }
 
     return(
         <Grid container alignItems='center'>
@@ -63,12 +87,12 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
                         <Grid container spacing={2} alignItems='center'>
                             <Grid item>
                                 <Grid container direction='column' alignItems='flex-end'>
-                                    <Typography variant="caption" style={{textTransform: 'none', fontWeight: 'bold'}}>Eric</Typography> 
-                                    <Typography variant="caption" style={{textTransform: 'none', color: 'darkgray'}}>Admin</Typography>
+                                    <Typography variant="caption" style={{textTransform: 'none', fontWeight: 'bold'}}>{getUserName()}</Typography> 
+                                    <Typography variant="caption" style={{textTransform: 'none', color: 'darkgray'}}>{getAccessLevel()}</Typography>
                                 </Grid>
                             </Grid>
                             <Grid item>
-                                <Avatar>E</Avatar>
+                                <Avatar>{getInitials()}</Avatar>
                             </Grid>
                             <Grid item>
                                 <IconButton onClick={handleClick}>
@@ -123,3 +147,4 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
 }
 
 export default DashboardHeader;
+

@@ -7,11 +7,12 @@ import App from './App';
 import AuthProvider from './components/auth/AuthProvider';
 import reportWebVitals from './reportWebVitals';
 
+
 ReactDOM.render(
  <AuthProvider>
-    <Router>
-      <App />
-    </Router>
+      <Router>
+        <App />
+      </Router>
   </AuthProvider>,
   document.getElementById('root')
 );

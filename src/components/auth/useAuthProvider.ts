@@ -1,36 +1,31 @@
-import Cookies from 'js-cookie';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
+import { UtilisateursType } from '../../Types';
 import dashboardAuth from './dashboardAuth';
 
 export interface IUseAuthProvider {
-    signIn: (nom: string) => void;
-    signOut: (nom: string) => void;
-    user: null | string;
+    signIn: (user: UtilisateursType) => void;
+    signOut: () => void;
+    user: null | UtilisateursType;
 }
 
 
 const useAuthProvider =() : IUseAuthProvider =>{
-    const [user, setUser] = useState<null |string>(null);
+    const [user, setUser] = useState<null |UtilisateursType>(null);
 
-    useEffect(()=>{
-        const token = Cookies.get('Eric');
-        if(token) setUser('Eric');
-        //console.log(user);
-    },[])
+    
 
-
-    const signIn = (nom: string) =>{
+    const signIn = (user: UtilisateursType) =>{
         dashboardAuth.signIn(()=>{
-            setUser(nom);
+            setUser(user);
             //history.push('/dashboard');
             
         })
     };
-    const signOut = (nom: string) =>{
+    const signOut = () =>{
         dashboardAuth.signOut(()=>{
             setUser(null);
-            Cookies.remove(nom);
+            //Cookies.remove(user);
         })
     };
 
