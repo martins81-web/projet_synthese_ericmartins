@@ -1,10 +1,11 @@
 import { faLevelDownAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Grid, Typography } from '@material-ui/core';
-import { Redirect, Route } from 'react-router-dom';
+import { useHistory } from 'react-router';
+import { Route } from 'react-router-dom';
 
-import useAuth from './auth/useAuth';
 import DashboardAccueil from './DashboardAccueil';
+import DashboardEditUsers from './DashboardEditUsers';
 import DashBoardUsers from './DashBoardUsers';
 
 
@@ -14,9 +15,7 @@ type Props = {
 };
 
 const DashboardContent: React.FC<Props> =({menuItemSelected})=>{
-    const auth = useAuth();
-
-
+    const history = useHistory();
 
 
     const renderMenuTitleArrow = (subtitle: string, variant: any, iconsize : any) => {
@@ -33,25 +32,7 @@ const DashboardContent: React.FC<Props> =({menuItemSelected})=>{
         )
     }
 
-    const renderAccueil =(menuItem: string)=>{
-
-        return (
-
-            <Grid container>
-                <Grid item xs={12}>
-                    <Typography variant='h3'> 
-                        En attende de validation 
-                    </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                    {renderMenuTitleArrow('Demandes de stage', 'h6', 'lg')}
-                </Grid>
-                <Grid item xs={6}>
-                    {renderMenuTitleArrow('Offres de stage', 'h6', 'lg')}
-                </Grid>  
-            </Grid>
-        );
-    }
+   
 
     const renderOffres =(menuItem: string)=>{
         return (
@@ -69,21 +50,7 @@ const DashboardContent: React.FC<Props> =({menuItemSelected})=>{
         );
     }
 
-    const renderCandidats =(menuItem: string)=>{
-        return (
-            <Grid container>
-                {renderMenuTitleArrow(menuItem, 'h3', '3x')}
-            </Grid>
-        );
-    }
-
-    const renderEntreprises =(menuItem: string)=>{
-        return (
-            <Grid container>
-                {renderMenuTitleArrow(menuItem, 'h3', '3x')}
-            </Grid>
-        );
-    }
+ 
 
     const renderProfil =(menuItem: string)=>{
         return (
@@ -102,6 +69,7 @@ const DashboardContent: React.FC<Props> =({menuItemSelected})=>{
             <Route path="/dashboard/candidats"><DashBoardUsers usersType='candidats'/></Route>
             <Route path="/dashboard/entreprises"><DashBoardUsers usersType='entreprises'/></Route>
             <Route path="/dashboard/profil">{renderProfil(menuItemSelected)}</Route>
+            <Route path="/dashboard/edit/user/:id"><DashboardEditUsers history={history}/></Route>
         </>
     )
 }

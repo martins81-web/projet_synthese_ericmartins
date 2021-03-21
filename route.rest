@@ -1,0 +1,36 @@
+GET http://localhost:3001/api/utilisateurs
+
+###
+
+PUT http://localhost:3001/api/utilisateurs/604fe5184be06a352dc9ef50
+Content-Type: application/json      
+
+{
+    "Nom": "Martins",
+    "Prenom": "Eric",
+    "Entreprise": false,
+    "NomEntreprise": "",
+    "Adresse": "190 Senecal",
+    "Ville": "Saint-Jean-sur-Richelieu",
+    "Region": "Monteregie",
+    "Logo": "",
+    "Courriel": "martins_eric81@hotmail.com",
+    "Telephone": "5144248691",
+    "SiteWeb": "ericmartins.net",
+    "CV": "",
+    "MessageMotivation": "",
+    "MotdePasse": "eric",
+    "Actif": true,
+    "Supprime": true,
+    "Valide": true,
+    "NiveauAcces": 111,
+    "PremierConnexion": false,
+    "DescriptionEntreprise": "",
+    "SecteursActivites": [
+      ""
+    ],
+    "PostesStagiaires": [
+      ""
+    ],
+    "Ecole": "Cégep Trois-Rivières"
+  }

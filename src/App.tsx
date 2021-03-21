@@ -1,4 +1,4 @@
-import './App.css';
+import './App.sass';
 
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';

@@ -9,7 +9,7 @@ interface PrivateRouteProps extends RouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({...rest}) => { 
 const auth = useAuth();
-console.log(auth?.user);
+//console.log(auth?.user);
 
 const token = Cookies.get('connected');
 

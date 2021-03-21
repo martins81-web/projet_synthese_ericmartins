@@ -1,11 +1,10 @@
-import './index.css';
-
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './App';
 import AuthProvider from './components/auth/AuthProvider';
 import reportWebVitals from './reportWebVitals';
+
 
 
 ReactDOM.render(

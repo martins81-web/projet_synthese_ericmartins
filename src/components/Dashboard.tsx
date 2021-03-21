@@ -58,6 +58,7 @@ type Props = {
 
 const Dashboard: React.FC<Props> =({logout})=>{
     const [menuItemSelected, setMenuItemSelected] = useState('');
+
     const auth = useAuth();
     const history = useHistory();
 
@@ -67,8 +68,8 @@ const Dashboard: React.FC<Props> =({logout})=>{
          history.push('/dashboard/accueil');
          location='/dashboard/accueil';
         }
+        // eslint-disable-next-line array-callback-return
         menuItems.map(item =>{
-             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             if (location === item.link) {
              setMenuItemSelected(item.name);
              history.push(location);
@@ -79,10 +80,11 @@ const Dashboard: React.FC<Props> =({logout})=>{
 
     return(
         auth?.user ?
-        <Wrapper>
+       <Wrapper>
             <Grid container>
-                <Grid item  xs={2} style={{backgroundColor: '#3e99df', color: 'white', minHeight: '100vh'}}>
-                    <Grid container direction='column'>
+                
+                <Grid item  xs={2}>
+                    <Grid container direction='column' style={{backgroundColor: '#3e99df', color: 'white', minHeight: '100vh'}}>
                         <Grid item style={{ padding: '30px'}}>
                             <Grid container justify='center' spacing={2} alignItems='center'>
                                 <Grid item>
@@ -129,6 +131,7 @@ const Dashboard: React.FC<Props> =({logout})=>{
                         </Grid>
                     </Grid>
                 </Grid>
+                
                 <Grid item xs={10} style={{position: 'relative'}}>
                     <Grid container direction='column'  style={{padding: '30px'}}>
                         <Grid item>

@@ -1,4 +1,7 @@
-export type SecteursAcitiviteType={
+import { ObjectType } from 'typescript';
+
+export type SecteursActiviteType={
+    _id: string,
     Titre: string,
     Actif: boolean,
     Supprime: boolean 
@@ -18,11 +21,16 @@ export type SecteursAcitiviteType={
     Telephone:string,
     SiteWeb:string,
     CV:string,
+    MessageMotivation: string,
     MotdePasse:string,
     Actif:boolean,
     Supprime:boolean,
     Valide:boolean,
     NiveauAcces: number
+    PremierConnexion: boolean,
+    SecteursActivites: Array<string>,
+    PostesStagiaires: Array<string>,
+    Ecole: string
   }
 
   
