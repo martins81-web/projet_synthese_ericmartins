@@ -1,5 +1,6 @@
 import './App.sass';
 
+import { Grid } from '@material-ui/core';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
@@ -61,16 +62,20 @@ function App() {
 
   return (
     <>
+    <Grid container direction='column'>
+
+    <Grid item>
       {
       !location.pathname.includes('/dashboard') &&
       <Header imageURL={getImage()} 
-              imgSize={location.pathname === "/accueil" ? Size.BIG : Size.SMALL}
+              imgSize={Size.BIG}
               logout={logout}
       />
       }
-      
-    
-      <Switch>
+      </Grid>
+      <Grid item>
+      <Switch >
+        <Redirect exact from="/dashboard/update" to="/dashboard"/>
         <Redirect exact from="/" to="/accueil" />
         <Route path="/accueil" component={Accueil}/>
         <Route path="/contact" component={NousJoindre}/>
@@ -79,10 +84,13 @@ function App() {
         <PrivateRoute path="/dashboard/"><Dashboard logout={logout}/></PrivateRoute>
         <ProtectedLogin path="/login" component={Login}/>
       </Switch>
+      </Grid>
+      <Grid item>
       {
       !location.pathname.includes('/dashboard') && < Footer/>
       }
-      
+      </Grid>
+      </Grid>
     </>
   );
 }

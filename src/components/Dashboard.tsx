@@ -1,7 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
     faArrowAltCircleLeft,
     faArrowAltCircleRight,
+    faBriefcase,
     faHome,
+    faMapMarkedAlt,
     faSignOutAlt,
     faUserGraduate,
     faUserTie,
@@ -13,7 +16,9 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { fetchUtilisateur } from '../Api';
 import { Menu } from '../Enum';
+import { UtilisateursType } from '../Types';
 import useAuth from './auth/useAuth';
 import DashboardContent from './DashBoardContent';
 import DashboardHeader from './DashBoardHeader';
@@ -49,6 +54,18 @@ const menuItems =[
         icon: faUserTie,
         link: "/dashboard/entreprises",
         accessLevel: [999]
+    },
+    {
+        name: Menu.regions,
+        icon: faMapMarkedAlt,
+        link: "/dashboard/regions",
+        accessLevel: [999]
+    },
+    {
+        name: Menu.secteurs,
+        icon: faBriefcase,
+        link: "/dashboard/secteurs",
+        accessLevel: [999]
     }
 ];
 
@@ -57,11 +74,14 @@ type Props = {
 };
 
 const Dashboard: React.FC<Props> =({logout})=>{
-    const [menuItemSelected, setMenuItemSelected] = useState('');
-
     const auth = useAuth();
-    const history = useHistory();
+    const history= useHistory();
+    const [menuItemSelected, setMenuItemSelected] = useState('accueil');
 
+    
+    const [user, setUser] =  useState<UtilisateursType|null|undefined>(auth?.user);
+  
+    
     useEffect(()=>{
         let location = history.location.pathname;
         if (location === '/dashboard' || location === '/dashboard/') {
@@ -76,15 +96,25 @@ const Dashboard: React.FC<Props> =({logout})=>{
             }         
         })
       // eslint-disable-next-line react-hooks/exhaustive-deps
+      getUser();
       },[])
 
+      const getUser= async()=>{
+        let id='';
+        if(auth?.user!==undefined && auth?.user!==null)
+        id = auth?.user._id;
+        let user : UtilisateursType | undefined = await fetchUtilisateur(id);
+        console.log(user);
+        setUser(user);
+    } 
+
     return(
-        auth?.user ?
+        auth?.user &&user ?
        <Wrapper>
             <Grid container>
                 
                 <Grid item  xs={2}>
-                    <Grid container direction='column' style={{backgroundColor: '#3e99df', color: 'white', minHeight: '100vh'}}>
+                    <Grid container direction='column' style={{backgroundColor: '#3e99df', color: 'white', minHeight: '100vh', height: '100%'}}>
                         <Grid item style={{ padding: '30px'}}>
                             <Grid container justify='center' spacing={2} alignItems='center'>
                                 <Grid item>
@@ -133,12 +163,16 @@ const Dashboard: React.FC<Props> =({logout})=>{
                 </Grid>
                 
                 <Grid item xs={10} style={{position: 'relative'}}>
-                    <Grid container direction='column'  style={{padding: '30px'}}>
+                    
+                    <Grid container direction='column'  style={{padding: '30px', marginBottom: 'auto'}}>
                         <Grid item>
                             <DashboardHeader logout={logout} 
-                            profil={()=>{
+                                profil={()=>{
                                             setMenuItemSelected('Profil');
-                                            history.push('profil')
+                                            history.push({
+                                                pathname: '/dashboard/profil',
+                                                state: { data: auth?.user}
+                                            });
                                         }}
                         />
                         </Grid>
@@ -146,7 +180,7 @@ const Dashboard: React.FC<Props> =({logout})=>{
                             <DashboardContent menuItemSelected={menuItemSelected}/>
                         </Grid>
                     </Grid>
-                    <Box style={{position: 'absolute',bottom: '0', width: '100%',borderLeft:  '7px solid #a0c3da'}}>
+                    <Box style={{position: 'absolute', bottom: '0', width: '100%',borderLeft:  '7px solid #a0c3da'}}>
                         <Footer/>
                     </Box>
                 </Grid>

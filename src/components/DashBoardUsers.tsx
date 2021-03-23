@@ -1,6 +1,7 @@
 import '../App.sass';
 
-import { Grid } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -15,11 +16,13 @@ type Props = {
 const DashboardCandidats: React.FC<Props> =({usersType})=>{
 
     const [utilisateurs, setUtilisateurs] = useState<UtilisateursType[]>([]);
-
+    
     useEffect(()=>{
         getUtilisateurs();
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
+
+    
 
     const getUtilisateurs = async () => {
         let users : UtilisateursType[] | undefined = await fetchUtilisateurs();
@@ -41,7 +44,19 @@ const DashboardCandidats: React.FC<Props> =({usersType})=>{
     
     return(
         <Wrapper>
+            <Grid container>
+                <Button
+                    color="primary"
+                    variant="contained"
+                    startIcon={<AddIcon/>}
+               
+                >
+                Ajouter {usersType==='entreprises'? 'une nouvelle entreprise':'un nouveau candidat'}
+                </Button>
+            </Grid>
             <Grid container spacing={2} className='dashboardContent'>
+            
+            
             {utilisateurs.length > 0 ?
                 utilisateurs.map((user,index)=>( 
                     user.Supprime === false ?

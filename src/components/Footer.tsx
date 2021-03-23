@@ -26,10 +26,26 @@ const Footer: React.FC<Props> =()=>{
                 </Grid>
                 <Grid item>
                     <Grid container spacing={4}>
-                        <Grid item><Link to="/accueil">Accueil</Link></Grid>
-                        <Grid item><Link to="/apropos">À propos</Link></Grid>
-                        <Grid item><Link to="/confidentialite">Confidentialité</Link></Grid>
-                        <Grid item><Link to="/contact">Nous Joindre</Link></Grid>
+                        <Grid item>
+                            <Link to="/accueil" style={{fontWeight: location.pathname=== "/accueil" ? 'bold': 'normal' }}>
+                                Accueil
+                            </Link>
+                        </Grid>
+                        <Grid item>
+                            <Link to="/apropos" style={{fontWeight: location.pathname=== "/apropos" ? 'bold': 'normal' }}>
+                                À propos
+                            </Link>
+                        </Grid>
+                        <Grid item>
+                            <Link to="/confidentialite" style={{fontWeight: location.pathname=== "/confidentialite" ? 'bold': 'normal' }}>
+                                Confidentialité
+                            </Link>
+                        </Grid>
+                        <Grid item>
+                            <Link to="/contact" style={{fontWeight: location.pathname=== "/contact" ? 'bold': 'normal' }}>
+                                Nous Joindre
+                            </Link>
+                        </Grid>
                         {
                         !location.pathname.includes("/dashboard") && token &&
                             <Grid item>{auth?.user !== null ? <Link to="/dashboard" style={{color: 'dodgerblue'}}>Dashboard</Link> :null}</Grid>
@@ -45,6 +61,7 @@ export default Footer;
 
 
 export const Wrapper = styled.div<{location: any}>`
+
     padding: 30px 100px 30px 100px;
     background-color: WhiteSmoke;
     a{

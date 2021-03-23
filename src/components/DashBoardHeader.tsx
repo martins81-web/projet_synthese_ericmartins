@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { faAngleDown, faBell, faPlus, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -13,9 +14,11 @@ import {
     MenuItem,
     Typography,
 } from '@material-ui/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { fetchUtilisateur } from '../Api';
 import { AccessLevel } from '../Enum';
+import { UtilisateursType } from '../Types';
 import useAuth from './auth/useAuth';
 
 
@@ -30,6 +33,22 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget);
     };
+
+    const [user, setUser] =  useState<UtilisateursType|null|undefined>(auth?.user);
+
+
+    useEffect(()=>{
+      getUser();
+      },[])
+
+      const getUser= async()=>{
+        let id='';
+        if(auth?.user!==undefined && auth?.user!==null)
+        id = auth?.user._id;
+        let user : UtilisateursType | undefined = await fetchUtilisateur(id);
+       // console.log(user);
+        setUser(user);
+    } 
   
     const handleClose = () => {
       setAnchorEl(null);
@@ -41,11 +60,11 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
       };
 
     const getUserName =()=> {
-        return auth?.user?.Prenom+ ' ' + auth?.user?.Nom;
+        return user?.Prenom+ ' ' + user?.Nom;
     }
 
     const getAccessLevel =()=> {
-        const userAccessLevel = auth?.user?.NiveauAcces;
+        const userAccessLevel = user?.NiveauAcces;
         if(userAccessLevel === AccessLevel.admin)
             return 'Admin';
         else if (userAccessLevel === AccessLevel.entreprise)
@@ -55,8 +74,8 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
      }
 
      const getInitials =()=> {
-        const initialePrenom = auth?.user?.Prenom !== undefined ? auth?.user?.Prenom.charAt(0) : "";
-        const initialeNom = auth?.user?.Nom !== undefined ? auth?.user?.Nom.charAt(0) : "";
+        const initialePrenom = user?.Prenom !== undefined ? user?.Prenom.charAt(0) : "";
+        const initialeNom = user?.Nom !== undefined ? user?.Nom.charAt(0) : "";
 
         return initialePrenom + initialeNom;
     }

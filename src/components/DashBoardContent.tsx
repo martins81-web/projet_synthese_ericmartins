@@ -5,7 +5,9 @@ import { useHistory } from 'react-router';
 import { Route } from 'react-router-dom';
 
 import DashboardAccueil from './DashboardAccueil';
+import DashboardEditProfil from './DashboardEditProfil';
 import DashboardEditUsers from './DashboardEditUsers';
+import DashboardSecteurs from './DashboardSecteurs';
 import DashBoardUsers from './DashBoardUsers';
 
 
@@ -16,6 +18,7 @@ type Props = {
 
 const DashboardContent: React.FC<Props> =({menuItemSelected})=>{
     const history = useHistory();
+
 
 
     const renderMenuTitleArrow = (subtitle: string, variant: any, iconsize : any) => {
@@ -52,23 +55,15 @@ const DashboardContent: React.FC<Props> =({menuItemSelected})=>{
 
  
 
-    const renderProfil =(menuItem: string)=>{
-        return (
-            <Grid container>
-                Profil
-            </Grid>
-        );
-    }
-
     return(
-        <>
-            
+        <>  
             <Route path="/dashboard/accueil"><DashboardAccueil/></Route>
             <Route path="/dashboard/offres">{renderOffres(menuItemSelected)}</Route>
             <Route path="/dashboard/demandes">{renderDemandes(menuItemSelected)}</Route>
             <Route path="/dashboard/candidats"><DashBoardUsers usersType='candidats'/></Route>
             <Route path="/dashboard/entreprises"><DashBoardUsers usersType='entreprises'/></Route>
-            <Route path="/dashboard/profil">{renderProfil(menuItemSelected)}</Route>
+            <Route path="/dashboard/profil"><DashboardEditProfil history={history}/></Route>
+            <Route path="/dashboard/Secteurs"><DashboardSecteurs/></Route>
             <Route path="/dashboard/edit/user/:id"><DashboardEditUsers history={history}/></Route>
         </>
     )

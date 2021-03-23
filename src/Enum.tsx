@@ -1,7 +1,8 @@
 
 export enum Size {
-    SMALL = 400,
-    BIG = 800
+    SMALL = 500,
+    BIG = 700,
+    SMALLER = 300,
   }
   
   export enum Appel {
@@ -15,7 +16,9 @@ export enum Size {
     demandes = 'Demandes de stage',
     candidats = 'Candidats',
     entreprises = 'Entreprises',
-    profil = 'Profil'
+    profil = 'Profil',
+    regions = 'Regions',
+    secteurs = "Secteurs d'activité"
   }
 
   export enum AccessLevel {
