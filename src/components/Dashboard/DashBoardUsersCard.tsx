@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, CardActions, CardContent, Grid, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
-import { UtilisateursType } from '../Types';
+import { UtilisateursType } from '../../Types';
 
 type Props = {
     user: UtilisateursType;
@@ -18,7 +18,7 @@ const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
 
         history.push({
             pathname: '/dashboard/edit/user/'+user._id,
-            state: { data: user}
+            state: {data: user}
         });
     }
 

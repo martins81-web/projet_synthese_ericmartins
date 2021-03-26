@@ -1,8 +1,8 @@
 import './App.sass';
 
-import { Grid } from '@material-ui/core';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
@@ -13,12 +13,16 @@ import PrivateRoute from './components/auth/PrivateRoute';
 import ProtectedLogin from './components/auth/ProtectedLogin';
 import useAuth from './components/auth/useAuth';
 import Confidentialite from './components/Confidentialite';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/Dashboard/Dashboard';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Login from './components/Login';
 import NousJoindre from './components/NousJoindre';
-import { Size } from './Enum';
+import OffresDemandes from './components/OffresDemandes';
+import SelectEntreprise from './components/Selects/SelectEntreprise';
+import SelectSecteur from './components/Selects/SelectSecteur';
+import SelectStagiaire from './components/Selects/SelectStagiaire';
+import { Appel, Size } from './Enum';
 import BGImage from './images/accueil.jpg';
 import { UtilisateursType } from './Types';
 
@@ -28,6 +32,11 @@ function App() {
   const history = useHistory();
   const location = useLocation(); 
   //console.log(location.pathname); 
+
+  //Ça fait scrollToTop on all route changes
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const getImage = ()=>{
     if(location.pathname === "/accueil")
@@ -60,37 +69,38 @@ function App() {
   
   }
 
+
+
   return (
     <>
-    <Grid container direction='column'>
-
-    <Grid item>
       {
       !location.pathname.includes('/dashboard') &&
       <Header imageURL={getImage()} 
               imgSize={Size.BIG}
               logout={logout}
       />
-      }
-      </Grid>
-      <Grid item>
+      } 
+      <SelectEntreprise onChange={(entreprise)=>console.log(entreprise?.NomEntreprise)}/>
+      <SelectStagiaire onChange={(stagiaire)=>console.log(stagiaire?.Prenom+" "+stagiaire?.Nom)}/>
+      <SelectSecteur onChange={(secteur)=>console.log(secteur?.Titre)}/>
       <Switch >
         <Redirect exact from="/dashboard/update" to="/dashboard"/>
         <Redirect exact from="/" to="/accueil" />
-        <Route path="/accueil" component={Accueil}/>
+        <Route exact path="/accueil" component={Accueil}/>
         <Route path="/contact" component={NousJoindre}/>
         <Route path="/confidentialite" component={Confidentialite}/>
         <Route path="/apropos" component={APropos}/>
+        <Route path="/accueil/offres"><OffresDemandes type={Appel.OFFRE}/></Route>
+        <Route  path="/accueil/Demandes"><OffresDemandes type={Appel.DEMANDE}/></Route>
         <PrivateRoute path="/dashboard/"><Dashboard logout={logout}/></PrivateRoute>
         <ProtectedLogin path="/login" component={Login}/>
       </Switch>
-      </Grid>
-      <Grid item>
+    
       {
       !location.pathname.includes('/dashboard') && < Footer/>
-      }
-      </Grid>
-      </Grid>
+      } 
+      
+      
     </>
   );
 }

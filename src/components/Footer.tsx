@@ -17,38 +17,35 @@ const Footer: React.FC<Props> =()=>{
     const auth = useAuth();
     return(
         <Wrapper location={location}>
-            <Grid container
-                direction='row'
-                justify="space-between"
-            >
-                <Grid item>
+            <Grid container>
+                <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
                     <Typography>© 2021 <Link to="/accueil" className='eStage'>eStage</Link> - Projet de Synthèse - Eric Martins</Typography>  
                 </Grid>
-                <Grid item>
-                    <Grid container spacing={4}>
-                        <Grid item>
+                <Grid item xs={12} sm={12} md={9} lg={9} xl={9}>
+                    <Grid container justify='flex-end'>
+                        <Grid item className='item'>
                             <Link to="/accueil" style={{fontWeight: location.pathname=== "/accueil" ? 'bold': 'normal' }}>
                                 Accueil
                             </Link>
                         </Grid>
-                        <Grid item>
+                        <Grid item className='item'>
                             <Link to="/apropos" style={{fontWeight: location.pathname=== "/apropos" ? 'bold': 'normal' }}>
                                 À propos
                             </Link>
                         </Grid>
-                        <Grid item>
+                        <Grid item className='item'>
                             <Link to="/confidentialite" style={{fontWeight: location.pathname=== "/confidentialite" ? 'bold': 'normal' }}>
                                 Confidentialité
                             </Link>
                         </Grid>
-                        <Grid item>
+                        <Grid item className='item'>
                             <Link to="/contact" style={{fontWeight: location.pathname=== "/contact" ? 'bold': 'normal' }}>
                                 Nous Joindre
                             </Link>
                         </Grid>
                         {
                         !location.pathname.includes("/dashboard") && token &&
-                            <Grid item>{auth?.user !== null ? <Link to="/dashboard" style={{color: 'dodgerblue'}}>Dashboard</Link> :null}</Grid>
+                            <Grid item className='item'>{auth?.user !== null ? <Link to="/dashboard" style={{color: 'dodgerblue'}}>Dashboard</Link> :null}</Grid>
                         }
                     </Grid>
                 </Grid>
@@ -61,8 +58,8 @@ export default Footer;
 
 
 export const Wrapper = styled.div<{location: any}>`
-
-    padding: 30px 100px 30px 100px;
+    
+    padding: 30px 50px 30px 50px;
     background-color: WhiteSmoke;
     a{
         color: black
@@ -84,5 +81,9 @@ export const Wrapper = styled.div<{location: any}>`
         color:  black;
     }
   `}
+
+  .item{
+      margin-left: 20px
+  }
     
 `

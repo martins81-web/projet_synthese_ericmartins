@@ -26,14 +26,14 @@ const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
 
     return(
     <Wrapper backgroundUrl={imageURL}>
-        <div className='filter'  style={{height: imgSize+'px' }}>
+        <div className='filter'  style={{height: imgSize+"px" }}>
             <Grid   container 
                     direction="row"
                     alignItems="center"
                     className="topBlock"
             >
                 <Grid item xl={3} lg={2} md={12} sm={12} xs={12}  style={{textAlign: 'center'}}>
-                    <Grid container justify='center' spacing={2} alignItems='center' >
+                    <Grid container justify='center' alignItems='center' >
                         <IconButton onClick={()=>history.push('/accueil')}>
                             <Grid item>
                                 <GestureIcon style={{color: 'white', fontSize: '3rem'}}/>
@@ -44,18 +44,17 @@ const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
                         </IconButton>
                     </Grid>
                 </Grid>
-                <Grid item xl={6} lg={5} md={6} sm={7} xs={12}  style={{marginTop: '10px'}}>
-                    <Grid container style={{marginLeft: '10px', marginRight: '10px'}}
+                <Grid item xl={6} lg={5} md={6} sm={7} xs={12} >
+                    <Grid container 
                             direction="row"
                             justify="center"
-                            spacing={1}
                     >
                         <Grid item>
-                            <Button variant="contained" size="medium" style={{backgroundColor: 'limegreen', color: 'white', textTransform: 'none'}}>
+                            <Button variant="contained" size="medium" style={{backgroundColor: 'limegreen', color: 'white', textTransform: 'none', marginTop: '10px'}}>
                                 Trouvez votre stage
                             </Button>
                         </Grid>
-                        <Grid item >
+                        <Grid item style={{marginLeft: '5px', marginTop: '10px'}}>
                             <Button variant="contained" size="medium"  style={{backgroundColor: 'limegreen', color: 'white', textTransform: 'none'}}>
                                 Trouvez votre futur stagiaire
                             </Button>
@@ -74,12 +73,9 @@ const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
                                 {token ?
                                 (<>
                                 <Grid container spacing={1}  alignItems="center">
-                                    {/* <Grid item>
-                                        <Typography style={{color: 'red', fontSize: '1rem'}}>Salut {auth?.user}!</Typography>
-                                        <Link to="/dashboard" style={{color: 'dodgerblue', fontSize: '1rem'}}>Dashboard</Link>
-                                    </Grid> */}
                                     
-                                    <Grid item>
+                                    
+                                    <Grid item style={{marginTop: '10px'}}>
                                         <Button variant="contained" 
                                                 size="medium"  
                                                 style={{textTransform: 'none'}}
@@ -93,7 +89,8 @@ const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
                                 </>
                                 ) 
                                 :
-                                
+                                <Grid item style={{marginTop: '10px'}}>
+
                                 <Button variant="contained" 
                                         size="medium"  
                                         style={{backgroundColor: 'white', color: 'dimgray', textTransform: 'none'}}
@@ -101,15 +98,21 @@ const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
                                 >
                                     Connexion
                                 </Button>
+                                </Grid>
                                 }
                                 
                                 
                             </Grid>
-                            <Grid item style={{marginLeft: '10px', marginRight: '10px'}}>
-                                
-                                <Button variant="contained" size="medium"  style={{backgroundColor: 'dimgray', color: 'white', textTransform: 'none'}}>
+                            <Grid item style={{marginLeft: '10px', marginRight: '10px', marginTop: '10px'}}>
+                            {token ? 
+                                <Button variant="contained" size="medium" color='primary' style={{textTransform: 'none'}} 
+                                onClick={()=>{history.push('/dashboard')}}>
+                                    Dashboard
+                                </Button>
+                            :    <Button variant="contained" size="medium"  style={{backgroundColor: 'dimgray', color: 'white', textTransform: 'none'}}>
                                     Inscription
                                 </Button>
+                            }
                             </Grid>
                     </Grid>
                 </Grid>
@@ -119,10 +122,9 @@ const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
                     <Grid container  
                         direction="column"
                         alignItems="center"
-                        spacing={5}
                     >
                         <Grid item>
-                            <Typography variant="h3" style={{color:'white', textAlign:'center'}}>Trouvez votre stage!</Typography>
+                            <Typography variant="h3" style={{color:'white', textAlign:'center', marginBottom: '20px'}}>Trouvez votre stage!</Typography>
                         </Grid>
                         <Grid item>
                                 <Grid container  alignItems="center" 

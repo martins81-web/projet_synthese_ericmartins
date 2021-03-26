@@ -17,13 +17,14 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import SaveIcon from '@material-ui/icons/Save';
 import { useEffect, useState } from 'react';
 
-import { fetchSecteursActivite, fetchUtilisateur, updateUtilisateur } from '../Api';
-import { AccessLevel } from '../Enum';
-import { SecteursActiviteType, UtilisateursType } from '../Types';
-import useAuth from './auth/useAuth';
+import { fetchSecteursActivite, updateUtilisateur } from '../../Api';
+import { AccessLevel } from '../../Enum';
+import { SecteursActiviteType, UtilisateursType } from '../../Types';
+import useAuth from '../auth/useAuth';
+import SelectRegion from '../Selects/SelectRegion';
 
 type Props = {
-    history:any
+    history: any
 };
 
 const ITEM_HEIGHT = 48;
@@ -67,28 +68,18 @@ const useStyles = makeStyles((theme: Theme) =>
 const DashboardEditUsers: React.FC<Props> =({history})=>{
 
 const classes = useStyles();
-const auth = useAuth();
-
-const [user, setUser] = useState<UtilisateursType|null>(null);
-
+  
+const [user, setUser] = useState<UtilisateursType>(history.location.state.data);
 const [secteursActivites, setSecteursActivites] = useState<SecteursActiviteType[]>([]);
 const [update, setUpdate]= useState<String>('');
 const [updatingUser, setUpdatingUser] = useState(true);
+const auth = useAuth();
 
 useEffect(()=>{
     getSecteursActivites();
-    getUser();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   
-  const getUser= async()=>{
-    let id='';
-    if(auth?.user!==undefined && auth?.user!==null)
-    id = auth?.user._id;
-    let user : UtilisateursType | undefined = await fetchUtilisateur(id);
-    console.log(user);
-    setUser(user);
-} 
 
 
 const getSecteursActivites = async () => {
@@ -115,13 +106,11 @@ const Field = (defaultValue: string, label: string, key: string) => {
 }
 
 const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if(user)
     setUser({ ...user, [event.target.name]: event.target.value });
     
 }
 
 const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if(user)
     setUser({ ...user, [event.target.name]: event.target.checked });
 };
 
@@ -142,24 +131,20 @@ const handleSave = async ()=>{
 
 async function userUpdated() {
     try {
-        if(user) {
         setUpdatingUser(true);
         const update=await updateUtilisateur(user);
-        setUpdate(update);
-        }
+      setUpdate(update);
     } catch (e) {
     } finally {
         setUpdatingUser(false);
-        history.push({
-            pathname: "/dashboard/update",
-            state: {data: user}
-        });
+        history.location.pathname==='/dashboard/profil'? history.push("/dashboard/accueil") :
+        user.Entreprise? history.push('/dashboard/entreprises'):
+        history.push('/dashboard/candidats');
     }
   }
 
  return(
-         user?
-            <div>  { user !== auth?.user ?
+        <>  { auth?.user?.NiveauAcces===AccessLevel.admin ?
             <Grid container>
                 <FormControlLabel
                     control={
@@ -211,7 +196,7 @@ async function userUpdated() {
                     {Field(user.Ville, "Ville", 'Ville')}
                 </Grid>
                 <Grid item xs={2}>
-                    {Field(user.Region, "Region", 'Region')}
+                    <SelectRegion selectedId={user.Region} onChange={(region)=>setUser({ ...user, Region: region?._id as string })}/>
                 </Grid>
         </Grid>
         <Grid container spacing={2}>
@@ -282,7 +267,7 @@ async function userUpdated() {
                         multiple
                         value={user.SecteursActivites}
                         onChange={(e)=>{
-                            console.log(e.target.value);
+                            //console.log(e.target.value);
                             setUser({ ...user, SecteursActivites: e.target.value as string[] })                      
                         }}
                         input={<Input id="select-multiple-chip" />}
@@ -325,15 +310,16 @@ async function userUpdated() {
                     color="secondary"
                     size="small"
                     onClick={()=>{
-                        history.push("/dashboard/update");
-
+                        history.location.pathname==='/dashboard/profil'? history.push("/dashboard/accueil") :
+                        user.Entreprise? history.push('/dashboard/entreprises'):
+                        history.push('/dashboard/candidats');
                     }}
                 >
                     Cancel
                 </Button>
             </Grid>
         </Grid>
-    </div>:null
+    </>
     )
 }
 

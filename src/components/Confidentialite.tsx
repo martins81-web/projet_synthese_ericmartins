@@ -8,7 +8,7 @@ type Props = {
 const Confidentialite: React.FC<Props> =()=>{
     return(
         <Container className='politique'>
-            <Typography variant='h3'>Politique et confidentialité!</Typography>  
+            <Typography variant='h3' >Politique et confidentialité!</Typography>  
             <p>
                 Lorem ipsum odor amet, consectetuer adipiscing elit. Ac purus in massa egestas mollis varius;
                 dignissim elementum. Mollis tincidunt mattis hendrerit dolor eros enim, nisi ligula ornare.

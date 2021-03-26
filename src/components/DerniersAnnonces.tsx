@@ -1,15 +1,44 @@
 import { Button, Grid, Typography } from '@material-ui/core';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { fetchOffreDemande } from '../Api';
 import { Appel } from '../Enum';
+import { OffreDemandeType } from '../Types';
 import CardDernieresAnnonces from './CardDernieresAnnonces';
 
 
 type Props = {
-    type: Appel
+    type: Appel,
 };
 
 const DerniersAnnonces: React.FC<Props> =({type})=>{
+    const history= useHistory();
+
+    const [offresDemandes, setOffresDemandes] = useState<OffreDemandeType[]>([]);
+    
+    useEffect(()=>{
+        getOffresDemandes();
+       
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      },[])
+
+    const getOffresDemandes = async () => {
+        let offresDemandes : OffreDemandeType[] | undefined = await fetchOffreDemande();
+        
+        // Filtre les offres valides
+        offresDemandes = offresDemandes.filter(offreDemande=> offreDemande.Supprime===false && offreDemande.Type===type && offreDemande.Valide );
+        // Trié par date
+        offresDemandes.sort((a, b) => (a.DateParution < b.DateParution) ? 1 : -1);
+         // Garde juste les 4 offre vedettes les plus récentes
+         offresDemandes.splice(4,offresDemandes.length-4);
+
+        console.log(offresDemandes);
+        setOffresDemandes(offresDemandes);  
+    }
+
     return(
         <Wrapper>
             <Grid container direction='column' alignItems="center" style={{textAlign:'center', paddingTop: '50px'}}>
@@ -26,24 +55,27 @@ const DerniersAnnonces: React.FC<Props> =({type})=>{
                         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Typography>
                 </Grid>
             </Grid>
-            <Grid container justify='center' style={{marginTop: '50px', padding: '0 120px 0 120px'}}>
-                <Grid item xs={3}>
-                    <CardDernieresAnnonces type={type}/>
-                </Grid>
-                <Grid item xs={3}>
-                    <CardDernieresAnnonces type={type}/>
-                </Grid>
-                <Grid item xs={3}>
-                    <CardDernieresAnnonces type={type}/>
-                </Grid>
-                <Grid item xs={3}>
-                    <CardDernieresAnnonces type={type}/>
+            <Grid container justify='center' >
+                <Grid item xs={11} lg={9} style={{marginTop: '50px'}}>
+                    <Grid container spacing={2} alignItems='stretch'>
+                {offresDemandes.length>0 &&
+                offresDemandes.map(offreDemande=>(
+                    <Grid item xs={3} key={offreDemande._id}>
+                        <CardDernieresAnnonces type={type} offreDemande={offreDemande} cardType='mini'/>
+                    </Grid>
+                ))
+                }
+                    </Grid>
                 </Grid>
             </Grid>
         
             <Grid container justify='center' style={{marginTop: '50px',paddingBottom: '50px'}}>
                 <Grid item>
-                    <Button variant="contained" size="medium" color="secondary" style={{borderRadius: '0',textTransform: 'none'}}>
+                    <Button variant="contained" size="medium" color="secondary" style={{borderRadius: '0',textTransform: 'none'}}
+                    onClick={()=>{
+                        history.push('/accueil/'+type+'s');
+                    }}
+                    >
                     {type===Appel.OFFRE? 'Voir toutes les offres de stage' : 'Voir tous les candidats'} 
                     </Button>
                 </Grid>

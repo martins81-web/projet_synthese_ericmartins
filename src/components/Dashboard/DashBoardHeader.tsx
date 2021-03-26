@@ -14,13 +14,14 @@ import {
     MenuItem,
     Typography,
 } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useEffect, useState } from 'react';
 
-import { fetchUtilisateur } from '../Api';
-import { AccessLevel } from '../Enum';
-import { UtilisateursType } from '../Types';
-import useAuth from './auth/useAuth';
-
+import { fetchUtilisateur } from '../../Api';
+import { AccessLevel } from '../../Enum';
+import { UtilisateursType } from '../../Types';
+import useAuth from '../auth/useAuth';
 
 type Props = {
     logout: () => void;
@@ -30,11 +31,15 @@ type Props = {
 const DashboardHeader: React.FC<Props> =({logout,profil})=>{
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const auth = useAuth();
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-      setAnchorEl(event.currentTarget);
-    };
+   
 
     const [user, setUser] =  useState<UtilisateursType|null|undefined>(auth?.user);
+    const theme = useTheme();
+
+    //mediaQueries
+    const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
+    const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
+    //console.log(matchesSM);
 
 
     useEffect(()=>{
@@ -50,6 +55,10 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
         setUser(user);
     } 
   
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+      };
+
     const handleClose = () => {
       setAnchorEl(null);
     };
@@ -82,28 +91,32 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
 
     return(
         <Grid container alignItems='center'>
-            <Grid item xs={6}>
-                <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} md={6}>
+                <Grid container spacing={2} justify={matchesSM? 'center':'flex-end'}>
+                    {(auth?.user?.NiveauAcces === AccessLevel.entreprise || auth?.user?.NiveauAcces === AccessLevel.admin) &&
+                    <Grid item>
+                        <Button variant="outlined" startIcon={<FontAwesomeIcon icon={faPlus}  size={matchesSM ? "sm": 'lg'}/>}
+                        style={{textTransform: 'none'}}
+                        >
+                            Offre de stage
+                        </Button>
+                    </Grid>
+                    }
+                    {(auth?.user?.NiveauAcces === AccessLevel.stagiaire || auth?.user?.NiveauAcces === AccessLevel.admin) &&
                     <Grid item>
                         <Button variant="outlined" startIcon={<FontAwesomeIcon icon={faPlus}  size="lg"/>}
                         style={{textTransform: 'none'}}
                         >
-                            Ajouter une offre de stage
+                            Demande de stage
                         </Button>
                     </Grid>
-                    <Grid item>
-                        <Button variant="outlined" startIcon={<FontAwesomeIcon icon={faPlus}  size="lg"/>}
-                        style={{textTransform: 'none'}}
-                        >
-                            Ajouter une demande de stage
-                        </Button>
-                    </Grid>
+                    }
                 </Grid>
             </Grid>
-            <Grid item xs={4}>
-                <Grid container justify='flex-end'>
+            <Grid item xs={12} sm={6} md={4}>
+                <Grid container justify={matchesXS? 'center':'flex-end'}>
                     <Box>
-                        <Grid container spacing={2} alignItems='center'>
+                        <Grid container spacing={1} alignItems='center'>
                             <Grid item>
                                 <Grid container direction='column' alignItems='flex-end'>
                                     <Typography variant="caption" style={{textTransform: 'none', fontWeight: 'bold'}}>{getUserName()}</Typography> 
@@ -145,8 +158,8 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
                     </Box>
                 </Grid>
             </Grid>
-            <Grid item xs={2}>
-                <Grid container justify='flex-end'>
+            <Grid item xs={12} sm={6} md={2}>
+                <Grid container justify={matchesXS?'center':matchesSM? 'flex-start':'flex-end'}>
                     <Grid item>
                         <IconButton>
                             <Badge color="primary" variant="dot" overlap="circle">

@@ -1,12 +1,12 @@
-import '../App.sass';
+import '../../App.sass';
 
 import { Button, Grid } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { fetchUtilisateurs, updateUtilisateur } from '../Api';
-import { UtilisateursType } from '../Types';
+import { fetchUtilisateurs, updateUtilisateur } from '../../Api';
+import { UtilisateursType } from '../../Types';
 import DashBoardUsersCard from './DashBoardUsersCard';
 
 type Props = {

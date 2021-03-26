@@ -17,13 +17,14 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import SaveIcon from '@material-ui/icons/Save';
 import { useEffect, useState } from 'react';
 
-import { fetchSecteursActivite, updateUtilisateur } from '../Api';
-import { AccessLevel } from '../Enum';
-import { SecteursActiviteType, UtilisateursType } from '../Types';
-import useAuth from './auth/useAuth';
+import { fetchSecteursActivite, fetchUtilisateur, updateUtilisateur } from '../../Api';
+import { AccessLevel } from '../../Enum';
+import { SecteursActiviteType, UtilisateursType } from '../../Types';
+import useAuth from '../auth/useAuth';
+import SelectRegion from '../Selects/SelectRegion';
 
 type Props = {
-    history: any
+    history:any
 };
 
 const ITEM_HEIGHT = 48;
@@ -67,18 +68,28 @@ const useStyles = makeStyles((theme: Theme) =>
 const DashboardEditUsers: React.FC<Props> =({history})=>{
 
 const classes = useStyles();
-  
-const [user, setUser] = useState<UtilisateursType>(history.location.state.data);
+const auth = useAuth();
+
+const [user, setUser] = useState<UtilisateursType|null>(null);
+
 const [secteursActivites, setSecteursActivites] = useState<SecteursActiviteType[]>([]);
 const [update, setUpdate]= useState<String>('');
 const [updatingUser, setUpdatingUser] = useState(true);
-const auth = useAuth();
 
 useEffect(()=>{
     getSecteursActivites();
+    getUser();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   
+  const getUser= async()=>{
+    let id='';
+    if(auth?.user!==undefined && auth?.user!==null)
+    id = auth?.user._id;
+    let user : UtilisateursType | undefined = await fetchUtilisateur(id);
+    console.log(user);
+    setUser(user);
+} 
 
 
 const getSecteursActivites = async () => {
@@ -105,11 +116,13 @@ const Field = (defaultValue: string, label: string, key: string) => {
 }
 
 const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if(user)
     setUser({ ...user, [event.target.name]: event.target.value });
     
 }
 
 const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if(user)
     setUser({ ...user, [event.target.name]: event.target.checked });
 };
 
@@ -130,45 +143,24 @@ const handleSave = async ()=>{
 
 async function userUpdated() {
     try {
+        if(user) {
         setUpdatingUser(true);
         const update=await updateUtilisateur(user);
-      setUpdate(update);
+        setUpdate(update);
+        }
     } catch (e) {
     } finally {
         setUpdatingUser(false);
-        history.location.pathname==='/dashboard/profil'? history.push("/dashboard/accueil") :
-        user.Entreprise? history.push('/dashboard/entreprises'):
-        history.push('/dashboard/candidats');
+        history.push({
+            pathname: "/dashboard/update",
+            state: {data: user}
+        });
     }
   }
 
  return(
-        <>  { auth?.user?.NiveauAcces===AccessLevel.admin ?
-            <Grid container>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={user.Valide}
-                            onChange={handleChange}
-                            color="primary"
-                            name="Valide"
-                        /> 
-                    }
-                    label="Validé"
-                />  
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={user.Actif}
-                            onChange={handleChange}
-                            color="primary"
-                            name="Actif"
-                        /> 
-                    }
-                    label="Actif"
-                /> 
-            </Grid> :null
-            }
+         user?
+            <div> 
             <Grid container spacing={2}>
                 {user.Entreprise?
                 <Grid item xs={2}> 
@@ -195,7 +187,8 @@ async function userUpdated() {
                     {Field(user.Ville, "Ville", 'Ville')}
                 </Grid>
                 <Grid item xs={2}>
-                    {Field(user.Region, "Region", 'Region')}
+                    <SelectRegion selectedId={user.Region} onChange={(region)=>setUser({ ...user, Region: region?._id as string })} />
+                    
                 </Grid>
         </Grid>
         <Grid container spacing={2}>
@@ -309,16 +302,15 @@ async function userUpdated() {
                     color="secondary"
                     size="small"
                     onClick={()=>{
-                        history.location.pathname==='/dashboard/profil'? history.push("/dashboard/accueil") :
-                        user.Entreprise? history.push('/dashboard/entreprises'):
-                        history.push('/dashboard/candidats');
+                        history.push("/dashboard/update");
+
                     }}
                 >
                     Cancel
                 </Button>
             </Grid>
         </Grid>
-    </>
+    </div>:null
     )
 }
 

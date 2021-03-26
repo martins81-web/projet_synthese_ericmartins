@@ -1,7 +1,7 @@
 
 export enum Size {
-    SMALL = 500,
-    BIG = 700,
+    SMALL = 400,
+    BIG = 650,
     SMALLER = 300,
   }
   

@@ -23,9 +23,9 @@ import SaveIcon from '@material-ui/icons/Save';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { fetchUtilisateurs } from '../Api';
-import { Menu } from '../Enum';
-import { UtilisateursType } from '../Types';
+import { fetchUtilisateurs } from '../../Api';
+import { Menu } from '../../Enum';
+import { UtilisateursType } from '../../Types';
 
 type Props = {
     usersType: string
