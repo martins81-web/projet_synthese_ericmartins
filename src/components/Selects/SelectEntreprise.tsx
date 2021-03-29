@@ -41,6 +41,7 @@ const SelectEntreprise: React.FC<Props> =({selectedId,onChange})=>{
             <InputLabel id="selectEntrepriseLabel">Entreprise</InputLabel>
             <Select
                 displayEmpty
+                defaultValue={selectedId}
                 labelId="selectEntrepriseLabel"
                 id="selectEntreprise"
                 value={selectedEntreprise||""}

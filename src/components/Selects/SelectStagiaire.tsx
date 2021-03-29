@@ -46,6 +46,7 @@ const SelectStagiaire: React.FC<Props> =({selectedId,onChange})=>{
                 displayEmpty
                 labelId="selectstagiaireLabel"
                 id="selectstagiaire"
+                defaultValue={selectedId}
                 value={selectedStagiaire||""}
                 onChange={(event)=>handleChange(event)}
             >

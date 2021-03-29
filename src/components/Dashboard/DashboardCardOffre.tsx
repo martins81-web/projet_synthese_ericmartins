@@ -4,19 +4,27 @@ import { Button, Card, CardActions, CardContent, Grid, Typography } from '@mater
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { fetchUtilisateur } from '../../Api';
-import { OffreDemandeType, UtilisateursType } from '../../Types';
+import { fetchUtilisateur, updateOffreDemande } from '../../Api';
+import { AccessLevel } from '../../Enum';
+import { OffresDemandesType, UtilisateursType } from '../../Types';
+import useAuth from '../auth/useAuth';
 
 type Props = {
-    offre: OffreDemandeType
+    offre: OffresDemandesType
     type?: 'attente' | undefined
+    updateOffre: ()=>void
 };
 
 
 
-const DashboardCardOffre: React.FC<Props> =({offre,type })=>{
+const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
 
     const [auteur, setAuteur] = useState<UtilisateursType | undefined>(undefined);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [update, setUpdate]= useState<String>('');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [updatingOffreDemande, setUpdatingOffreDemande] = useState(true);
+    const auth = useAuth();
 
     useEffect(()=>{
         getAuteur(offre.Auteur);
@@ -46,6 +54,23 @@ const DashboardCardOffre: React.FC<Props> =({offre,type })=>{
 
     const getAuteurNom = (auteur:UtilisateursType)=>{
         return (auteur.NomEntreprise)
+    }
+
+    async function offreDemandeUpdated(offreDemande:OffresDemandesType) {
+        try {
+            setUpdatingOffreDemande(true);
+            const update=await updateOffreDemande(offreDemande);
+            setUpdate(update);  
+        } catch (e) {
+        } finally {
+            setUpdatingOffreDemande(false);
+            updateOffre();
+        }
+      }
+    
+    const handleSupprimer =()=>{
+        offre.Supprime=true;
+        offreDemandeUpdated(offre);
     }
 
     return(
@@ -120,6 +145,7 @@ const DashboardCardOffre: React.FC<Props> =({offre,type })=>{
                                 <Grid item>
                                     <Button variant="outlined" size="small" 
                                     style={{textTransform: 'none', borderRadius: '0', backgroundColor: '#fa6980', color: 'white'}}
+                                    onClick={handleSupprimer}
                                     >
                                         Refuser
                                     </Button>
@@ -129,12 +155,17 @@ const DashboardCardOffre: React.FC<Props> =({offre,type })=>{
                                         variant="outlined" 
                                         size="small"  
                                         style={{textTransform: 'none', borderRadius: '0', backgroundColor: '#72a84a', color: 'white'}}
+                                        onClick={()=>{
+                                            offre.Valide=true;
+                                            offreDemandeUpdated(offre);
+                                        }}
                                     >
                                         Acepter
                                     </Button>
                                 </Grid>
                             </Grid>
                             :
+                            auth?.user?.NiveauAcces!==AccessLevel.stagiaire && 
                             <Grid container spacing={1}>
                                 <Grid item>
                                     <Button variant="outlined" size="small" 
@@ -150,6 +181,7 @@ const DashboardCardOffre: React.FC<Props> =({offre,type })=>{
                                         size="small"  
                                         startIcon={<FontAwesomeIcon icon={faTimes} color="red"/>}
                                         style={{textTransform: 'none', borderRadius: '0'}}
+                                        onClick={handleSupprimer}
                                     >
                                         Supprimer
                                     </Button>

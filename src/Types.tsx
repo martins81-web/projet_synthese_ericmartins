@@ -1,4 +1,3 @@
-import { ObjectType } from 'typescript';
 
 export type SecteursActiviteType={
     _id: string,
@@ -29,7 +28,7 @@ export type SecteursActiviteType={
     NiveauAcces: number
     PremierConnexion: boolean,
     SecteursActivites: Array<string>,
-    PostesStagiaires: Array<string>,
+    PostesStagiaires: string,
     Ecole: string
   }
 
@@ -41,7 +40,7 @@ export type SecteursActiviteType={
   }
   
 
-  export type OffreDemandeType={
+  export type OffresDemandesType={
     _id: string,
     Titre: string,
     Type: string,

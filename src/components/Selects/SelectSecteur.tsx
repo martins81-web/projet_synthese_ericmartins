@@ -43,6 +43,7 @@ const SelectSecteur: React.FC<Props> =({selectedId,onChange})=>{
                 displayEmpty
                 labelId="selectsecteurLabel"
                 id="selectsecteur"
+                defaultValue={selectedId}
                 value={selectedSecteur||""}
                 onChange={(event)=>handleChange(event)}
             >

@@ -2,9 +2,9 @@ import { Grid, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { fetchOffreDemande } from '../Api';
+import { fetchOffresDemandes } from '../Api';
 import { Appel } from '../Enum';
-import { OffreDemandeType } from '../Types';
+import { OffresDemandesType } from '../Types';
 import CardDernieresAnnonces from './CardDernieresAnnonces';
 
 
@@ -13,7 +13,7 @@ type Props = {
 };
 
 const OffresVedettes: React.FC<Props> =()=>{
-    const [offres, setOffres] = useState<OffreDemandeType[]>([]);
+    const [offres, setOffres] = useState<OffresDemandesType[]>([]);
     
     useEffect(()=>{
         getOffres();
@@ -22,7 +22,7 @@ const OffresVedettes: React.FC<Props> =()=>{
       },[])
 
     const getOffres = async () => {
-        let offres : OffreDemandeType[] | undefined = await fetchOffreDemande();
+        let offres : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         // Filtre les offres, valides et vedettes
         offres = offres.filter(offre=> offre.Supprime===false && offre.Type==='offre' && offre.Valide && offre.Vedette);
         // Trié par date

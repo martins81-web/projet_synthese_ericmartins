@@ -1,21 +1,28 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { faEdit, faTimes, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, CardActions, CardContent, Grid, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { fetchUtilisateur } from '../../Api';
-import { OffreDemandeType, UtilisateursType } from '../../Types';
+import { fetchUtilisateur, updateOffreDemande } from '../../Api';
+import { AccessLevel } from '../../Enum';
+import { OffresDemandesType, UtilisateursType } from '../../Types';
+import useAuth from '../auth/useAuth';
 
 type Props = {
-    demande: OffreDemandeType,
+    demande: OffresDemandesType,
     type?: 'attente' | undefined
+    updateDemande: ()=> void
 };
 
 
 
-const DashboardCardDemande: React.FC<Props> =({demande, type})=>{
+const DashboardCardDemande: React.FC<Props> =({demande, type,updateDemande})=>{
     const [auteur, setAuteur] = useState<UtilisateursType | undefined>(undefined);
+    const [update, setUpdate]= useState<String>('');
+    const [updatingOffreDemande, setUpdatingOffreDemande] = useState(true);
+    const auth = useAuth();
 
     useEffect(()=>{
         getAuteur(demande.Auteur);
@@ -47,6 +54,23 @@ const DashboardCardDemande: React.FC<Props> =({demande, type})=>{
         return (auteur.Prenom+" "+auteur.Nom)
     }
 
+    async function offreDemandeUpdated(offreDemande:OffresDemandesType) {
+        try {
+            setUpdatingOffreDemande(true);
+            const update=await updateOffreDemande(offreDemande);
+            setUpdate(update);  
+        } catch (e) {
+        } finally {
+            setUpdatingOffreDemande(false);
+            updateDemande();
+        }
+      }
+
+    const handleSupprimer = () =>{
+        demande.Supprime=true;
+        offreDemandeUpdated(demande);
+    }
+
     return(
         <Wrapper>
             <Card style={{borderTop: '5px solid #3e99df', backgroundColor: '#F0F0F0', 
@@ -69,10 +93,12 @@ const DashboardCardDemande: React.FC<Props> =({demande, type})=>{
                         </Grid>
                         <Grid item xs={12} >
                             <Grid container>
-                                <Grid item xs={type!=='attente' ? 7: 12}>
+                                <Grid item xs={12} md={type!=='attente' ? 7: 12}>
                                     <Grid container>
                                         <Grid item xs={12}>
-                                           {auteur? getAuteurNom(auteur) : null}
+                                           {
+                                           auth?.user?.NiveauAcces!==AccessLevel.entreprise && auteur? getAuteurNom(auteur) : null
+                                           }
                                         </Grid>
                                         <Grid item xs={12}>
                                             <b>Ville:</b> {demande.Ville}
@@ -83,7 +109,7 @@ const DashboardCardDemande: React.FC<Props> =({demande, type})=>{
                                     </Grid>
                                 </Grid>
                                 {type!=='attente' &&
-                                <Grid item xs={5}>
+                                <Grid item xs={12} md={5}>
                                     <Grid container>
                                         <Grid item xs={12}>
                                             <b>Formation:</b> {demande.ProgrammesSuivi}
@@ -120,6 +146,7 @@ const DashboardCardDemande: React.FC<Props> =({demande, type})=>{
                                 <Grid item>
                                     <Button variant="outlined" size="small" 
                                     style={{textTransform: 'none', borderRadius: '0', backgroundColor: '#fa6980', color: 'white'}}
+                                    onClick={handleSupprimer}
                                     >
                                         Refuser
                                     </Button>
@@ -129,32 +156,38 @@ const DashboardCardDemande: React.FC<Props> =({demande, type})=>{
                                         variant="outlined" 
                                         size="small"  
                                         style={{textTransform: 'none', borderRadius: '0', backgroundColor: '#72a84a', color: 'white'}}
+                                        onClick={()=>{
+                                            demande.Valide=true;
+                                            offreDemandeUpdated(demande);
+                                        }}
                                     >
                                         Acepter
                                     </Button>
                                 </Grid>
                                 </Grid>
                             :
-                            <Grid container spacing={1}>
-                                <Grid item>
-                                    <Button variant="outlined" size="small" 
-                                    startIcon={  <FontAwesomeIcon icon={faEdit} color="green"/>}
-                                    style={{textTransform: 'none', borderRadius: '0'}}
-                                    >
-                                        Modifier
-                                    </Button>
-                                </Grid>
-                                <Grid item>
-                                    <Button 
-                                        variant="outlined" 
-                                        size="small"  
-                                        startIcon={<FontAwesomeIcon icon={faTimes} color="red"/>}
+                            auth?.user?.NiveauAcces!==AccessLevel.entreprise && 
+                                <Grid container spacing={1}>
+                                    <Grid item>
+                                        <Button variant="outlined" size="small" 
+                                        startIcon={  <FontAwesomeIcon icon={faEdit} color="green"/>}
                                         style={{textTransform: 'none', borderRadius: '0'}}
-                                    >
-                                        Supprimer
-                                    </Button>
+                                        >
+                                            Modifier
+                                        </Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button 
+                                            variant="outlined" 
+                                            size="small"  
+                                            startIcon={<FontAwesomeIcon icon={faTimes} color="red"/>}
+                                            style={{textTransform: 'none', borderRadius: '0'}}
+                                            onClick={handleSupprimer}
+                                        >
+                                            Supprimer
+                                        </Button>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
                             }
                         </Grid>
                     </Grid>

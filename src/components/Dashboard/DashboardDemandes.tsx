@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Grid, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 
-import { fetchOffreDemande } from '../../Api';
+import { fetchOffresDemandes } from '../../Api';
 import { AccessLevel } from '../../Enum';
-import { OffreDemandeType } from '../../Types';
+import { OffresDemandesType } from '../../Types';
 import useAuth from '../auth/useAuth';
 import DashboardCardDemande from './DashboardCardDemande';
 
@@ -16,7 +16,7 @@ type Props = {
 
 const DashboardDemandes: React.FC<Props> =()=>{
     const auth = useAuth();
-    const [demandes, setDemandes] = useState<OffreDemandeType[]>([]);
+    const [demandes, setDemandes] = useState<OffresDemandesType[]>([]);
     
     useEffect(()=>{
         getDemandes();
@@ -25,12 +25,18 @@ const DashboardDemandes: React.FC<Props> =()=>{
       },[])
 
     const getDemandes = async () => {
-        let demandes : OffreDemandeType[] | undefined = await fetchOffreDemande();
+        let demandes : OffresDemandesType[] | undefined = await fetchOffresDemandes();
+        //filtre les demandes qui ne sont pas supprimées
         demandes = demandes.filter(demande=> demande.Supprime===false && demande.Type==='demande');
-        if(auth?.user?.NiveauAcces!==AccessLevel.admin){
+        console.log(demandes);
+        //si stagiaire tu vois tes demandes
+        if(auth?.user?.NiveauAcces===AccessLevel.stagiaire){
             demandes= demandes.filter(demande=> demande.Auteur===auth?.user?._id)
-        }
-        //console.log(demandes);
+        } 
+        //si entreprises tu vois toutes les demandes validées
+        if(auth?.user?.NiveauAcces===AccessLevel.entreprise){
+            demandes= demandes.filter(demande=> demande.Valide===true)
+        } 
         setDemandes(demandes);  
     }
 
@@ -52,7 +58,7 @@ const DashboardDemandes: React.FC<Props> =()=>{
             <Grid item xs={12}>
                 {demandes ? 
                     demandes.map(demande =>(
-                        <DashboardCardDemande demande={demande} key={demande._id}/>
+                        <DashboardCardDemande demande={demande} key={demande._id} updateDemande={()=>getDemandes()}/>
                         
                         )):null
                     }

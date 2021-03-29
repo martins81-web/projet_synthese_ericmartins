@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { fetchOffreDemande } from '../Api';
+import { fetchOffresDemandes } from '../Api';
 import { Appel } from '../Enum';
-import { OffreDemandeType } from '../Types';
+import { OffresDemandesType } from '../Types';
 import CardDernieresAnnonces from './CardDernieresAnnonces';
 
 
@@ -17,7 +17,7 @@ type Props = {
 const DerniersAnnonces: React.FC<Props> =({type})=>{
     const history= useHistory();
 
-    const [offresDemandes, setOffresDemandes] = useState<OffreDemandeType[]>([]);
+    const [offresDemandes, setOffresDemandes] = useState<OffresDemandesType[]>([]);
     
     useEffect(()=>{
         getOffresDemandes();
@@ -26,7 +26,7 @@ const DerniersAnnonces: React.FC<Props> =({type})=>{
       },[])
 
     const getOffresDemandes = async () => {
-        let offresDemandes : OffreDemandeType[] | undefined = await fetchOffreDemande();
+        let offresDemandes : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         
         // Filtre les offres valides
         offresDemandes = offresDemandes.filter(offreDemande=> offreDemande.Supprime===false && offreDemande.Type===type && offreDemande.Valide );

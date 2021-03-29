@@ -1,16 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable array-callback-return */
-import {
-    Button,
-    FormControl,
-    FormControlLabel,
-    Grid,
-    InputLabel,
-    MenuItem,
-    Select,
-    Switch,
-    TextField,
-} from '@material-ui/core';
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import Input from '@material-ui/core/Input';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -22,9 +12,10 @@ import { AccessLevel } from '../../Enum';
 import { SecteursActiviteType, UtilisateursType } from '../../Types';
 import useAuth from '../auth/useAuth';
 import SelectRegion from '../Selects/SelectRegion';
+import PremierConnexion from './PremierConnexion';
 
 type Props = {
-    history:any
+    history:any,
 };
 
 const ITEM_HEIGHT = 48;
@@ -65,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-const DashboardEditUsers: React.FC<Props> =({history})=>{
+const DashboardProfil: React.FC<Props> =({history})=>{
 
 const classes = useStyles();
 const auth = useAuth();
@@ -87,7 +78,7 @@ useEffect(()=>{
     if(auth?.user!==undefined && auth?.user!==null)
     id = auth?.user._id;
     let user : UtilisateursType | undefined = await fetchUtilisateur(id);
-    console.log(user);
+    //console.log(user);
     setUser(user);
 } 
 
@@ -107,8 +98,8 @@ const Field = (defaultValue: string, label: string, key: string) => {
             variant="outlined"
             onChange={handleChangeTextField}
             defaultValue={defaultValue}
-            //onChange={}
             margin='dense'
+            required
             type={label==='Téléphone'? "tel" : label==='Courriel'? 'email' :'text'}
             inputProps={{ className: classes.input,pattern: label==='Téléphone'? "[0-9]{3}[0-9]{3}[0-9]{4}": null }}
         />
@@ -121,10 +112,6 @@ const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
     
 }
 
-const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if(user)
-    setUser({ ...user, [event.target.name]: event.target.checked });
-};
 
 const getTitres =(ids: string[])=>{
     let titres: string[]=[];
@@ -137,7 +124,15 @@ const getTitres =(ids: string[])=>{
     return titres;
 }
 
-const handleSave = async ()=>{
+const handleSave = async (e:any)=>{
+    e.preventDefault();
+    if(user){
+        let userEdited=user;
+        userEdited.PremierConnexion=false;
+        setUser(userEdited);
+
+    }
+    console.log(user)
     userUpdated();
 }
 
@@ -154,13 +149,15 @@ async function userUpdated() {
         history.push({
             pathname: "/dashboard/update",
             state: {data: user}
-        });
+        }); 
+
     }
   }
 
  return(
          user?
             <div> 
+                <form onSubmit={(e)=>handleSave(e)}>
             <Grid container spacing={2}>
                 {user.Entreprise?
                 <Grid item xs={2}> 
@@ -170,7 +167,7 @@ async function userUpdated() {
                 <Grid item xs={3}>
                     {Field(user.Prenom, user.Entreprise? 'Prénom de la personne responsable': 'Prénom','Prenom' )}
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={3}>
                     {Field(user.Nom, user.Entreprise? 'Nom de la personne responsable': 'Nom', 'Nom')}    
                 </Grid>
                 {user.Entreprise?
@@ -280,7 +277,9 @@ async function userUpdated() {
                         </Select>
                     </FormControl>
                 </Grid>
-                
+                <Grid item xs={6}>
+                        {Field(user.PostesStagiaires, "Types de postes sensibles à accueillir des stagiaires", 'PostesStagiaires')}
+                </Grid>
                
         </Grid> :null
         }
@@ -291,7 +290,7 @@ async function userUpdated() {
                     color="primary"
                     endIcon={<SaveIcon/>}
                     size="small"
-                    onClick={()=>handleSave()}
+                    type='submit'
                 >
                     Save
                 </Button>
@@ -310,8 +309,9 @@ async function userUpdated() {
                 </Button>
             </Grid>
         </Grid>
+        </form>
     </div>:null
     )
 }
 
-export default DashboardEditUsers;
+export default DashboardProfil;

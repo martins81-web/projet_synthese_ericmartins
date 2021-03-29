@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { fetchUtilisateur } from '../Api';
 import { Appel } from '../Enum';
-import { OffreDemandeType, UtilisateursType } from '../Types';
+import { OffresDemandesType, UtilisateursType } from '../Types';
 
 
 
@@ -13,7 +13,7 @@ import { OffreDemandeType, UtilisateursType } from '../Types';
 
 type Props = {
     type: Appel,
-    offreDemande?: OffreDemandeType |undefined,
+    offreDemande?: OffresDemandesType |undefined,
     cardType?: string
 };
 

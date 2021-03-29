@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { fetchOffreDemande } from '../Api';
+import { fetchOffresDemandes } from '../Api';
 import { Appel } from '../Enum';
-import { OffreDemandeType } from '../Types';
+import { OffresDemandesType } from '../Types';
 import CardDernieresAnnonces from './CardDernieresAnnonces';
 
 
@@ -17,7 +17,7 @@ type Props = {
 };
 
 const ListOffresDemandes: React.FC<Props> =({type, selectedSecteurID, selectedRegionID})=>{
-    const [offresDemandes, setOffresDemandes] = useState<OffreDemandeType[]>([]);
+    const [offresDemandes, setOffresDemandes] = useState<OffresDemandesType[]>([]);
     console.log(selectedSecteurID);
     console.log(selectedRegionID);
     useEffect(()=>{
@@ -27,7 +27,7 @@ const ListOffresDemandes: React.FC<Props> =({type, selectedSecteurID, selectedRe
       },[])
 
     const getOffresDemandes = async () => {
-        let offresDemandes : OffreDemandeType[] | undefined = await fetchOffreDemande();
+        let offresDemandes : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         // Filtre les offres valides
         offresDemandes = offresDemandes.filter(offreDemande=> offreDemande.Supprime===false && offreDemande.Type===type && offreDemande.Valide );
         // Trié par date

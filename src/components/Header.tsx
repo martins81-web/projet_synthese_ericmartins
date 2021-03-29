@@ -109,7 +109,10 @@ const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
                                 onClick={()=>{history.push('/dashboard')}}>
                                     Dashboard
                                 </Button>
-                            :    <Button variant="contained" size="medium"  style={{backgroundColor: 'dimgray', color: 'white', textTransform: 'none'}}>
+                            :    <Button variant="contained" size="medium"  
+                                    style={{backgroundColor: 'dimgray', color: 'white', textTransform: 'none'}}
+                                    onClick={()=>history.push('/register')}
+                                    >
                                     Inscription
                                 </Button>
                             }

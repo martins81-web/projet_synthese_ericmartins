@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Grid, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 
-import { fetchOffreDemande } from '../../Api';
+import { fetchOffresDemandes } from '../../Api';
 import { AccessLevel } from '../../Enum';
-import { OffreDemandeType } from '../../Types';
+import { OffresDemandesType } from '../../Types';
 import useAuth from '../auth/useAuth';
 import DashboardCardOffre from './DashboardCardOffre';
 
@@ -17,8 +17,9 @@ type Props = {
 const DashboardOffres: React.FC<Props> =()=>{
     const auth = useAuth();
 
-    const [offres, setOffres] = useState<OffreDemandeType[]>([]);
+    const [offres, setOffres] = useState<OffresDemandesType[]>([]);
     
+
     useEffect(()=>{
         getOffres();
        
@@ -26,15 +27,23 @@ const DashboardOffres: React.FC<Props> =()=>{
       },[])
 
     const getOffres = async () => {
-        let offres : OffreDemandeType[] | undefined = await fetchOffreDemande();
+        let offres : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         offres = offres.filter(offre=> offre.Supprime===false && offre.Type==='offre');
-        if(auth?.user?.NiveauAcces!==AccessLevel.admin){
+
+        //si entreprise tu vois tes offres seulement
+        if(auth?.user?.NiveauAcces===AccessLevel.entreprise){
             offres= offres.filter(offre=> offre.Auteur===auth?.user?._id)
         }
+
+        //si stagiaire tu vois toutes les offres validées
+        if(auth?.user?.NiveauAcces===AccessLevel.entreprise){
+            offres= offres.filter(offre=> offre.Valide===true)
+        } 
         //console.log(offres);
         setOffres(offres);  
     }
 
+   
 
     return(
         <>
@@ -53,7 +62,7 @@ const DashboardOffres: React.FC<Props> =()=>{
             <Grid item xs={12}>
                 {offres ? 
                     offres.map(offre =>(
-                        <DashboardCardOffre offre={offre} key={offre._id}/>
+                        <DashboardCardOffre key={offre._id} offre={offre} updateOffre={()=>getOffres()}/>
                         )):null
                     }
             </Grid>
@@ -64,3 +73,5 @@ const DashboardOffres: React.FC<Props> =()=>{
 }
 
 export default DashboardOffres;
+
+

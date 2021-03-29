@@ -19,11 +19,12 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { fetchUtilisateur } from '../../Api';
-import { Menu } from '../../Enum';
+import { AccessLevel, Menu } from '../../Enum';
 import { UtilisateursType } from '../../Types';
 import useAuth from '../auth/useAuth';
 import Footer from '../Footer';
 import DashboardContent from './DashBoardContent';
+import DashboardEditProfil from './DashboardEditProfil';
 import DashboardHeader from './DashBoardHeader';
 
 const menuItems =[
@@ -37,13 +38,13 @@ const menuItems =[
         name: Menu.offres,
         icon: faArrowAltCircleRight,
         link: "/dashboard/offres",
-        accessLevel: [333,999]
+        accessLevel: [111,333,999]
     },
     {
         name: Menu.demandes,
         icon: faArrowAltCircleLeft,
         link: "/dashboard/demandes",
-        accessLevel: [111,999]
+        accessLevel: [111,333,999]
     },
     {
         name: Menu.candidats,
@@ -117,8 +118,9 @@ const Dashboard: React.FC<Props> =({logout})=>{
     } 
 
     return(
-        auth?.user &&user ?
+      
        <Wrapper>
+            {user  &&
             <Grid container>
                 
                 <Grid item xs={2}>
@@ -172,7 +174,12 @@ const Dashboard: React.FC<Props> =({logout})=>{
                                                 <Grid container style={{textAlign:matchesMD?'center': 'left'}}>
                                                     <ListItemText disableTypography
                                                     style={{fontSize: matchesSM?'0.9em':'1.3em', flexWrap: 'wrap'}}
-                                                    >{item.name}</ListItemText >
+                                                    >
+                                                    {item.name===Menu.offres && user.NiveauAcces===AccessLevel.entreprise ? 'Mes offres de stage': 
+                                                        item.name===Menu.demandes && user.NiveauAcces===AccessLevel.stagiaire ? 'Mes demandes de stage':
+                                                        item.name
+                                                    }
+                                                    </ListItemText >
                                                 </Grid>
                                             </Grid>
                                             }
@@ -226,15 +233,31 @@ const Dashboard: React.FC<Props> =({logout})=>{
                         />
                         </Grid>
                         <Grid item>
-                            <DashboardContent/>
+                            {user && user.PremierConnexion ?
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    <Typography variant='h4'>Première connexion - Veuillez compléter votre profil</Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <DashboardEditProfil history={history}/>
+                                </Grid>
+                            </Grid> 
+                            :
+                            <Grid container direction='column'>
+                                <Grid item xs>
+                                    <DashboardContent/>
+                                </Grid>
+                            </Grid>
+                            }
+                            
                         </Grid>
                      
                     </Grid>
                 </Grid>
-            </Grid> 
+            </Grid> }
             <Footer/>
         </Wrapper>
-   : null
+
     )
 }
 
