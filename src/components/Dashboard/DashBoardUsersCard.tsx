@@ -4,6 +4,7 @@ import { Button, Card, CardActions, CardContent, Grid, Typography } from '@mater
 import { useHistory } from 'react-router-dom';
 
 import { UtilisateursType } from '../../Types';
+import useAuth from '../auth/useAuth';
 
 type Props = {
     user: UtilisateursType;
@@ -13,6 +14,7 @@ type Props = {
 
 const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
     const history= useHistory();
+    const auth = useAuth();
 
     const handleEdit = (user: UtilisateursType) =>{
 
@@ -27,7 +29,7 @@ const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
           <Card variant="outlined" style={{textAlign:'center'}}>
                 <CardContent>
                     <Typography variant='h5'>
-                        {usersType === 'candidats' ? user.Prenom+' '+user.Nom:
+                        {usersType !== 'entreprises' ? user.Prenom+' '+user.Nom:
                         user.NomEntreprise
                         }
                     </Typography>
@@ -48,6 +50,7 @@ const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
                                 Modifier
                             </Button>
                         </Grid>
+                        { auth?.user?._id!==user._id &&
                         <Grid item>
                             <Button 
                                 onClick={supprimer}
@@ -58,6 +61,7 @@ const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
                                 Supprimer
                             </Button>
                         </Grid>
+                        }
                     </Grid>
                 </CardActions>
             </Card> 

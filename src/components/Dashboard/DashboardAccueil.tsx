@@ -37,7 +37,7 @@ const DashboardAccueil: React.FC<Props> =()=>{
     const getOffres = async () => {
         let offres : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         offres = offres.filter(offre=> offre.Supprime===false && offre.Type==='offre' && offre.Valide===false);
-       // console.log(offres);
+        console.log(offres);
         setOffres(offres);  
     }
 
@@ -70,7 +70,7 @@ const DashboardAccueil: React.FC<Props> =()=>{
                         <Grid item xs={12}>
                             {
                             demandes.map(demande=>(
-                                <DashboardCardDemande demande={demande} type='attente' key={demande._id} updateDemande={()=>getDemandes()} />
+                                <DashboardCardDemande demande={demande} type='attente' key={demande._id} updateDemande={getDemandes} />
                             ))
                             }
                         </Grid>
@@ -89,7 +89,7 @@ const DashboardAccueil: React.FC<Props> =()=>{
                         <Grid item xs={12}>
                             {
                             offres.map(offre=>(
-                                <DashboardCardOffre offre={offre} type='attente' key={offre._id} updateOffre={()=>getOffres()}/>            
+                                <DashboardCardOffre offre={offre} type='attente' key={offre._id} updateOffre={getOffres}/>            
                             ))
                             }
                         </Grid>

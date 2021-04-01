@@ -47,7 +47,7 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
         <Wrapper className='card'>
             
             {offreDemande!==undefined && 
-            <Card  style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column', height: '100%'}}>
+            <Card  style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column', height: '100%', width:'100%'}}>
                 <CardHeader 
                     title={offreDemande.Titre}
                     subheader={auteur? getAuteurNom(auteur) : null}
@@ -84,7 +84,7 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
 export default CardDernieresAnnonces;
 
 export const Wrapper = styled.div`
-
+width: 100%;
 
 .actionbutton1{
     color: dodgerblue;

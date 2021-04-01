@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { FormControl, MenuItem, TextField } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 
 import { fetchRegions } from '../../Api';
@@ -38,20 +38,25 @@ const SelectRegion: React.FC<Props> =({selectedId,onChange})=>{
         <>
         {regions.length > 0?
         <FormControl style={{minWidth: '200px'}}>
-            <InputLabel id="selectRegionLabel">Region</InputLabel>
-            <Select
-                displayEmpty
-                labelId="selectRegionLabel"
+            <TextField
+                variant="outlined"
+                label="Region"
                 id="selectRegion"
+                defaultValue={selectedId}
+                required
+                select
+                fullWidth
                 value={selectedRegion||""}
                 onChange={(event)=>handleChange(event)}
+                margin='dense'
+
             >
                 {
                 regions.map(region => (
                     <MenuItem key={region._id} value={region._id}>{region.Name}</MenuItem>
                 ))
                 }
-            </Select> 
+            </TextField> 
         </FormControl> : null
         }
        </>

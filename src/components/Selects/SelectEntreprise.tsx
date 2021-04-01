@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { FormControl, MenuItem, TextField } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 
 import { fetchUtilisateurs } from '../../Api';
@@ -38,21 +38,25 @@ const SelectEntreprise: React.FC<Props> =({selectedId,onChange})=>{
         <>
         {entreprises.length > 0?
         <FormControl style={{minWidth: '200px'}}>
-            <InputLabel id="selectEntrepriseLabel">Entreprise</InputLabel>
-            <Select
-                displayEmpty
+            <TextField
+                variant="outlined"
+                label="Entreprise"
+                select
+                fullWidth
                 defaultValue={selectedId}
-                labelId="selectEntrepriseLabel"
                 id="selectEntreprise"
                 value={selectedEntreprise||""}
                 onChange={(event)=>handleChange(event)}
+                required
+                margin='dense'
+
             >
                 {
                 entreprises.map(entreprise => (
                     <MenuItem key={entreprise._id} value={entreprise._id}>{entreprise.NomEntreprise}</MenuItem>
                 ))
                 }
-            </Select> 
+            </TextField> 
         </FormControl> : null
         }
        </>

@@ -2,6 +2,7 @@ import { faEdit, faTimes, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, CardActions, CardContent, Grid, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
 import { fetchUtilisateur, updateOffreDemande } from '../../Api';
@@ -18,6 +19,7 @@ type Props = {
 
 
 const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
+    const history = useHistory();
 
     const [auteur, setAuteur] = useState<UtilisateursType | undefined>(undefined);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -31,6 +33,7 @@ const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
        
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
+      
 
     const getAuteur = async (id: string) => {
         let auteur : UtilisateursType| undefined = await fetchUtilisateur(id);
@@ -58,9 +61,10 @@ const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
 
     async function offreDemandeUpdated(offreDemande:OffresDemandesType) {
         try {
-            setUpdatingOffreDemande(true);
             const update=await updateOffreDemande(offreDemande);
-            setUpdate(update);  
+            setUpdatingOffreDemande(true);
+            setUpdate(update); 
+             
         } catch (e) {
         } finally {
             setUpdatingOffreDemande(false);
@@ -70,6 +74,11 @@ const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
     
     const handleSupprimer =()=>{
         offre.Supprime=true;
+        offreDemandeUpdated(offre);
+    }
+
+    const handleValider  =()=>{
+        offre.Valide=true;
         offreDemandeUpdated(offre);
     }
 
@@ -155,10 +164,7 @@ const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
                                         variant="outlined" 
                                         size="small"  
                                         style={{textTransform: 'none', borderRadius: '0', backgroundColor: '#72a84a', color: 'white'}}
-                                        onClick={()=>{
-                                            offre.Valide=true;
-                                            offreDemandeUpdated(offre);
-                                        }}
+                                        onClick={handleValider}
                                     >
                                         Acepter
                                     </Button>
@@ -171,6 +177,10 @@ const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
                                     <Button variant="outlined" size="small" 
                                     startIcon={  <FontAwesomeIcon icon={faEdit} color="green"/>}
                                     style={{textTransform: 'none', borderRadius: '0'}}
+                                    onClick={()=>history.push({
+                                        pathname: '/dashboard/edit/offre/'+offre._id,
+                                        state: {data: offre}
+                                    })}
                                     >
                                         Modifier
                                     </Button>

@@ -50,12 +50,20 @@ const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
                             justify="center"
                     >
                         <Grid item>
-                            <Button variant="contained" size="medium" style={{backgroundColor: 'limegreen', color: 'white', textTransform: 'none', marginTop: '10px'}}>
+                            <Button 
+                            variant="contained" 
+                            size="medium" 
+                            style={{backgroundColor: 'limegreen', color: 'white', textTransform: 'none', marginTop: '10px'}}
+                            onClick={()=>history.push('/accueil/offres')}
+                            >
                                 Trouvez votre stage
                             </Button>
                         </Grid>
                         <Grid item style={{marginLeft: '5px', marginTop: '10px'}}>
-                            <Button variant="contained" size="medium"  style={{backgroundColor: 'limegreen', color: 'white', textTransform: 'none'}}>
+                            <Button variant="contained" size="medium"  
+                            style={{backgroundColor: 'limegreen', color: 'white', textTransform: 'none'}}
+                            onClick={()=>history.push('/accueil/demandes')}
+                            >
                                 Trouvez votre futur stagiaire
                             </Button>
                         </Grid>

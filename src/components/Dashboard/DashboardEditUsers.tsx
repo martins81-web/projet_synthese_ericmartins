@@ -138,8 +138,8 @@ async function userUpdated() {
     } finally {
         setUpdatingUser(false);
         history.location.pathname==='/dashboard/profil'? history.push("/dashboard/accueil") :
-        user.Entreprise? history.push('/dashboard/entreprises'):
-        history.push('/dashboard/candidats');
+        user.NiveauAcces === 333? history.push('/dashboard/entreprises'):user.NiveauAcces === 111?
+        history.push('/dashboard/candidats'): history.push('/dashboard/admins');
     }
   }
 
@@ -179,7 +179,7 @@ async function userUpdated() {
                 <Grid item xs={3}>
                     {Field(user.Prenom, user.Entreprise? 'Prénom de la personne responsable': 'Prénom','Prenom' )}
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={3}>
                     {Field(user.Nom, user.Entreprise? 'Nom de la personne responsable': 'Nom', 'Nom')}    
                 </Grid>
                 {user.Entreprise?
@@ -311,8 +311,8 @@ async function userUpdated() {
                     size="small"
                     onClick={()=>{
                         history.location.pathname==='/dashboard/profil'? history.push("/dashboard/accueil") :
-                        user.Entreprise? history.push('/dashboard/entreprises'):
-                        history.push('/dashboard/candidats');
+                        user.NiveauAcces === 333? history.push('/dashboard/entreprises'):user.NiveauAcces === 111?
+                        history.push('/dashboard/candidats'): history.push('/dashboard/admins');
                     }}
                 >
                     Cancel

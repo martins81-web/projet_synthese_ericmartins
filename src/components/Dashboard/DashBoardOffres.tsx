@@ -36,9 +36,9 @@ const DashboardOffres: React.FC<Props> =()=>{
         }
 
         //si stagiaire tu vois toutes les offres validées
-        if(auth?.user?.NiveauAcces===AccessLevel.entreprise){
+        /* if(auth?.user?.NiveauAcces===AccessLevel.entreprise){
             offres= offres.filter(offre=> offre.Valide===true)
-        } 
+        }  */
         //console.log(offres);
         setOffres(offres);  
     }

@@ -381,6 +381,7 @@ const Login: React.FC<Props> =({login})=>{
                                         <FormControl variant="outlined"  required fullWidth>
                                             <InputLabel htmlFor="outlined-adornment-password">Mot de passe</InputLabel>
                                             <OutlinedInput
+                                                required
                                                 fullWidth
                                                 id="outlined-adornment-password"
                                                 type={values.showPassword ? 'text' : 'password'}
@@ -406,6 +407,7 @@ const Login: React.FC<Props> =({login})=>{
                                         <FormControl variant="outlined"  required fullWidth>
                                             <InputLabel htmlFor="outlined-adornment-confirmation">Confirmez le nouveau mot de passe</InputLabel>
                                             <OutlinedInput
+                                                required
                                                 fullWidth
                                                 id="outlined-adornment-confirmation"
                                                 type={values.showConfirmation ? 'text' : 'password'}

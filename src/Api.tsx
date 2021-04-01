@@ -12,23 +12,38 @@ export const updateOffreDemande = async (offreDemande: OffresDemandesType) : Pro
   //const {currentIndustry, ...filteredObject} = myObject;
   //</string>console.log(offreDemande);
   const {_id, ...offreDemandeToEdit} = offreDemande;
-  let updated=''
-  fetch(ENDPOINT+ "offreDemande/"+ offreDemande._id, {
+
+  var updated= await fetch(ENDPOINT+ "offreDemande/"+ offreDemande._id, {
     method: 'put', // Méthode elle-même
     headers: {
      'Content-type': 'application/json; charset=UTF-8' // Indique le contenu 
     },
     body: JSON.stringify(offreDemandeToEdit) // Envoie du data en format JSON 
    })
+    
+
+    return updated.json();
+}
+
+export const addOffreDemande = async (OffreDemande: OffresDemandesType) : Promise<string> => {
+  //const {currentIndustry, ...filteredObject} = myObject;
+  //console.log(OffreDemande);
+  const {_id, ...offreDemandeToAdd} = OffreDemande;
+  let added='';
+  fetch(ENDPOINT+ "offreDemande/", {
+    method: 'post', // Méthode elle-même
+    headers: {
+     'Content-type': 'application/json; charset=UTF-8' // Indique le contenu 
+    },
+    body: JSON.stringify(offreDemandeToAdd) // Envoie du data en format JSON 
+   })
     .then(response => {
       response.json();
-      updated='updated'
-      return updated;
     })
     .then(data => console.log(data)) // Manipuler les données récupérées, si nous voulons en faire quelque chose
     .catch(err => console.log(err))
 
-    return updated;
+    return added;
 }
 
 export const fetchRegions = async (): Promise<RegionsType[]> => {
@@ -46,7 +61,7 @@ export const updateRegion = async (region: RegionsType) : Promise<string> => {
   //const {currentIndustry, ...filteredObject} = myObject;
   //console.log(region);
   const {_id, ...regionToEdit} = region;
-  let updated=''
+  let updated='';
   fetch(ENDPOINT+ "regions/"+ region._id, {
     method: 'put', // Méthode elle-même
     headers: {
@@ -56,8 +71,8 @@ export const updateRegion = async (region: RegionsType) : Promise<string> => {
    })
     .then(response => {
       response.json();
-      updated='updated'
-      return updated;
+     // updated='updated'
+     // return updated;
     })
     .then(data => console.log(data)) // Manipuler les données récupérées, si nous voulons en faire quelque chose
     .catch(err => console.log(err))
@@ -107,8 +122,8 @@ export const updateSecteurActivite = async (secteur: SecteursActiviteType) : Pro
    })
     .then(response => {
       response.json();
-      updated='updated'
-      return updated;
+      //updated='updated'
+      //return updated;
     })
     .then(data => console.log(data)) // Manipuler les données récupérées, si nous voulons en faire quelque chose
     .catch(err => console.log(err))

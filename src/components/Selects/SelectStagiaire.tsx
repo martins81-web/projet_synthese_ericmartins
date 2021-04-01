@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { FormControl, MenuItem, TextField } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 
 import { fetchUtilisateurs } from '../../Api';
@@ -20,7 +20,7 @@ const SelectStagiaire: React.FC<Props> =({selectedId,onChange})=>{
 
     const getstagiaires = async () => {
         let stagiaires : UtilisateursType[] | undefined = await fetchUtilisateurs();
-        stagiaires = stagiaires.filter(stagiaire=> stagiaire.Supprime===false && stagiaire.Entreprise===false);
+        stagiaires = stagiaires.filter(stagiaire=> stagiaire.Supprime===false && stagiaire.Entreprise===false && stagiaire.NiveauAcces!==999);
         stagiaires.sort((a, b) => (a.Nom > b.Nom) ? 1 : -1);
 
         setStagiaires(stagiaires);  
@@ -41,21 +41,24 @@ const SelectStagiaire: React.FC<Props> =({selectedId,onChange})=>{
         <>
         {stagiaires.length > 0?
         <FormControl style={{minWidth: '200px'}}>
-            <InputLabel id="selectstagiaireLabel">stagiaire</InputLabel>
-            <Select
-                displayEmpty
-                labelId="selectstagiaireLabel"
+            <TextField
+                variant="outlined"
+                select
+                label="Stagiaire"
                 id="selectstagiaire"
+                required
                 defaultValue={selectedId}
                 value={selectedStagiaire||""}
                 onChange={(event)=>handleChange(event)}
+                margin='dense'
+
             >
                 {
                 stagiaires.map(stagiaire => (
                     <MenuItem key={stagiaire._id} value={stagiaire._id}>{NomComplet(stagiaire)}</MenuItem>
                 ))
                 }
-            </Select> 
+            </TextField> 
         </FormControl> : null
         }
        </>

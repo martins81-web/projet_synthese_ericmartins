@@ -18,7 +18,8 @@ export enum Size {
     entreprises = 'Entreprises',
     profil = 'Profil',
     regions = 'Regions',
-    secteurs = "Secteurs d'activité"
+    secteurs = "Secteurs d'activité",
+    admins = 'Administrateurs'
   }
 
   export enum AccessLevel {

@@ -16,7 +16,9 @@ import {
 } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { fetchUtilisateur } from '../../Api';
 import { AccessLevel } from '../../Enum';
@@ -31,7 +33,8 @@ type Props = {
 const DashboardHeader: React.FC<Props> =({logout,profil})=>{
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const auth = useAuth();
-   
+    const history= useHistory();
+
 
     const [user, setUser] =  useState<UtilisateursType|null|undefined>(auth?.user);
     const theme = useTheme();
@@ -47,10 +50,12 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
       },[])
 
       const getUser= async()=>{
-        let id='';
-        if(auth?.user!==undefined && auth?.user!==null)
-        id = auth?.user._id;
-        let user : UtilisateursType | undefined = await fetchUtilisateur(id);
+        const token = Cookies.get('connected');
+        //console.log(token);
+        
+        let user:UtilisateursType | undefined;
+        if(token)
+        user  = await fetchUtilisateur(token);
        // console.log(user);
         setUser(user);
     } 
@@ -92,11 +97,25 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
     return(
         <Grid container alignItems='center'>
             <Grid item xs={12} sm={12} md={6}>
-                <Grid container spacing={2} justify={matchesSM? 'center':'flex-end'}>
+                { (history.location.pathname==='/dashboard/admins' 
+                || history.location.pathname==='/dashboard/entreprises'
+                || history.location.pathname==='/dashboard/candidats') &&  auth?.user?.NiveauAcces === AccessLevel.admin?
+                <Grid container>
+                    <Grid item>
+                        <Button variant="outlined" startIcon={<FontAwesomeIcon icon={faPlus}  size={matchesSM ? "sm": 'lg'}/>}
+                        style={{textTransform: 'none'}}
+                        onClick={()=>history.push('/dashboard/newUser')}
+                        >
+                            Nouveau utilisateur
+                        </Button>
+                    </Grid>
+                </Grid>
+                :<Grid container spacing={2} justify={matchesSM? 'center':'flex-end'}>
                     {(auth?.user?.NiveauAcces === AccessLevel.entreprise || auth?.user?.NiveauAcces === AccessLevel.admin) &&
                     <Grid item>
                         <Button variant="outlined" startIcon={<FontAwesomeIcon icon={faPlus}  size={matchesSM ? "sm": 'lg'}/>}
                         style={{textTransform: 'none'}}
+                        onClick={()=>history.push('/dashboard/newOffre')}
                         >
                             Offre de stage
                         </Button>
@@ -106,12 +125,14 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
                     <Grid item>
                         <Button variant="outlined" startIcon={<FontAwesomeIcon icon={faPlus}  size="lg"/>}
                         style={{textTransform: 'none'}}
+                        onClick={()=>history.push('/dashboard/newDemande')}
                         >
                             Demande de stage
                         </Button>
                     </Grid>
                     }
                 </Grid>
+                }
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
                 <Grid container justify={matchesXS? 'center':'flex-end'}>

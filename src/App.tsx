@@ -80,7 +80,7 @@ function App() {
       />
       } 
       <Switch >
-        
+
         <Redirect exact from="/dashboard/update" to="/dashboard"/>
         <Redirect exact from="/" to="/accueil" />
         <Route exact path="/accueil" component={Accueil}/>

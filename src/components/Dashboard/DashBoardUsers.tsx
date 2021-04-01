@@ -1,7 +1,6 @@
 import '../../App.sass';
 
-import { Button, Grid } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { Grid } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -26,8 +25,9 @@ const DashboardCandidats: React.FC<Props> =({usersType})=>{
 
     const getUtilisateurs = async () => {
         let users : UtilisateursType[] | undefined = await fetchUtilisateurs();
-        users =users.filter(user=> user.NiveauAcces=== (usersType === 'candidats' ? 111: usersType === 'entreprises' ? 333 : 999 ) && user.Supprime=== false);
-        //console.log(users);
+        users =users.filter(user=> 
+            user.NiveauAcces=== (usersType === 'candidats' ? 111: usersType === 'entreprises' ? 333 : 999 ) && user.Supprime=== false);
+        //console.log(usersType);
         setUtilisateurs(users);
     }
     
@@ -43,24 +43,12 @@ const DashboardCandidats: React.FC<Props> =({usersType})=>{
    
     
     return(
-        <Wrapper>
-            <Grid container>
-                <Button
-                    color="primary"
-                    variant="contained"
-                    startIcon={<AddIcon/>}
-               
-                >
-                Ajouter {usersType==='entreprises'? 'une nouvelle entreprise':'un nouveau candidat'}
-                </Button>
-            </Grid>
+        <Wrapper>     
             <Grid container spacing={2} className='dashboardContent'>
-            
-            
             {utilisateurs.length > 0 ?
                 utilisateurs.map((user,index)=>( 
                     user.Supprime === false ?
-                <Grid item xs={3} key={user._id}>
+                <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
                     <DashBoardUsersCard user={user} usersType={usersType} supprimer={()=>handleSupprimer(user)} />
                 </Grid> 
                 :null
@@ -68,7 +56,7 @@ const DashboardCandidats: React.FC<Props> =({usersType})=>{
                 : 
                 null
                 }
-        </Grid>
+            </Grid>
         </Wrapper>
     )
 }

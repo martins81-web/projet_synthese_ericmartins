@@ -40,7 +40,7 @@ const ListOffresDemandes: React.FC<Props> =({type, selectedSecteurID, selectedRe
         <Grid container spacing={3}>
             {offresDemandes.map( offreDemande => (
                 offreDemande.SecteurActivite.includes(selectedSecteurID||"") && offreDemande.Region.includes(selectedRegionID||"") &&
-                <Grid item key={offreDemande._id}>
+                <Grid item xs={12} key={offreDemande._id}>
                     <CardDernieresAnnonces type={type} offreDemande={offreDemande}/>
                 </Grid>
             ))}

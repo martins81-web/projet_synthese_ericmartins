@@ -3,6 +3,7 @@ import { faEdit, faTimes, faUserGraduate } from '@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, CardActions, CardContent, Grid, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
 import { fetchUtilisateur, updateOffreDemande } from '../../Api';
@@ -23,6 +24,7 @@ const DashboardCardDemande: React.FC<Props> =({demande, type,updateDemande})=>{
     const [update, setUpdate]= useState<String>('');
     const [updatingOffreDemande, setUpdatingOffreDemande] = useState(true);
     const auth = useAuth();
+    const history = useHistory();
 
     useEffect(()=>{
         getAuteur(demande.Auteur);
@@ -56,13 +58,15 @@ const DashboardCardDemande: React.FC<Props> =({demande, type,updateDemande})=>{
 
     async function offreDemandeUpdated(offreDemande:OffresDemandesType) {
         try {
-            setUpdatingOffreDemande(true);
             const update=await updateOffreDemande(offreDemande);
+            setUpdatingOffreDemande(true);
             setUpdate(update);  
+            updateDemande();
+        
         } catch (e) {
         } finally {
             setUpdatingOffreDemande(false);
-            updateDemande();
+            
         }
       }
 
@@ -172,6 +176,10 @@ const DashboardCardDemande: React.FC<Props> =({demande, type,updateDemande})=>{
                                         <Button variant="outlined" size="small" 
                                         startIcon={  <FontAwesomeIcon icon={faEdit} color="green"/>}
                                         style={{textTransform: 'none', borderRadius: '0'}}
+                                        onClick={()=>history.push({
+                                            pathname: '/dashboard/edit/demande/'+demande._id,
+                                            state: {data: demande}
+                                        })}
                                         >
                                             Modifier
                                         </Button>

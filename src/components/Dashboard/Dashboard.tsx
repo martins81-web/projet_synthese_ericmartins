@@ -7,6 +7,7 @@ import {
     faMapMarkedAlt,
     faSignOutAlt,
     faUserGraduate,
+    faUserNinja,
     faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -56,6 +57,12 @@ const menuItems =[
         name: Menu.entreprises,
         icon: faUserTie,
         link: "/dashboard/entreprises",
+        accessLevel: [999]
+    },
+    {
+        name: Menu.admins,
+        icon: faUserNinja,
+        link: "/dashboard/admins",
         accessLevel: [999]
     },
     {
