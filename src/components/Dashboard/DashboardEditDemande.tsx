@@ -1,9 +1,8 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { Button, Grid, TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { differenceInWeeks, parseISO } from 'date-fns';
+import { differenceInWeeks } from 'date-fns';
 import { useState } from 'react';
-import { useLastLocation } from 'react-router-last-location';
 
 import { updateOffreDemande } from '../../Api';
 import { AccessLevel } from '../../Enum';
@@ -28,9 +27,7 @@ const DashboardEditDemande: React.FC<Props> =({history})=>{
     const [, setUpdate]= useState<String>('');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [updatingDemande, setUpdatingDemande] = useState(true);
-    const lastLocation = useLastLocation();
-    const [dateDebut, changeDateDebut] = useState<Date | null>(demande.DateDebut || new Date());
-    const [dateFin, changeDateFin] = useState<Date | null>(demande.DateFin || new Date());
+  
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDemande({ ...demande, [event.target.name]: event.target.value });   
     };

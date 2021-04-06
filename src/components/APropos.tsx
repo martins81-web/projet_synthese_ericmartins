@@ -69,7 +69,7 @@ const APropos: React.FC<Props> =()=>{
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                    <Grid container   alignItems="stretch">
+                    <Grid container>
                         <Grid item xs={6}>
                             <Image src={apropos4} rounded fluid/>
                         </Grid>

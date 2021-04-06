@@ -7,17 +7,15 @@ interface ProtectedDashboardProps extends RouteProps {
 
 }
 
-const ProtectedLogin: React.FC<ProtectedDashboardProps> = ({...rest}) => {
+const ProtectedDashboardRoutes: React.FC<ProtectedDashboardProps> = ({...rest}) => {
      
 const auth = useAuth();
 //console.log(auth?.user);
 
 const token = Cookies.get('connected');
 
-
-
-if (auth?.user !== null && token ) {
-       return <Redirect to="/dashboard"></Redirect>;
+if (!token ) {
+       return <Redirect to="/accueil"></Redirect>;
 }
 return (
         <Route {...rest} />
@@ -25,4 +23,4 @@ return (
     
 };
 
-export default ProtectedLogin;
+export default ProtectedDashboardRoutes;

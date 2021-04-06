@@ -15,6 +15,7 @@ import useAuth from './components/auth/useAuth';
 import Confidentialite from './components/Confidentialite';
 import Dashboard from './components/Dashboard/Dashboard';
 import PremierConnexion from './components/Dashboard/PremierConnexion';
+import DetailsAnnonces from './components/DetailsAnnonces';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Login from './components/Login';
@@ -88,7 +89,9 @@ function App() {
         <Route path="/confidentialite" component={Confidentialite}/>
         <Route path="/apropos" component={APropos}/>
         <Route path="/accueil/offres"><OffresDemandes type={Appel.OFFRE}/></Route>
-        <Route  path="/accueil/Demandes"><OffresDemandes type={Appel.DEMANDE}/></Route>
+        <Route path="/accueil/offre/:id"><DetailsAnnonces history={history} type={Appel.OFFRE}/></Route>
+        <Route path="/accueil/demande/:id"><DetailsAnnonces history={history} type={Appel.DEMANDE}/></Route>
+        <Route path="/accueil/Demandes"><OffresDemandes type={Appel.DEMANDE}/></Route>
         <Route path="/premiereConnexion"><PremierConnexion/></Route>
         <PrivateRoute path="/dashboard/"><Dashboard logout={logout}/></PrivateRoute>
         <ProtectedLogin path="/login" ><Login login={true}/></ProtectedLogin>

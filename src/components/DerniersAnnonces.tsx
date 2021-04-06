@@ -43,26 +43,28 @@ const DerniersAnnonces: React.FC<Props> =({type})=>{
         <Wrapper>
             <Grid container direction='column' alignItems="center" style={{textAlign:'center', paddingTop: '50px'}}>
                 {type===Appel.OFFRE ?
-                <Grid item xs={3}>
+                <Grid item xs={10} sm={8} md={6} lg={4}>
                     <Typography variant="h4">Tu es à la recherche de ton stage de fin d'etudes?</Typography>
                 </Grid> :
-                <Grid item xs={4}>
+                <Grid item xs={10} sm={8} md={6} lg={4}>
                     <Typography variant="h4">Votre futur stagiaire se trouve ici.</Typography>
                 </Grid>
                 }    
-                <Grid item xs={3}>
+                <Grid item xs={10} sm={8} md={6} lg={3}>
                     <Typography style={{color: 'darkgray'}}>Lorem Ipsum dolor sit amet, consectetur adipiscing elit, 
                         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Typography>
                 </Grid>
             </Grid>
             <Grid container justify='center' >
                 <Grid item xs={11} lg={9} style={{marginTop: '50px'}}>
-                    <Grid container spacing={2} alignItems='stretch'>
+                    <Grid container spacing={2} justify='center'>
                 {offresDemandes.length>0 &&
-                offresDemandes.map(offreDemande=>(
-                    <Grid item xs={3} key={offreDemande._id}>
-                        <CardDernieresAnnonces type={type} offreDemande={offreDemande} cardType='mini'/>
-                    </Grid>
+                    offresDemandes.map(offreDemande=>(
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={offreDemande._id}>
+                            <Grid container style={{height: '100%'}}>
+                                <CardDernieresAnnonces type={type} offreDemande={offreDemande} cardType='mini'/>
+                            </Grid>
+                        </Grid>
                 ))
                 }
                     </Grid>

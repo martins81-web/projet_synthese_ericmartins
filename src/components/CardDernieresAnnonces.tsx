@@ -1,5 +1,6 @@
 import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { fetchUtilisateur } from '../Api';
@@ -20,6 +21,7 @@ type Props = {
 
 const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
     const [auteur, setAuteur] = useState<UtilisateursType | undefined>(undefined);
+    const history= useHistory();
 
     useEffect(()=>{
         offreDemande && getAuteur(offreDemande.Auteur);
@@ -35,7 +37,7 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
 
    
     const getAuteurNom = (auteur:UtilisateursType)=>{
-        let auteurNom = type==='offre' ? auteur.NomEntreprise : auteur.Prenom+" "+auteur.Nom;
+        let auteurNom = type==='offre' ? auteur.NomEntreprise : auteur.Ville;
         return auteurNom;
     }
 
@@ -47,7 +49,7 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
         <Wrapper className='card'>
             
             {offreDemande!==undefined && 
-            <Card  style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column', height: '100%', width:'100%'}}>
+            <Card  style={{display: 'flex',justifyContent: 'space-between', flexDirection: 'column', height: '100%', width:'100%'}}>
                 <CardHeader 
                     title={offreDemande.Titre}
                     subheader={auteur? getAuteurNom(auteur) : null}
@@ -70,7 +72,17 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
                     
                 </CardContent>
                 <CardActions>
-                    <Button className='actionbutton1 button' variant="contained" size="medium">Détails</Button>
+                    <Button 
+                        className='actionbutton1 button' 
+                        variant="contained" 
+                        size="medium"
+                        onClick={()=>history.push({
+                            pathname: type===Appel.OFFRE ? '/accueil/offre/'+offreDemande._id : '/accueil/demande/'+offreDemande._id ,
+                            state: {data: offreDemande}
+                        })}
+                    >
+                        Détails
+                    </Button>
                     <Button className='actionbutton2 button'  variant="contained" size="medium" >
                         {type===Appel.OFFRE? 'Postuler' : 'Contacter candidat'}
                     </Button>

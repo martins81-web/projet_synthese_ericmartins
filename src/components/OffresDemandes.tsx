@@ -25,11 +25,11 @@ const OffresDemandes: React.FC<Props> =({type})=>{
 
     return(
         <Grid container>
-            <Grid item>
+            <Grid item xs={12}>
                 <Grid container style={{padding: '50px'}} spacing={matchesMD? 4:0}>
                     <Grid item xs={12} sm={12} md={8}>
                         <Grid container direction='column' spacing={4}>
-                            <Grid item xs>
+                            <Grid item xs={12}>
                                 <Breadcrumbs  separator={<NavigateNextIcon fontSize="small" />}  aria-label="breadcrumb">
                                     <Link color="inherit" to="/accueil">
                                         Accueil
@@ -37,7 +37,7 @@ const OffresDemandes: React.FC<Props> =({type})=>{
                                     <Typography color="textPrimary">{type.toString().charAt(0).toUpperCase()+type.slice(1)+'s de stage'}</Typography>
                                 </Breadcrumbs>
                             </Grid>
-                            <Grid item xs>
+                            <Grid item xs={12}>
                                 <ListOffresDemandes type={type} selectedSecteurID={selectedSecteurID} selectedRegionID={selectedRegionID}/>
                             </Grid>
                         </Grid>
