@@ -7,13 +7,15 @@ interface PrivateRouteProps extends RouteProps {
 
 }
 
+
+
 const PrivateRoute: React.FC<PrivateRouteProps> = ({...rest}) => { 
 const auth = useAuth();
 //console.log(auth?.user);
 
 const token = Cookies.get('connected');
 
-
+//Private route utilisé pour le dashboard - si pas d'utilisateur connecté redirectionne vers login sinon ça continue son chemin 
     if (auth?.user === null && !token) return <Redirect to="/login" /> 
     else return (
             <Route {...rest} />

@@ -4,7 +4,7 @@ import { Container, Typography } from '@material-ui/core';
 type Props = {
     
 };
-
+//page statique
 const Confidentialite: React.FC<Props> =()=>{
     return(
         <Container className='politique'>

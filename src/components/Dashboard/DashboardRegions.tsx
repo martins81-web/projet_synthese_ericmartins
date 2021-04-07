@@ -29,6 +29,7 @@ type Props = {
     
 };
 
+//Liste des regions et respective crud dans le dashboard
 
 const DashboardSecteurs: React.FC<Props> =()=>{
     const [regions, setRegions] = useState<RegionsType[]>([]);

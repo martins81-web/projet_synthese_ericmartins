@@ -1,5 +1,4 @@
 import { useHistory } from 'react-router';
-import { Route } from 'react-router-dom';
 import { LastLocationProvider } from 'react-router-last-location';
 
 import ProtectedDashboardRoutes from '../auth/ProtectedDashboardRoutes';
@@ -9,6 +8,7 @@ import DashboardEditDemande from './DashboardEditDemande';
 import DashboardEditOffre from './DashboardEditOffre';
 import DashboardProfil from './DashboardEditProfil';
 import DashboardEditUsers from './DashboardEditUsers';
+import DashboardFicheUser from './DashboardFicheUser';
 import DashboardNouveauUser from './DashboardNouveauUser';
 import DashboardNouvelleDemande from './DashboardNouvelleDemande';
 import DashboardNouvelleOffre from './DashboardNouvelleOffre';
@@ -21,6 +21,7 @@ import DashBoardUsers from './DashBoardUsers';
 type Props = {
 };
 
+//Routage du contenu dans le dashboard
 const DashboardContent: React.FC<Props> =()=>{
     const history = useHistory();
     //const auth = useAuth();
@@ -42,6 +43,7 @@ const DashboardContent: React.FC<Props> =()=>{
                 <ProtectedDashboardRoutes path="/dashboard/edit/user/:id"><DashboardEditUsers history={history}/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/edit/offre/:id"><DashboardEditOffre history={history}/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/edit/demande/:id"><DashboardEditDemande history={history}/></ProtectedDashboardRoutes>
+                <ProtectedDashboardRoutes path="/dashboard/ficheUser/:id"><DashboardFicheUser  history={history}/></ProtectedDashboardRoutes>
             </LastLocationProvider>
         </div>
     )

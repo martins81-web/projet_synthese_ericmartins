@@ -23,7 +23,7 @@ const DashboardDemandes: React.FC<Props> =()=>{
       
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
-
+      //cherche les demandes dans l'api
     const getDemandes = async () => {
         let demandes : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         //filtre les demandes qui ne sont pas supprimées
@@ -47,7 +47,7 @@ const DashboardDemandes: React.FC<Props> =()=>{
             <Grid item xs={12}>    
                 <Grid container spacing={2}>
                     <Grid item>
-                        <Typography variant={'h4'}>Demandes de stage</Typography>
+                        <Typography variant={'h4'}> {auth?.user?.NiveauAcces===AccessLevel.stagiaire? 'Mes demandes de stage':'Demandes de stage'}</Typography>
                     </Grid>
                     <Grid item style={{position: 'relative'}}>
                         <FontAwesomeIcon icon={faLevelDownAlt}  size='lg'  style={{position: 'absolute', top: '30px'}} />

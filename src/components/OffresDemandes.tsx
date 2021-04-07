@@ -16,6 +16,8 @@ type Props = {
     type: Appel
 };
 
+
+//lists offres/demandes
 const OffresDemandes: React.FC<Props> =({type})=>{
     const [selectedSecteurID, setSelectedSecteurID] = useState<string | undefined>(undefined);
     const [selectedRegionID, setSelectedRegionID] = useState<string | undefined>(undefined);

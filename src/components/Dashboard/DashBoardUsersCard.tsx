@@ -12,6 +12,7 @@ type Props = {
     supprimer :()=>void
 };
 
+//card pour les utilisateursa
 const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
     const history= useHistory();
     const auth = useAuth();
@@ -26,7 +27,12 @@ const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
 
     return(
         <>
-          <Card variant="outlined" style={{textAlign:'center'}}>
+          <Card variant="outlined" style={{textAlign:'center', cursor: 'pointer'}} 
+          onClick={()=>{history.push({
+              pathname:'/dashboard/ficheUser/'+user._id,
+              state: {data: user}
+                })}}      
+          >
                 <CardContent>
                     <Typography variant='h5'>
                         {usersType !== 'entreprises' ? user.Prenom+' '+user.Nom:
@@ -44,7 +50,11 @@ const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
                     <Grid container justify='center' spacing={2}>
                         <Grid item>
                             <Button variant="outlined" size="small" 
-                            onClick={()=>handleEdit(user)}
+                            onClick={(event)=>{
+                                event.stopPropagation();
+                                event.preventDefault();
+                                handleEdit(user);
+                            }}
                             startIcon={  <FontAwesomeIcon icon={faEdit} color="green"/>}
                             >
                                 Modifier
@@ -53,7 +63,11 @@ const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
                         { auth?.user?._id!==user._id &&
                         <Grid item>
                             <Button 
-                                onClick={supprimer}
+                                onClick={(event)=>{
+                                        event.stopPropagation();
+                                        event.preventDefault();
+                                        supprimer();
+                                }}
                                 variant="outlined" 
                                 size="small"  
                                 startIcon={<FontAwesomeIcon icon={faTimes} color="red"/>}

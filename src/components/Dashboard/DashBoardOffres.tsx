@@ -13,7 +13,7 @@ type Props = {
 };
 
 
-
+//Liste des offres de stage dans le dashboard
 const DashboardOffres: React.FC<Props> =()=>{
     const auth = useAuth();
 
@@ -51,7 +51,8 @@ const DashboardOffres: React.FC<Props> =()=>{
             <Grid item xs={12}>    
                 <Grid container spacing={2}>
                     <Grid item>
-                        <Typography variant={'h4'}>Offres de stage</Typography>
+                        <Typography variant={'h4'}>{auth?.user?.NiveauAcces===AccessLevel.entreprise? 'Mes offres de stage'
+                        :'Offres de stage'}</Typography>
                     </Grid>
                     <Grid item style={{position: 'relative'}}>
                         <FontAwesomeIcon icon={faLevelDownAlt}  size='lg'  style={{position: 'absolute', top: '30px'}} />

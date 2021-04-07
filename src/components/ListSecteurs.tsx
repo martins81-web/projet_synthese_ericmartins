@@ -20,10 +20,12 @@ const ListSecteurs: React.FC<Props> =({selectedSecteurId})=>{
       // eslint-disable-next-line react-hooks/exhaustive-deps
      
       },[])
-
+    
+      //fetch les secteurs dans l'api
     const getSecteursActivites = async () => {
         let secteursActivites : SecteursActiviteType[] | undefined = await fetchSecteursActivite();
         secteursActivites = secteursActivites.filter(secteur=> secteur.Supprime===false);
+        //trie par ordre alphabétique
         secteursActivites.sort((a, b) => (a.Titre > b.Titre) ? 1 : -1);
 
         setSecteursActivites(secteursActivites);

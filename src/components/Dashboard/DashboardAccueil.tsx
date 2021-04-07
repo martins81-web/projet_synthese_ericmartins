@@ -27,6 +27,7 @@ const DashboardAccueil: React.FC<Props> =()=>{
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
 
+      //cherche les demandes dans l'api
     const getDemandes = async () => {
         let demandes : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         demandes = demandes.filter(demande=> demande.Supprime===false && demande.Type==='demande' && demande.Valide===false);
@@ -34,6 +35,7 @@ const DashboardAccueil: React.FC<Props> =()=>{
         setDemandes(demandes);  
     }
 
+    //cherche les offres dans l'api
     const getOffres = async () => {
         let offres : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         offres = offres.filter(offre=> offre.Supprime===false && offre.Type==='offre' && offre.Valide===false);
@@ -42,7 +44,7 @@ const DashboardAccueil: React.FC<Props> =()=>{
     }
 
    
-
+    //affiche les offres et demandes à être validés par l'admin
     return(
         <> {auth?.user?.NiveauAcces === AccessLevel.admin ?
            <Grid container spacing={2}>

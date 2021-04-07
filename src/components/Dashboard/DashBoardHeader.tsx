@@ -49,7 +49,8 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
       getUser();
       },[])
 
-      const getUser= async()=>{
+    //cherche l'user connecté dans la DB/api
+    const getUser= async()=>{
         const token = Cookies.get('connected');
         //console.log(token);
         
@@ -60,6 +61,7 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
         setUser(user);
     } 
   
+
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
       };
@@ -73,10 +75,12 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
         profil();
       };
 
+    //retourne le nom complet de l'utilisateur
     const getUserName =()=> {
         return user?.Prenom+ ' ' + user?.Nom;
     }
 
+    //returne le niveau d'accès ou type d'utilisateur
     const getAccessLevel =()=> {
         const userAccessLevel = user?.NiveauAcces;
         if(userAccessLevel === AccessLevel.admin)
@@ -87,6 +91,7 @@ const DashboardHeader: React.FC<Props> =({logout,profil})=>{
             return 'Étudiant';
      }
 
+     //retoure les initiales du prenon/nom
      const getInitials =()=> {
         const initialePrenom = user?.Prenom !== undefined ? user?.Prenom.charAt(0) : "";
         const initialeNom = user?.Nom !== undefined ? user?.Nom.charAt(0) : "";

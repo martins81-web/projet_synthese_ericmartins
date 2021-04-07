@@ -97,23 +97,23 @@ const Field = (defaultValue: string, label: string, key: string) => {
             variant="outlined"
             onChange={handleChangeTextField}
             defaultValue={defaultValue}
-            //onChange={}
             margin='dense'
             type={label==='Téléphone'? "tel" : label==='Courriel'? 'email' :'text'}
             inputProps={{ className: classes.input,pattern: label==='Téléphone'? "[0-9]{3}[0-9]{3}[0-9]{4}": null }}
         />
     )
 }
-
+// onChange des textfields
 const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [event.target.name]: event.target.value });
     
 }
-
+// onChange des textfields
 const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [event.target.name]: event.target.checked });
 };
 
+//retourne les titres des secteurs
 const getTitres =(ids: string[])=>{
     let titres: string[]=[];
     secteursActivites.map(secteur=> {
@@ -129,6 +129,7 @@ const handleSave = async ()=>{
     userUpdated();
 }
 
+//mise à jour de l'utilisateur
 async function userUpdated() {
     try {
         setUpdatingUser(true);

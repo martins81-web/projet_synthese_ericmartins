@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Breadcrumbs, Button, Grid, Typography } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -10,7 +11,6 @@ import { fetchUtilisateur } from '../Api';
 import { Appel } from '../Enum';
 import { OffresDemandesType, UtilisateursType } from '../Types';
 import AppelAction from './AppelAction';
-import ListOffresDemandes from './ListOffresDemandes';
 import ListRegions from './ListRegions';
 import ListSecteurs from './ListSecteurs';
 
@@ -31,6 +31,7 @@ const DetailsAnnonces: React.FC<Props> =({history, type})=>{
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
 
+      //fetch l'auteur
     const getAuteur = async () => {
         let auteur : UtilisateursType|null = await fetchUtilisateur(offreDemande.Auteur);
         setAuteur(auteur);  
@@ -40,6 +41,7 @@ const DetailsAnnonces: React.FC<Props> =({history, type})=>{
      const theme = useTheme();
      const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
+     //format date yyyy-mm-dd
      function formatDate(date:Date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),

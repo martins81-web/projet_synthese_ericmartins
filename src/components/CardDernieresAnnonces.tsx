@@ -29,18 +29,20 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
 
+      //fetch l'auteur dans l'api
     const getAuteur = async (id: string) => {
         let auteur : UtilisateursType| undefined = await fetchUtilisateur(id);
         //console.log(auteur);
         setAuteur(auteur);
     }
 
-   
+   //retourne le nom d'entreprise si c'est une offre sinon ça retourne la ville de la demande de stage
     const getAuteurNom = (auteur:UtilisateursType)=>{
         let auteurNom = type==='offre' ? auteur.NomEntreprise : auteur.Ville;
         return auteurNom;
     }
 
+    //retourne le logo de l'entreprise
     const getLogo = (auteur:UtilisateursType)=>{
         return auteur.Logo;
     }

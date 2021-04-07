@@ -25,6 +25,8 @@ const DerniersAnnonces: React.FC<Props> =({type})=>{
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
 
+
+      //fetch les offres/demandes dans l'api
     const getOffresDemandes = async () => {
         let offresDemandes : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         

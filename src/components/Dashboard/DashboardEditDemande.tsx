@@ -17,9 +17,6 @@ type Props = {
     history: any
 };
 
-
-
-
 const DashboardEditDemande: React.FC<Props> =({history})=>{
     const auth = useAuth();
     const [demande, setDemande]=useState<OffresDemandesType>(history.location.state.data) 
@@ -32,12 +29,13 @@ const DashboardEditDemande: React.FC<Props> =({history})=>{
         setDemande({ ...demande, [event.target.name]: event.target.value });   
     };
     
+    //sauvegarde les changements  
     const handleSave = async (e:any)=>{
         e.preventDefault();
         demandeUpdated();
     }
    
-
+    //mise à jour de la demande
     async function demandeUpdated() {
         try {
             setUpdatingDemande(true);

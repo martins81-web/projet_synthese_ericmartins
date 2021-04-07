@@ -9,7 +9,7 @@ export interface IUseAuthProvider {
     user: null | UtilisateursType;
 }
 
-
+//Provider d'authentication
 const useAuthProvider =() : IUseAuthProvider =>{
     const [user, setUser] = useState<null |UtilisateursType>(null);
 

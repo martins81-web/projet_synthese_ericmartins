@@ -21,6 +21,7 @@ const ListRegions: React.FC<Props> =({selectedRegionId})=>{
      
       },[])
 
+      //fetch regions dans l'api
     const getRegions = async () => {
         let regions : RegionsType[] | undefined = await fetchRegions();
         regions = regions.filter(region=> region.Supprime===false);

@@ -26,6 +26,7 @@ const ListOffresDemandes: React.FC<Props> =({type, selectedSecteurID, selectedRe
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
 
+    
     const getOffresDemandes = async () => {
         let offresDemandes : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         // Filtre les offres valides

@@ -12,6 +12,7 @@ type Props = {
     
 };
 
+//section offre vedettes
 const OffresVedettes: React.FC<Props> =()=>{
     const [offres, setOffres] = useState<OffresDemandesType[]>([]);
     

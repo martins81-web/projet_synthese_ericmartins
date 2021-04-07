@@ -1,7 +1,7 @@
 import { OffresDemandesType, RegionsType, SecteursActiviteType, UtilisateursType } from './Types';
 
 
-const ENDPOINT='http://localhost:3001/api/'
+const ENDPOINT='https://apiestage.herokuapp.com/api/'
 
 export const fetchOffresDemandes = async (): Promise<OffresDemandesType[]> => {
   const data = await (await fetch(ENDPOINT+"offreDemande")).json();

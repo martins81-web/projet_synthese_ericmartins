@@ -32,12 +32,14 @@ const DashboardCardDemande: React.FC<Props> =({demande, type,updateDemande})=>{
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
 
+      //cherche l'auteur de la demande
     const getAuteur = async (id: string) => {
         let auteur : UtilisateursType| undefined = await fetchUtilisateur(id);
         //console.log(auteur);
         setAuteur(auteur);
     }
 
+    //formatation de la date au format YYYY-MM-dd
     function formatDate(date:Date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -56,6 +58,7 @@ const DashboardCardDemande: React.FC<Props> =({demande, type,updateDemande})=>{
         return (auteur.Prenom+" "+auteur.Nom)
     }
 
+    //mise à jour de la demande
     async function offreDemandeUpdated(offreDemande:OffresDemandesType) {
         try {
             const update=await updateOffreDemande(offreDemande);
@@ -70,6 +73,7 @@ const DashboardCardDemande: React.FC<Props> =({demande, type,updateDemande})=>{
         }
       }
 
+      //suppression de la demande
     const handleSupprimer = () =>{
         demande.Supprime=true;
         offreDemandeUpdated(demande);

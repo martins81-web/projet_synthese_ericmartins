@@ -12,7 +12,6 @@ import { AccessLevel } from '../../Enum';
 import { SecteursActiviteType, UtilisateursType } from '../../Types';
 import useAuth from '../auth/useAuth';
 import SelectRegion from '../Selects/SelectRegion';
-import PremierConnexion from './PremierConnexion';
 
 type Props = {
     history:any,
@@ -73,6 +72,7 @@ useEffect(()=>{
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   
+  //cherche l'user dans la database
   const getUser= async()=>{
     let id='';
     if(auth?.user!==undefined && auth?.user!==null)
@@ -82,7 +82,7 @@ useEffect(()=>{
     setUser(user);
 } 
 
-
+//cherche les secteurs d'activité
 const getSecteursActivites = async () => {
     let secteursActivites : SecteursActiviteType[] | undefined = await fetchSecteursActivite();
     setSecteursActivites(secteursActivites);
@@ -106,13 +106,14 @@ const Field = (defaultValue: string, label: string, key: string) => {
     )
 }
 
+//changements des textfields (onChange)
 const handleChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
     if(user)
     setUser({ ...user, [event.target.name]: event.target.value });
     
 }
 
-
+//retourne les titres des secteurs pour le select
 const getTitres =(ids: string[])=>{
     let titres: string[]=[];
     secteursActivites.map(secteur=> {
@@ -124,6 +125,7 @@ const getTitres =(ids: string[])=>{
     return titres;
 }
 
+//sauvergarde les changements
 const handleSave = async (e:any)=>{
     e.preventDefault();
     if(user){
@@ -136,6 +138,7 @@ const handleSave = async (e:any)=>{
     userUpdated();
 }
 
+//mise à jour de l'utilisateur
 async function userUpdated() {
     try {
         if(user) {

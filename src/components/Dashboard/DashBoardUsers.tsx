@@ -12,6 +12,7 @@ type Props = {
     usersType: string
 };
 
+//liste des utilisateurs
 const DashboardCandidats: React.FC<Props> =({usersType})=>{
 
     const [utilisateurs, setUtilisateurs] = useState<UtilisateursType[]>([]);

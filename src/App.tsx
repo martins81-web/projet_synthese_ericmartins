@@ -14,7 +14,6 @@ import ProtectedLogin from './components/auth/ProtectedLogin';
 import useAuth from './components/auth/useAuth';
 import Confidentialite from './components/Confidentialite';
 import Dashboard from './components/Dashboard/Dashboard';
-import PremierConnexion from './components/Dashboard/PremierConnexion';
 import DetailsAnnonces from './components/DetailsAnnonces';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -32,7 +31,7 @@ function App() {
   const location = useLocation(); 
   //console.log(location.pathname); 
 
-  //Ça fait scrollToTop on all route changes
+  //Ça fait scrollToTop dans tous les changements de route 
   useLayoutEffect(() => {
     if(location.pathname!=='/login' && location.pathname!=='/register')
     window.scrollTo(0, 0);
@@ -51,11 +50,13 @@ function App() {
     history.push('/accueil');
   }
 
+  
   useEffect(()=>{
-    handleConnectionfromCookie();
+    handleConnectionfromCookie(); //appel de la fonction qui vérifie s'il y a un cookie de connection
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
+  //vérifie s'il y a un cookie de connexion et fait la connexion
   const handleConnectionfromCookie = async () => {
     const token = Cookies.get('connected');
     //console.log(token);
@@ -80,8 +81,7 @@ function App() {
               logout={logout}
       />
       } 
-      <Switch >
-
+      <Switch>
         <Redirect exact from="/dashboard/update" to="/dashboard"/>
         <Redirect exact from="/" to="/accueil" />
         <Route exact path="/accueil" component={Accueil}/>
@@ -92,7 +92,6 @@ function App() {
         <Route path="/accueil/offre/:id"><DetailsAnnonces history={history} type={Appel.OFFRE}/></Route>
         <Route path="/accueil/demande/:id"><DetailsAnnonces history={history} type={Appel.DEMANDE}/></Route>
         <Route path="/accueil/Demandes"><OffresDemandes type={Appel.DEMANDE}/></Route>
-        <Route path="/premiereConnexion"><PremierConnexion/></Route>
         <PrivateRoute path="/dashboard/"><Dashboard logout={logout}/></PrivateRoute>
         <ProtectedLogin path="/login" ><Login login={true}/></ProtectedLogin>
         <ProtectedLogin path="/register" ><Login login={false}/></ProtectedLogin>

@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { fetchUtilisateur } from '../../Api';
-import { AccessLevel, Menu } from '../../Enum';
+import { Menu } from '../../Enum';
 import { UtilisateursType } from '../../Types';
 import useAuth from '../auth/useAuth';
 import Footer from '../Footer';
@@ -28,6 +28,7 @@ import DashboardContent from './DashBoardContent';
 import DashboardEditProfil from './DashboardEditProfil';
 import DashboardHeader from './DashBoardHeader';
 
+//items du menu, routes et permissions
 const menuItems =[
     {
         name: Menu.accueil,
@@ -182,8 +183,7 @@ const Dashboard: React.FC<Props> =({logout})=>{
                                                     <ListItemText disableTypography
                                                     style={{fontSize: matchesSM?'0.9em':'1.3em', flexWrap: 'wrap'}}
                                                     >
-                                                    {item.name===Menu.offres && user.NiveauAcces===AccessLevel.entreprise ? 'Mes offres de stage': 
-                                                        item.name===Menu.demandes && user.NiveauAcces===AccessLevel.stagiaire ? 'Mes demandes de stage':
+                                                    {
                                                         item.name
                                                     }
                                                     </ListItemText >
@@ -239,6 +239,7 @@ const Dashboard: React.FC<Props> =({logout})=>{
                                         }}
                         />
                         </Grid>
+                        {/*PREMIÈRE CONNEXION*/}
                         <Grid item>
                             {user && user.PremierConnexion ?
                             <Grid container>

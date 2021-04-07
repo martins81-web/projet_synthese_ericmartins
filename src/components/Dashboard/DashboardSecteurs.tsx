@@ -29,7 +29,7 @@ type Props = {
     
 };
 
-
+//Liste des secteurs et respective crud dans le dashboard
 const DashboardSecteurs: React.FC<Props> =()=>{
     const [secteursActivites, setSecteursActivites] = useState<SecteursActiviteType[]>([]);
     const [edit, setEdit] = useState<SecteursActiviteType | undefined >(undefined);

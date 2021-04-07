@@ -38,7 +38,7 @@ interface State {
     Vedette: boolean
   }
 
-
+//Formulaire de création d'une nouvelle offre
 const DashboardNouvelleOffre: React.FC<Props> =()=>{
     const history= useHistory();
     const auth = useAuth();

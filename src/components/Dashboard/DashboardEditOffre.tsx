@@ -26,27 +26,24 @@ const DashboardEditOffre: React.FC<Props> =({history})=>{
     const [, setUpdate]= useState<String>('');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [updatingOffre, setUpdatingOffre] = useState(true);
-
-
- 
    
-    
+    //changements des fields
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setOffre({ ...offre, [event.target.name]: event.target.value });   
     }
 
-   
-    
+    //changements des boutons switch 
     const handleChangeCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
         setOffre({ ...offre, [event.target.name]: event.target.checked });
     }; 
 
-
+    //sauvegarde l'offre
     const handleSave = async (e:any)=>{
         e.preventDefault();
         OffreUpdated();
     }
     
+    //mise à jour de l'offre
     async function OffreUpdated() {
         try {
             setUpdatingOffre(true);
