@@ -1,4 +1,4 @@
-import { faEdit, faLevelDownAlt, faTimes, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faLevelDownAlt, faTimes, faUserGraduate, faUserNinja, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Grid, Typography } from '@material-ui/core';
 import { useState } from 'react';
@@ -107,8 +107,16 @@ const DashBoardFicheUser: React.FC<Props> =({history})=>{
                             <Grid container  style={{borderBottom: '2px solid black', marginTop: '15px'}}>
                                 <Grid item>
                                     <Grid container spacing={2} > 
-                                        <Grid item style={{paddingBottom: '0px'}}><FontAwesomeIcon icon={faUserGraduate} size="2x"  /></Grid>
-                                        <Grid item><Typography variant='h5' style={{fontWeight: 'bold'}}>{user?.Prenom+" "+user?.Nom}</Typography></Grid>
+                                        <Grid item style={{paddingBottom: '0px'}}>
+                                            <FontAwesomeIcon 
+                                            icon={user?.NiveauAcces===AccessLevel.stagiaire? faUserGraduate: user?.NiveauAcces===AccessLevel.entreprise ? faUserTie: faUserNinja} 
+                                            size="2x"  />
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant='h5' style={{fontWeight: 'bold'}}>
+                                                {user?.Entreprise? user.NomEntreprise : user?.Prenom+" "+user?.Nom}
+                                            </Typography>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>

@@ -24,28 +24,36 @@ const Footer: React.FC<Props> =()=>{
                 <Grid item xs={12} sm={12} md={9} lg={9} xl={9}>
                     <Grid container justify='flex-end'>
                         <Grid item className='item'>
-                            <Link to="/accueil" style={{fontWeight: location.pathname=== "/accueil" ? 'bold': 'normal' }}>
-                                Accueil
-                            </Link>
+                            <Typography>
+                                <Link to="/accueil" style={{fontWeight: location.pathname=== "/accueil" ? 'bold': 'normal' }}>
+                                    Accueil
+                                </Link>
+                            </Typography>
                         </Grid>
                         <Grid item className='item'>
-                            <Link to="/apropos" style={{fontWeight: location.pathname=== "/apropos" ? 'bold': 'normal' }}>
-                                À propos
-                            </Link>
+                            <Typography>
+                                <Link to="/apropos" style={{fontWeight: location.pathname=== "/apropos" ? 'bold': 'normal' }}>
+                                    À propos
+                                </Link>
+                            </Typography>
                         </Grid>
                         <Grid item className='item'>
-                            <Link to="/confidentialite" style={{fontWeight: location.pathname=== "/confidentialite" ? 'bold': 'normal' }}>
-                                Confidentialité
-                            </Link>
+                            <Typography>
+                                <Link to="/confidentialite" style={{fontWeight: location.pathname=== "/confidentialite" ? 'bold': 'normal' }}>
+                                    Confidentialité
+                                </Link>
+                            </Typography>
                         </Grid>
                         <Grid item className='item'>
-                            <Link to="/contact" style={{fontWeight: location.pathname=== "/contact" ? 'bold': 'normal' }}>
-                                Nous Joindre
-                            </Link>
+                            <Typography>
+                                <Link to="/contact" style={{fontWeight: location.pathname=== "/contact" ? 'bold': 'normal' }}>
+                                    Nous Joindre
+                                </Link>
+                                </Typography>
                         </Grid>
                         {
                         !location.pathname.includes("/dashboard") && token &&
-                            <Grid item className='item'>{auth?.user !== null ? <Link to="/dashboard" style={{color: 'dodgerblue'}}>Dashboard</Link> :null}</Grid>
+                            <Grid item className='item'>{auth?.user !== null ? <Typography><Link to="/dashboard" style={{color: 'dodgerblue'}}>Dashboard</Link></Typography> :null}</Grid>
                         }
                     </Grid>
                 </Grid>
@@ -65,7 +73,7 @@ export const Wrapper = styled.div<{location: any}>`
         color: black
     }
     a:hover{
-        font-weight: bold;
+        font-weight: bold !important;
         text-decoration: none;
     }
     .eStage{

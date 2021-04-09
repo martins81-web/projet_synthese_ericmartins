@@ -116,7 +116,7 @@ const DashboardSecteurs: React.FC<Props> =()=>{
                             InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                        <SearchIcon/>
+                                    <SearchIcon/>
                                 </InputAdornment>
                             )
                             }}

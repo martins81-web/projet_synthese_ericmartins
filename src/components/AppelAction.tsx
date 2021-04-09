@@ -2,26 +2,61 @@ import { Button, Grid, Typography } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Image from 'react-bootstrap/Image';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
-import { Appel } from '../Enum';
+import { AccessLevel, Appel } from '../Enum';
 import imgDemande from '../images/demande.jpg';
 import imgOffre from '../images/offre.jpg';
+import useAuth from './auth/useAuth';
+
+
 
 type Props = {
-    type: Appel
+    type: Appel,
+    toast?:()=>void
 };
 
 
 
-const AppelAction: React.FC<Props> =({type})=>{
-
+const AppelAction: React.FC<Props> =({type, toast})=>{
+    const history = useHistory();
+    const auth = useAuth();
     //MediaQueries
     const theme = useTheme();
     const matchesMD = useMediaQuery(theme.breakpoints.down('md'));
 
+    const handlePublierOffre=()=>{
+       if(auth?.user && auth?.user?.NiveauAcces !== AccessLevel.stagiaire){
+        history.push('/dashboard/newOffre')
+       }  else if(auth?.user && auth?.user?.NiveauAcces === AccessLevel.stagiaire){
+        console.log('here')
+
+        toast && toast();
+        }
+        else{
+            console.log('here')
+
+            toast && toast();
+            history.push('/login');
+        }
+    }
+
+    const handlePublierDemande=()=>{
+        if(auth?.user && auth?.user?.NiveauAcces !== AccessLevel.entreprise){
+            history.push('/dashboard/NewDemande');
+        } else if(auth?.user && auth?.user?.NiveauAcces === AccessLevel.entreprise){
+            toast && toast();
+        }
+        else{
+            console.log('here')
+            toast && toast();
+            history.push('/login');
+        }
+     }
+
     return(
-        <Wrapper>
+        <Wrapper >
         <Grid container>
             {type===Appel.OFFRE ?  
             <Grid item  xs={12} sm={12} md={6}  
@@ -41,7 +76,9 @@ const AppelAction: React.FC<Props> =({type})=>{
                         <li><span>Ut enim ad minim veniam</span></li>
                     </Grid>
                     <Grid item xs={9} >
-                        <Button variant="contained" size="medium"  style={{borderRadius: '0',textTransform: 'none'}}>
+                        <Button variant="contained" size="medium"  style={{borderRadius: '0',textTransform: 'none'}}
+                        onClick={handlePublierOffre}
+                        >
                                 Publier une offre de stage maintenant!
                         </Button>
                     </Grid>
@@ -73,7 +110,9 @@ const AppelAction: React.FC<Props> =({type})=>{
                             <li><span>Ut enim ad minim veniam</span></li>
                         </Grid>
                         <Grid item xs={9} >
-                            <Button variant="contained" size="medium" style={{borderRadius: '0',textTransform: 'none'}}>
+                            <Button variant="contained" size="medium" style={{borderRadius: '0',textTransform: 'none'}}
+                            onClick={handlePublierDemande}
+                            >
                                     Publier une demande de stage maintenant!
                             </Button>
                         </Grid>
@@ -81,6 +120,7 @@ const AppelAction: React.FC<Props> =({type})=>{
             </Grid>
             : null}
         </Grid>
+        
         </Wrapper>
     )
 }

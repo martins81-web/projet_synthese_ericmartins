@@ -48,7 +48,7 @@ const OffresVedettes: React.FC<Props> =()=>{
                     </Grid>
                     <Grid container justify='center' >
                         <Grid item xs={11} lg={9}>
-                            <Grid container spacing={2} alignItems='stretch'>
+                            <Grid container spacing={2} alignItems='stretch' justify='center'>
                                 {offres.length>0 && offres.map(offre=>(
                                     <Grid item key={offre._id} xs={12} sm={6} md={3} lg={3} xl={3} style={{display: 'flex'}}>
                                         <CardDernieresAnnonces type={Appel.OFFRE}  offreDemande={offre} cardType='mini'/>

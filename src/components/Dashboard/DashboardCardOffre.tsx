@@ -1,6 +1,6 @@
 import { faEdit, faTimes, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Card, CardActions, CardContent, Grid, Typography } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, FormControlLabel, Grid, Switch, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
@@ -72,6 +72,11 @@ const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
         }
       }
     
+      const handleVedette =()=>{
+        offre.Vedette=!offre.Vedette;
+        offreDemandeUpdated(offre);
+    }
+
     const handleSupprimer =()=>{
         offre.Supprime=true;
         offreDemandeUpdated(offre);
@@ -172,7 +177,22 @@ const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
                             </Grid>
                             :
                             auth?.user?.NiveauAcces!==AccessLevel.stagiaire && 
-                            <Grid container spacing={1}>
+                            <Grid container spacing={1} >
+                                {auth?.user?.NiveauAcces===AccessLevel.admin && 
+                                <Grid item>
+                                    <FormControlLabel
+                                        control={
+                                        <Switch
+                                            checked={offre.Vedette}
+                                            onChange={handleVedette}
+                                            name="checkedB"
+                                            color="primary"
+                                        />
+                                        }
+                                        label="Vedette"
+                                    />
+                                </Grid>
+                                }
                                 <Grid item>
                                     <Button variant="outlined" size="small" 
                                     startIcon={  <FontAwesomeIcon icon={faEdit} color="green"/>}

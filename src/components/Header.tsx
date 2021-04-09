@@ -4,6 +4,8 @@ import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Appel } from '../Enum';
+
 
 
 
@@ -11,10 +13,11 @@ type Props = {
     imageURL: string;
     imgSize: number;
     logout: () => void;
+    recherche: (recherche:string) => void;
 }
 
 
-const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
+const Header: React.FC<Props> =({imageURL,imgSize,logout, recherche})=>{
     const history= useHistory();
 
     const handleLogin =()=>{
@@ -54,7 +57,11 @@ const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
                             variant="contained" 
                             size="medium" 
                             style={{backgroundColor: 'limegreen', color: 'white', textTransform: 'none', marginTop: '10px'}}
-                            onClick={()=>history.push('/accueil/offres')}
+                            onClick={()=>history.push({
+                                pathname: '/accueil/offres',
+                                state: {type: Appel.OFFRE}
+                            
+                            })}
                             >
                                 Trouvez votre stage
                             </Button>
@@ -62,7 +69,10 @@ const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
                         <Grid item style={{marginLeft: '5px', marginTop: '10px'}}>
                             <Button variant="contained" size="medium"  
                             style={{backgroundColor: 'limegreen', color: 'white', textTransform: 'none'}}
-                            onClick={()=>history.push('/accueil/demandes')}
+                            onClick={()=>history.push({
+                                pathname: '/accueil/demandes',
+                                state: {type: Appel.DEMANDE}
+                            })}
                             >
                                 Trouvez votre futur stagiaire
                             </Button>
@@ -144,10 +154,14 @@ const Header: React.FC<Props> =({imageURL,imgSize,logout})=>{
                                         <InputBase 
                                             fullWidth
                                             placeholder="Mot clé"
+                                            onChange={(e)=>recherche(e.target.value)}
                                         />
                                     </Grid>
                                     <Grid item xl={3} lg={4} md={4} sm={5} xs={12}>
-                                        <Button fullWidth variant="contained" color="primary" style={{borderRadius: '0',textTransform: 'none'}}>
+                                        <Button 
+                                        data-testid="button-recherche"
+                                        onClick={()=>history.push('/accueil/offres')}
+                                        fullWidth variant="contained" color="primary" style={{borderRadius: '0',textTransform: 'none'}}>
                                             Rechercher
                                         </Button>
                                     </Grid>

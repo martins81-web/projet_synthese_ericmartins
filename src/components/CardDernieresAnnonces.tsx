@@ -48,7 +48,8 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
     }
     
     return(
-        <Wrapper className='card'>
+        <div data-testid='CardDerniersAnnonces'>
+        <Wrapper className='card' >
             
             {offreDemande!==undefined && 
             <Card  style={{display: 'flex',justifyContent: 'space-between', flexDirection: 'column', height: '100%', width:'100%'}}>
@@ -64,7 +65,7 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
                             </Typography> 
                         </Grid >
                         { type===Appel.OFFRE && cardType!== 'mini' &&
-                        <Grid item xs={4}>
+                        <Grid item xs={12} sm={12} md={4}>
                             <Grid container justify='center' >
                                 {auteur && <Typography variant='h2'>{getLogo(auteur)}</Typography>}
                             </Grid>
@@ -78,6 +79,7 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
                         className='actionbutton1 button' 
                         variant="contained" 
                         size="medium"
+                        name='buttonDetails'
                         onClick={()=>history.push({
                             pathname: type===Appel.OFFRE ? '/accueil/offre/'+offreDemande._id : '/accueil/demande/'+offreDemande._id ,
                             state: {data: offreDemande}
@@ -85,13 +87,14 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
                     >
                         Détails
                     </Button>
-                    <Button className='actionbutton2 button'  variant="contained" size="medium" >
+                    <Button className='actionbutton2 button'  variant="contained" size="medium" name='buttonPostuler' >
                         {type===Appel.OFFRE? 'Postuler' : 'Contacter candidat'}
                     </Button>
                 </CardActions>
             </Card>
             }
         </Wrapper>
+        </div>
     )
 }
 

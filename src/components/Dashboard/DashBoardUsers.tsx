@@ -1,6 +1,7 @@
 import '../../App.sass';
 
-import { Grid } from '@material-ui/core';
+import { Grid, InputAdornment, TextField } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -16,7 +17,8 @@ type Props = {
 const DashboardCandidats: React.FC<Props> =({usersType})=>{
 
     const [utilisateurs, setUtilisateurs] = useState<UtilisateursType[]>([]);
-    
+    const [recherche, setRecherche]= useState<String>('');
+
     useEffect(()=>{
         getUtilisateurs();
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,17 +43,38 @@ const DashboardCandidats: React.FC<Props> =({usersType})=>{
         updateUtilisateur(user);
     }
 
-   
+    const getFullName = (user: UtilisateursType) => {
+        return (user.Prenom+" "+user.Nom).toLowerCase();
+    }
     
     return(
         <Wrapper>     
-            <Grid container spacing={2} className='dashboardContent'>
+            <Grid container direction='column' spacing={3} alignItems='center' >
+                <Grid item>
+                        <TextField
+                            data-testid="rechercheUsers"
+                            placeholder="Rechercher"
+                            onChange={(e)=>setRecherche(e.target.value)}
+                            InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                        <SearchIcon/>
+                                </InputAdornment>
+                            )
+                            }}
+                            variant="outlined"
+                        />
+                </Grid>
+             </Grid> 
+            <Grid container spacing={2} className='dashboardContent' >
             {utilisateurs.length > 0 ?
                 utilisateurs.map((user,index)=>( 
-                    user.Supprime === false ?
-                <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
-                    <DashBoardUsersCard user={user} usersType={usersType} supprimer={()=>handleSupprimer(user)} />
-                </Grid> 
+                    user.Supprime === false && 
+                    (user?.NomEntreprise?.toLowerCase().includes(recherche?.toLowerCase()) || getFullName(user).includes(recherche?.toLowerCase())  )                
+                    ?
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={user._id} >
+                        <DashBoardUsersCard user={user} usersType={usersType} supprimer={()=>handleSupprimer(user)} />
+                    </Grid> 
                 :null
                 ))
                 : 

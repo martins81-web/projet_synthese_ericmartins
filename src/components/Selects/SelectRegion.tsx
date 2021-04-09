@@ -35,9 +35,9 @@ const SelectRegion: React.FC<Props> =({selectedId,onChange})=>{
 
 
     return(
-        <>
+        <div data-testid="region-1">
         {regions.length > 0?
-        <FormControl style={{minWidth: '200px'}}>
+        <FormControl style={{minWidth: '200px'}} >
             <TextField
                 variant="outlined"
                 label="Region"
@@ -49,7 +49,7 @@ const SelectRegion: React.FC<Props> =({selectedId,onChange})=>{
                 value={selectedRegion||""}
                 onChange={(event)=>handleChange(event)}
                 margin='dense'
-
+                
             >
                 {
                 regions.map(region => (
@@ -59,7 +59,7 @@ const SelectRegion: React.FC<Props> =({selectedId,onChange})=>{
             </TextField> 
         </FormControl> : null
         }
-       </>
+       </div>
     )
 }
 

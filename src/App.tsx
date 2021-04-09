@@ -1,7 +1,7 @@
 import './App.sass';
 
 import Cookies from 'js-cookie';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLayoutEffect } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -23,8 +23,15 @@ import OffresDemandes from './components/OffresDemandes';
 import { Appel, Size } from './Enum';
 import BGImage from './images/accueil.jpg';
 import { UtilisateursType } from './Types';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { toast, ToastContainer } from 'react-toastify';
 
 function App() {
+  const [recherche, setRecherche]= useState<string>('');
+
+  const offre = () => toast.error(<p>Vous devez vous connecter en tant qu'<b>ENTREPRISE</b> pour pouvoir publier une offre de stage!</p>);
+  const demande = () => toast.error(<p>Vous devez vous connecter en tant que <b>STAGIAIRE</b> pour pouvoir publier une demande de stage!</p>);
 
   const auth = useAuth();
   const history = useHistory();
@@ -79,24 +86,26 @@ function App() {
       <Header imageURL={getImage()} 
               imgSize={Size.BIG}
               logout={logout}
+              recherche={(recherche)=>setRecherche(recherche)}
       />
       } 
       <Switch>
         <Redirect exact from="/dashboard/update" to="/dashboard"/>
         <Redirect exact from="/" to="/accueil" />
-        <Route exact path="/accueil" component={Accueil}/>
+        <Route exact path="/accueil"><Accueil toast={(type)=>type==='offre'? offre: demande} /></Route>
         <Route path="/contact" component={NousJoindre}/>
         <Route path="/confidentialite" component={Confidentialite}/>
         <Route path="/apropos" component={APropos}/>
-        <Route path="/accueil/offres"><OffresDemandes type={Appel.OFFRE}/></Route>
+        <Route path="/accueil/offres"><OffresDemandes type={Appel.OFFRE} recherche={recherche}/></Route>
         <Route path="/accueil/offre/:id"><DetailsAnnonces history={history} type={Appel.OFFRE}/></Route>
+        <Route path="/accueil/Demandes"><OffresDemandes type={Appel.DEMANDE} recherche={recherche} /></Route>
         <Route path="/accueil/demande/:id"><DetailsAnnonces history={history} type={Appel.DEMANDE}/></Route>
-        <Route path="/accueil/Demandes"><OffresDemandes type={Appel.DEMANDE}/></Route>
         <PrivateRoute path="/dashboard/"><Dashboard logout={logout}/></PrivateRoute>
         <ProtectedLogin path="/login" ><Login login={true}/></ProtectedLogin>
         <ProtectedLogin path="/register" ><Login login={false}/></ProtectedLogin>
       </Switch>
-    
+      <ToastContainer limit={1}/>
+
       {
       !location.pathname.includes('/dashboard') && !location.pathname.includes('/premiereConnexion') &&< Footer/>
       } 

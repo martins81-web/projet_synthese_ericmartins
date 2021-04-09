@@ -2,6 +2,7 @@ import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, CardActions, CardContent, Grid, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { UtilisateursType } from '../../Types';
 import useAuth from '../auth/useAuth';
@@ -26,12 +27,13 @@ const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
     }
 
     return(
-        <>
-          <Card variant="outlined" style={{textAlign:'center', cursor: 'pointer'}} 
+        <Wrapper>
+          <Card variant="outlined" className='card'  
           onClick={()=>{history.push({
               pathname:'/dashboard/ficheUser/'+user._id,
               state: {data: user}
-                })}}      
+                })}}   
+                style={{display: 'flex',justifyContent: 'space-between', flexDirection: 'column', height: '100%', width:'100%'}}   
           >
                 <CardContent>
                     <Typography variant='h5'>
@@ -79,8 +81,24 @@ const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
                     </Grid>
                 </CardActions>
             </Card> 
-        </>
+        </Wrapper>
     )
 }
 
 export default DashBoardUsersCard;
+
+
+export const Wrapper = styled.div`
+
+height: 100%;
+.card{
+    text-align:center;
+ 
+}
+
+.card:hover{
+    background-color: #E8E8E8;
+    cursor: pointer;
+}
+
+`

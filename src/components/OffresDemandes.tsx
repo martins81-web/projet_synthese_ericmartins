@@ -13,12 +13,13 @@ import ListRegions from './ListRegions';
 import ListSecteurs from './ListSecteurs';
 
 type Props = {
-    type: Appel
+    type: Appel,
+    recherche: string
 };
 
 
 //lists offres/demandes
-const OffresDemandes: React.FC<Props> =({type})=>{
+const OffresDemandes: React.FC<Props> =({type, recherche})=>{
     const [selectedSecteurID, setSelectedSecteurID] = useState<string | undefined>(undefined);
     const [selectedRegionID, setSelectedRegionID] = useState<string | undefined>(undefined);
      //MediaQueries
@@ -40,7 +41,7 @@ const OffresDemandes: React.FC<Props> =({type})=>{
                                 </Breadcrumbs>
                             </Grid>
                             <Grid item xs={12}>
-                                <ListOffresDemandes type={type} selectedSecteurID={selectedSecteurID} selectedRegionID={selectedRegionID}/>
+                                <ListOffresDemandes type={type} selectedSecteurID={selectedSecteurID} selectedRegionID={selectedRegionID} recherche={recherche}/>
                             </Grid>
                         </Grid>
                     </Grid>

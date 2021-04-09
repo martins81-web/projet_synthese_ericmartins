@@ -1,6 +1,7 @@
 import { faLevelDownAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, InputAdornment, TextField, Typography } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import { useEffect, useState } from 'react';
 
 import { fetchOffresDemandes } from '../../Api';
@@ -17,7 +18,8 @@ type Props = {
 const DashboardDemandes: React.FC<Props> =()=>{
     const auth = useAuth();
     const [demandes, setDemandes] = useState<OffresDemandesType[]>([]);
-    
+    const [recherche, setRecherche]= useState<String>('');
+
     useEffect(()=>{
         getDemandes();
       
@@ -43,6 +45,23 @@ const DashboardDemandes: React.FC<Props> =()=>{
 
     return(
         <>
+         <Grid container spacing={3} alignItems='center' justify='center' >
+                <Grid item>
+                    <TextField
+                        label="Rechercher"
+                        onChange={(e)=>setRecherche(e.target.value)}
+                        InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                    <SearchIcon/>
+                            </InputAdornment>
+                        )
+                        }}
+                        variant="outlined"
+                    />
+                </Grid>
+               
+             </Grid>
          <Grid container alignItems='center' spacing={3} > 
             <Grid item xs={12}>    
                 <Grid container spacing={2}>
@@ -58,6 +77,7 @@ const DashboardDemandes: React.FC<Props> =()=>{
             <Grid item xs={12}>
                 {demandes ? 
                     demandes.map(demande =>(
+                        demande.Titre.toLowerCase().includes(recherche.toLowerCase())&&
                         <DashboardCardDemande demande={demande} key={demande._id} updateDemande={()=>getDemandes()}/>
                         
                         )):null

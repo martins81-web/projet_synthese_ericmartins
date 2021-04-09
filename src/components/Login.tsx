@@ -190,6 +190,7 @@ const Login: React.FC<Props> =({login})=>{
                                                 label="Courriel"
                                                 variant="outlined"
                                                 type='email'
+                                                name='Courriel'
                                                 required
                                                 onChange={handleChange('email')}
                                             />
