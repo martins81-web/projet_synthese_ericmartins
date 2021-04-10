@@ -27,7 +27,8 @@ import { UtilisateursType } from '../Types';
 import useAuth from './auth/useAuth';
 
 type Props = {
-    login: boolean
+    login: boolean,
+    toast?:()=> any
 };
 
 interface State {
@@ -45,7 +46,7 @@ interface State {
 
 
   //formulaires de login et création d'utilisateur
-const Login: React.FC<Props> =({login})=>{
+const Login: React.FC<Props> =({login,toast})=>{
     const [values, setValues] = useState<State>({
         password: '',
         confirmation: '',
@@ -93,6 +94,8 @@ const Login: React.FC<Props> =({login})=>{
         if (utilisateur) {
            auth?.signIn(utilisateur);
            Cookies.set('connected', utilisateur._id);  
+        } else {
+            toast && toast();
         }
         
     }
@@ -100,12 +103,15 @@ const Login: React.FC<Props> =({login})=>{
     const handleCreation= async (e:any)=>{
         e.preventDefault();
         setError(false);
+        let erreur= false;
 
     if(values.confirmation!== values.password){
         setError(true);
+        erreur=true;
     } 
     if(values.entreprise === undefined){
         setError(true);
+        erreur=true;
     } 
 
        let newUser: UtilisateursType={
@@ -134,7 +140,7 @@ const Login: React.FC<Props> =({login})=>{
            PostesStagiaires:''
         }
 
-    if(!error){
+    if(!erreur){
         utilisateurAdded(newUser);
     }
 

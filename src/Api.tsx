@@ -13,37 +13,31 @@ export const updateOffreDemande = async (offreDemande: OffresDemandesType) : Pro
   //</string>console.log(offreDemande);
   const {_id, ...offreDemandeToEdit} = offreDemande;
 
-  var updated= await fetch(ENDPOINT+ "offreDemande/"+ offreDemande._id, {
+  var updated= await (await fetch(ENDPOINT+ "offreDemande/"+ offreDemande._id, {
     method: 'put', // Méthode elle-même
     headers: {
      'Content-type': 'application/json; charset=UTF-8' // Indique le contenu 
     },
     body: JSON.stringify(offreDemandeToEdit) // Envoie du data en format JSON 
-   })
+   })).json()
     
 
-    return updated.json();
+    return updated;
 }
 
 export const addOffreDemande = async (OffreDemande: OffresDemandesType) : Promise<string> => {
   //const {currentIndustry, ...filteredObject} = myObject;
   //console.log(OffreDemande);
   const {_id, ...offreDemandeToAdd} = OffreDemande;
-  let added='';
-  fetch(ENDPOINT+ "offreDemande/", {
+  var added= await fetch(ENDPOINT+ "offreDemande/", {
     method: 'post', // Méthode elle-même
     headers: {
      'Content-type': 'application/json; charset=UTF-8' // Indique le contenu 
     },
     body: JSON.stringify(offreDemandeToAdd) // Envoie du data en format JSON 
    })
-    .then(response => {
-      response.json();
-    })
-    .then(data => console.log(data)) // Manipuler les données récupérées, si nous voulons en faire quelque chose
-    .catch(err => console.log(err))
 
-    return added;
+    return added.json();
 }
 
 export const fetchRegions = async (): Promise<RegionsType[]> => {
@@ -61,44 +55,28 @@ export const updateRegion = async (region: RegionsType) : Promise<string> => {
   //const {currentIndustry, ...filteredObject} = myObject;
   //console.log(region);
   const {_id, ...regionToEdit} = region;
-  let updated='';
-  fetch(ENDPOINT+ "regions/"+ region._id, {
+  var updated= await fetch(ENDPOINT+ "regions/"+ region._id, {
     method: 'put', // Méthode elle-même
     headers: {
      'Content-type': 'application/json; charset=UTF-8' // Indique le contenu 
     },
     body: JSON.stringify(regionToEdit) // Envoie du data en format JSON 
-   })
-    .then(response => {
-      response.json();
-     // updated='updated'
-     // return updated;
-    })
-    .then(data => console.log(data)) // Manipuler les données récupérées, si nous voulons en faire quelque chose
-    .catch(err => console.log(err))
+  })
 
-    return updated;
+    return updated.json();
 }
 
 export const addRegion = async (region: RegionsType) : Promise<string> => {
   //const {currentIndustry, ...filteredObject} = myObject;
   console.log(region);
   const {_id, ...regionToAdd} = region;
-  let added=''
-  fetch(ENDPOINT+ "regions/"+ region._id, {
+  var added = await (await fetch(ENDPOINT+ "regions/"+ region._id, {
     method: 'post', // Méthode elle-même
     headers: {
      'Content-type': 'application/json; charset=UTF-8' // Indique le contenu 
     },
     body: JSON.stringify(regionToAdd) // Envoie du data en format JSON 
-   })
-    .then(response => {
-      response.json();
-      added='added'
-      return added;
-    })
-    .then(data => console.log(data)) // Manipuler les données récupérées, si nous voulons en faire quelque chose
-    .catch(err => console.log(err))
+   })).json();
 
     return added;
 }
@@ -112,46 +90,32 @@ export const updateSecteurActivite = async (secteur: SecteursActiviteType) : Pro
   //const {currentIndustry, ...filteredObject} = myObject;
   console.log(secteur);
   const {_id, ...secteurToEdit} = secteur;
-  let updated=''
-  fetch(ENDPOINT+ "secteurs/"+ secteur._id, {
+  var updated= await fetch(ENDPOINT+ "secteurs/"+ secteur._id, {
     method: 'put', // Méthode elle-même
     headers: {
      'Content-type': 'application/json; charset=UTF-8' // Indique le contenu 
     },
     body: JSON.stringify(secteurToEdit) // Envoie du data en format JSON 
    })
-    .then(response => {
-      response.json();
-      //updated='updated'
-      //return updated;
-    })
-    .then(data => console.log(data)) // Manipuler les données récupérées, si nous voulons en faire quelque chose
-    .catch(err => console.log(err))
+    
 
-    return updated;
+    return updated.json();
 }
 
 export const addSecteurActivite = async (secteur: SecteursActiviteType) : Promise<string> => {
   //const {currentIndustry, ...filteredObject} = myObject;
   console.log(secteur);
   const {_id, ...secteurToAdd} = secteur;
-  let added=''
-  fetch(ENDPOINT+ "secteurs/"+secteur._id, {
+  
+  var added = await fetch(ENDPOINT+ "secteurs/"+secteur._id, {
     method: 'post', // Méthode elle-même
     headers: {
      'Content-type': 'application/json; charset=UTF-8' // Indique le contenu 
     },
     body: JSON.stringify(secteurToAdd) // Envoie du data en format JSON 
    })
-    .then(response => {
-      response.json();
-      added='added'
-      return added;
-    })
-    .then(data => console.log(data)) // Manipuler les données récupérées, si nous voulons en faire quelque chose
-    .catch(err => console.log(err))
 
-    return added;
+    return added.json();
 }
 
 
@@ -171,44 +135,28 @@ export const fetchUtilisateur = async (id: string): Promise<UtilisateursType> =>
 export const updateUtilisateur = async (user: UtilisateursType) : Promise<string> => {
   //const {currentIndustry, ...filteredObject} = myObject;
   const {_id, ...userToEdit} = user;
-  let updated=''
-  fetch(ENDPOINT+ "utilisateurs/"+user._id, {
+  var updated= await fetch(ENDPOINT+ "utilisateurs/"+user._id, {
     method: 'put', // Méthode elle-même
     headers: {
      'Content-type': 'application/json; charset=UTF-8' // Indique le contenu  
     },
     body: JSON.stringify(userToEdit) // Envoie du data en format JSON 
    })
-    .then(response => {
-      response.json();
-      updated='updated'
-      return updated;
-    })
-    .then(data => console.log(data)) // Manipuler les données récupérées, si nous voulons en faire quelque chose
-    .catch(err => console.log(err))
-
-    return updated;
+  
+    return updated.json();
 }
 
 export const addUtilisateur = async (utilisateur: UtilisateursType) : Promise<string> => {
   //const {currentIndustry, ...filteredObject} = myObject;
   console.log(utilisateur);
   const {_id, ...utilisateurToAdd} = utilisateur;
-  let added=''
-  fetch(ENDPOINT+ "utilisateurs/"+ utilisateur._id, {
+  var added= await fetch(ENDPOINT+ "utilisateurs/"+ utilisateur._id, {
     method: 'post', // Méthode elle-même
     headers: {
      'Content-type': 'application/json; charset=UTF-8' // Indique le contenu 
     },
     body: JSON.stringify(utilisateurToAdd) // Envoie du data en format JSON 
    })
-    .then(response => {
-      response.json();
-      added='added'
-      return added;
-    })
-    .then(data => console.log(data)) // Manipuler les données récupérées, si nous voulons en faire quelque chose
-    .catch(err => console.log(err))
 
-    return added;
+    return added.json();
 }

@@ -26,12 +26,16 @@ import { UtilisateursType } from './Types';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { toast, ToastContainer } from 'react-toastify';
+import FormSubmittedMerci from './components/formSubmittedMerci';
 
 function App() {
   const [recherche, setRecherche]= useState<string>('');
 
   const offre = () => toast.error(<p>Vous devez vous connecter en tant qu'<b>ENTREPRISE</b> pour pouvoir publier une offre de stage!</p>);
   const demande = () => toast.error(<p>Vous devez vous connecter en tant que <b>STAGIAIRE</b> pour pouvoir publier une demande de stage!</p>);
+  const loginToast = () =>toast.error(<><h5>Erreur</h5>
+    <p>Votre courriel ou votre mot de passe est invalide.
+    Assurez-vous d'avoir le bon courriel et le bon mot de passe et essayez à nouveau.</p></>);
 
   const auth = useAuth();
   const history = useHistory();
@@ -82,9 +86,9 @@ function App() {
   return (
     <>
       {
-      !location.pathname.includes('/dashboard') && !location.pathname.includes('/premiereConnexion') &&
+      !location.pathname.includes('/dashboard') && !location.pathname.includes('/premiereConnexion')  &&
       <Header imageURL={getImage()} 
-              imgSize={Size.BIG}
+              imgSize={!location.pathname.includes('/merci') ?Size.BIG: Size.SMALLER}
               logout={logout}
               recherche={(recherche)=>setRecherche(recherche)}
       />
@@ -99,10 +103,11 @@ function App() {
         <Route path="/accueil/offres"><OffresDemandes type={Appel.OFFRE} recherche={recherche}/></Route>
         <Route path="/accueil/offre/:id"><DetailsAnnonces history={history} type={Appel.OFFRE}/></Route>
         <Route path="/accueil/Demandes"><OffresDemandes type={Appel.DEMANDE} recherche={recherche} /></Route>
-        <Route path="/accueil/demande/:id"><DetailsAnnonces history={history} type={Appel.DEMANDE}/></Route>
+        <Route path="/accueil/demande/:id"><DetailsAnnonces history={history} type={Appel.DEMANDE}/></Route> 
+        <Route exact path="/merci" component={FormSubmittedMerci}></Route>
         <PrivateRoute path="/dashboard/"><Dashboard logout={logout}/></PrivateRoute>
-        <ProtectedLogin path="/login" ><Login login={true}/></ProtectedLogin>
-        <ProtectedLogin path="/register" ><Login login={false}/></ProtectedLogin>
+        <ProtectedLogin path="/login" ><Login login={true} toast={loginToast}/></ProtectedLogin>
+        <ProtectedLogin path="/register" ><Login login={false}/></ProtectedLogin> 
       </Switch>
       <ToastContainer limit={1}/>
 

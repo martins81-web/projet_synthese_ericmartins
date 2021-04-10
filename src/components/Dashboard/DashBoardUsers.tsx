@@ -4,6 +4,7 @@ import { Grid, InputAdornment, TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useAuth from '../auth/useAuth';
 
 import { fetchUtilisateurs, updateUtilisateur } from '../../Api';
 import { UtilisateursType } from '../../Types';
@@ -15,6 +16,7 @@ type Props = {
 
 //liste des utilisateurs
 const DashboardCandidats: React.FC<Props> =({usersType})=>{
+    const auth = useAuth();
 
     const [utilisateurs, setUtilisateurs] = useState<UtilisateursType[]>([]);
     const [recherche, setRecherche]= useState<String>('');
@@ -69,7 +71,7 @@ const DashboardCandidats: React.FC<Props> =({usersType})=>{
             <Grid container spacing={2} className='dashboardContent' >
             {utilisateurs.length > 0 ?
                 utilisateurs.map((user,index)=>( 
-                    user.Supprime === false && 
+                    user.Supprime === false && user._id !== auth?.user?._id &&
                     (user?.NomEntreprise?.toLowerCase().includes(recherche?.toLowerCase()) || getFullName(user).includes(recherche?.toLowerCase())  )                
                     ?
                     <Grid item xs={12} sm={6} md={4} lg={3} key={user._id} >

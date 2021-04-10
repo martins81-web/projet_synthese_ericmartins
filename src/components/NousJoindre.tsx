@@ -36,6 +36,8 @@ const NousJoindre: React.FC<Props> =()=>{
               </Grid>
               <Grid item xs={12}>
                 <TextField id="outlined-basic" label="Message" variant="outlined"  multiline rows='5' fullWidth name='message' required/>
+                <input type="hidden" name="_next" value="https://martins81-web.github.io/projet_synthese_ericmartins/merci"/>
+                <input type="hidden" name="_captcha" value="false"/>
               </Grid>
               <Grid item xs={12}>
                 <Button
@@ -49,6 +51,7 @@ const NousJoindre: React.FC<Props> =()=>{
                   </Button>
               </Grid>
             </Grid>
+            
           </form>
         </Container>
       </Wrapper>

@@ -48,14 +48,15 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
     }
     
     return(
-        <div data-testid='CardDerniersAnnonces'>
-        <Wrapper className='card' >
+        <div data-testid='CardDerniersAnnonces' style={{width: '100%'}}>
+        <Wrapper className='card' style={{height: '100%'}} >
             
             {offreDemande!==undefined && 
-            <Card  style={{display: 'flex',justifyContent: 'space-between', flexDirection: 'column', height: '100%', width:'100%'}}>
+            <Card style={{height: '100%',display: 'flex',flexDirection: 'column', justifyContent:'space-between'}}>
                 <CardHeader 
                     title={offreDemande.Titre}
                     subheader={auteur? getAuteurNom(auteur) : null}
+                    
                 />
                 <CardContent>
                     <Grid container alignItems='center'>
@@ -65,7 +66,7 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
                             </Typography> 
                         </Grid >
                         { type===Appel.OFFRE && cardType!== 'mini' &&
-                        <Grid item xs={12} sm={12} md={4}>
+                        <Grid item xs={12} sm={12} md={4} >
                             <Grid container justify='center' >
                                 {auteur && <Typography variant='h2'>{getLogo(auteur)}</Typography>}
                             </Grid>

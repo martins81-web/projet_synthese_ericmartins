@@ -8,7 +8,7 @@ import AuthProvider from './components/auth/AuthProvider';
 
 ReactDOM.render(
  <AuthProvider>
-      <Router>
+      <Router basename="/projet_synthese_ericmartins/">
         <App />
       </Router>
   </AuthProvider>,

@@ -59,11 +59,11 @@ const DerniersAnnonces: React.FC<Props> =({type})=>{
             </Grid>
             <Grid container justify='center' >
                 <Grid item xs={11} lg={9} style={{marginTop: '50px'}}>
-                    <Grid container spacing={2} justify='center'>
+                    <Grid container spacing={2} justify='center' >
                 {offresDemandes.length>0 &&
                     offresDemandes.map(offreDemande=>(
                         <Grid item xs={12} sm={6} md={4} lg={3} key={offreDemande._id}>
-                            <Grid container style={{height: '100%'}}>
+                            <Grid container style={{height: '100%'}} >
                                 <CardDernieresAnnonces type={type} offreDemande={offreDemande} cardType='mini'/>
                             </Grid>
                         </Grid>
