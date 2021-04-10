@@ -27,6 +27,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { toast, ToastContainer } from 'react-toastify';
 import FormSubmittedMerci from './components/formSubmittedMerci';
+import NotFound from './components/NotFound';
 
 function App() {
   const [recherche, setRecherche]= useState<string>('');
@@ -86,7 +87,7 @@ function App() {
   return (
     <>
       {
-      !location.pathname.includes('/dashboard') && !location.pathname.includes('/premiereConnexion')  &&
+      !location.pathname.includes('/dashboard') && !location.pathname.includes('/notFound') &&
       <Header imageURL={getImage()} 
               imgSize={!location.pathname.includes('/merci') ?Size.BIG: Size.SMALLER}
               logout={logout}
@@ -108,11 +109,13 @@ function App() {
         <PrivateRoute path="/dashboard/"><Dashboard logout={logout}/></PrivateRoute>
         <ProtectedLogin path="/login" ><Login login={true} toast={loginToast}/></ProtectedLogin>
         <ProtectedLogin path="/register" ><Login login={false}/></ProtectedLogin> 
+        <Route path="/notFound" component={NotFound} />
+        <Redirect from="**" to="/notFound" />
       </Switch>
       <ToastContainer limit={1}/>
 
       {
-      !location.pathname.includes('/dashboard') && !location.pathname.includes('/premiereConnexion') &&< Footer/>
+      !location.pathname.includes('/dashboard') && !location.pathname.includes('/notFound') && < Footer/>
       } 
       
       
