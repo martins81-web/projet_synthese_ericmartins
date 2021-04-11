@@ -86,6 +86,12 @@ export const fetchSecteursActivite = async (): Promise<SecteursActiviteType[]> =
   return data;
 };
 
+export const fetchSecteur = async (id: string): Promise<SecteursActiviteType> => {
+  const data = await (await fetch(ENDPOINT+"secteurs/"+id)).json();
+  return data;
+  
+};
+
 export const updateSecteurActivite = async (secteur: SecteursActiviteType) : Promise<string> => {
   //const {currentIndustry, ...filteredObject} = myObject;
   console.log(secteur);

@@ -12,6 +12,7 @@ import DashboardFicheUser from './DashboardFicheUser';
 import DashboardNouveauUser from './DashboardNouveauUser';
 import DashboardNouvelleDemande from './DashboardNouvelleDemande';
 import DashboardNouvelleOffre from './DashboardNouvelleOffre';
+import DashBoardOffreDemandeDetails from './DashboardOffreDemandeDetails';
 import DashboardOffres from './DashBoardOffres';
 import DashboardRegions from './DashboardRegions';
 import DashboardSecteurs from './DashboardSecteurs';
@@ -44,6 +45,9 @@ const DashboardContent: React.FC<Props> =()=>{
                 <ProtectedDashboardRoutes path="/dashboard/edit/offre/:id"><DashboardEditOffre history={history}/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/edit/demande/:id"><DashboardEditDemande history={history}/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/ficheUser/:id"><DashboardFicheUser  history={history}/></ProtectedDashboardRoutes>
+                <ProtectedDashboardRoutes path="/dashboard/details/offre/:id"><DashBoardOffreDemandeDetails  history={history}/></ProtectedDashboardRoutes>
+                <ProtectedDashboardRoutes path="/dashboard/details/demande/:id"><DashBoardOffreDemandeDetails  history={history}/></ProtectedDashboardRoutes>
+
             </LastLocationProvider>
         </div>
     )

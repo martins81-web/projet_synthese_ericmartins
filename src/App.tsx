@@ -37,11 +37,15 @@ function App() {
   const loginToast = () =>toast.error(<><h5>Erreur</h5>
     <p>Votre courriel ou votre mot de passe est invalide.
     Assurez-vous d'avoir le bon courriel et le bon mot de passe et essayez à nouveau.</p></>);
+  const customToast =(text:string)=> toast.error(text);
 
   const auth = useAuth();
   const history = useHistory();
   const location = useLocation(); 
   //console.log(location.pathname); 
+
+  document.title =location.pathname.includes('/dashboard') ? 'eStage: Dashboard':'eStage: Publique';
+
 
   //Ça fait scrollToTop dans tous les changements de route 
   useLayoutEffect(() => {
@@ -97,14 +101,14 @@ function App() {
       <Switch>
         <Redirect exact from="/dashboard/update" to="/dashboard"/>
         <Redirect exact from="/" to="/accueil" />
-        <Route exact path="/accueil"><Accueil toast={(type)=>type==='offre'? offre: demande} /></Route>
+        <Route exact path="/accueil"><Accueil toast={(type)=>type==='offre'? offre: type==='demande'? demande : customToast(type)} /></Route>
         <Route path="/contact" component={NousJoindre}/>
         <Route path="/confidentialite" component={Confidentialite}/>
         <Route path="/apropos" component={APropos}/>
-        <Route path="/accueil/offres"><OffresDemandes type={Appel.OFFRE} recherche={recherche}/></Route>
-        <Route path="/accueil/offre/:id"><DetailsAnnonces history={history} type={Appel.OFFRE}/></Route>
-        <Route path="/accueil/Demandes"><OffresDemandes type={Appel.DEMANDE} recherche={recherche} /></Route>
-        <Route path="/accueil/demande/:id"><DetailsAnnonces history={history} type={Appel.DEMANDE}/></Route> 
+        <Route path="/accueil/offres"><OffresDemandes type={Appel.OFFRE} recherche={recherche} toast={(text)=> customToast(text)}/></Route>
+        <Route path="/accueil/offre/:id"><DetailsAnnonces history={history} type={Appel.OFFRE} toast={(text)=> customToast(text)}/></Route>
+        <Route path="/accueil/Demandes"><OffresDemandes type={Appel.DEMANDE} recherche={recherche} toast={(text)=> customToast(text)}/></Route>
+        <Route path="/accueil/demande/:id"><DetailsAnnonces history={history} type={Appel.DEMANDE} toast={(text)=> customToast(text)}/></Route> 
         <Route exact path="/merci" component={FormSubmittedMerci}></Route>
         <PrivateRoute path="/dashboard/"><Dashboard logout={logout}/></PrivateRoute>
         <ProtectedLogin path="/login" ><Login login={true} toast={loginToast}/></ProtectedLogin>

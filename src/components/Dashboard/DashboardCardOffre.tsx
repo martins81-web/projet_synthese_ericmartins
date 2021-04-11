@@ -91,7 +91,7 @@ const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
         <Wrapper>
 
             <Card style={{borderTop: '5px solid #aab14a', 
-            backgroundColor: '#F0F0F0', marginBottom: '20px', padding: '10px',position: 'relative'}} >
+            backgroundColor: '#F0F0F0', padding: '10px',position: 'relative'}} >
              {offre.Valide===false && type!=='attente' && <div className="corner-ribbon top-right sticky red">Pas validé</div>}
                 <CardContent>
                     <Grid container spacing={2}>
@@ -149,7 +149,12 @@ const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
                     <Grid container justify='space-between'>
                         <Grid item >
                             <Button variant="contained" color="primary" size="small"   
-                                style={{textTransform: 'none', borderRadius: '0'}}>
+                                style={{textTransform: 'none', borderRadius: '0'}}
+                                onClick={()=>history.push({
+                                    pathname: '/dashboard/details/offre/'+offre._id,
+                                    state: {data: offre,auteur: auteur}
+                                })}
+                                >
                                 Détails
                             </Button>
                         </Grid>
@@ -171,7 +176,7 @@ const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
                                         style={{textTransform: 'none', borderRadius: '0', backgroundColor: '#72a84a', color: 'white'}}
                                         onClick={handleValider}
                                     >
-                                        Acepter
+                                        Accepter
                                     </Button>
                                 </Grid>
                             </Grid>

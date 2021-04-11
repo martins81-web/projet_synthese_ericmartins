@@ -14,12 +14,14 @@ import ListSecteurs from './ListSecteurs';
 
 type Props = {
     type: Appel,
-    recherche: string
+    recherche: string,
+    toast: (text: string)=> void
+
 };
 
 
 //lists offres/demandes
-const OffresDemandes: React.FC<Props> =({type, recherche})=>{
+const OffresDemandes: React.FC<Props> =({type, recherche, toast})=>{
     const [selectedSecteurID, setSelectedSecteurID] = useState<string | undefined>(undefined);
     const [selectedRegionID, setSelectedRegionID] = useState<string | undefined>(undefined);
      //MediaQueries
@@ -41,7 +43,7 @@ const OffresDemandes: React.FC<Props> =({type, recherche})=>{
                                 </Breadcrumbs>
                             </Grid>
                             <Grid item xs={12}>
-                                <ListOffresDemandes type={type} selectedSecteurID={selectedSecteurID} selectedRegionID={selectedRegionID} recherche={recherche}/>
+                                <ListOffresDemandes type={type} selectedSecteurID={selectedSecteurID} selectedRegionID={selectedRegionID} recherche={recherche} toast={(text)=>toast(text)}/>
                             </Grid>
                         </Grid>
                     </Grid>

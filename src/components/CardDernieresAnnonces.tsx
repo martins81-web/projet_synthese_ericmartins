@@ -2,9 +2,10 @@ import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } 
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import useAuth from './auth/useAuth';
 
-import { fetchUtilisateur } from '../Api';
-import { Appel } from '../Enum';
+import { fetchUtilisateur, updateOffreDemande } from '../Api';
+import { Appel, AccessLevel } from '../Enum';
 import { OffresDemandesType, UtilisateursType } from '../Types';
 
 
@@ -15,13 +16,15 @@ import { OffresDemandesType, UtilisateursType } from '../Types';
 type Props = {
     type: Appel,
     offreDemande?: OffresDemandesType |undefined,
-    cardType?: string
+    cardType?: string,
+    toast?: (text: string) => void,
 };
 
 
-const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
+const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType, toast})=>{
     const [auteur, setAuteur] = useState<UtilisateursType | undefined>(undefined);
     const history= useHistory();
+    const auth = useAuth();
 
     useEffect(()=>{
         offreDemande && getAuteur(offreDemande.Auteur);
@@ -46,7 +49,38 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
     const getLogo = (auteur:UtilisateursType)=>{
         return auteur.Logo;
     }
-    
+
+    const handlePostulerContacter =()=>{
+        if(auth?.user?.NiveauAcces===AccessLevel.stagiaire && type===Appel.OFFRE){
+            let dejaPostule=offreDemande?.Communications.find(communication=>communication.EnvoyeParID===auth?.user?._id);
+            
+            let communication= {
+                Date: new Date(),
+                EnvoyeParID: auth.user._id,
+                Message: 'Postulation',
+                NbMessages: 0,
+            };
+
+            if(!dejaPostule){
+                offreDemande?.Communications.push(communication);
+                offreDemande && updateOffreDemande(offreDemande);
+            }  else {
+                toast && toast('Vous avez déjà postulé pour cette offre de stage.');
+            } 
+
+        } else if ( auth?.user?.NiveauAcces===AccessLevel.entreprise && type===Appel.DEMANDE){
+            console.log('contacter');
+        } else if (type===Appel.OFFRE && auth?.user?.NiveauAcces!==AccessLevel.stagiaire) {
+            toast && toast('Vous devez être connecté en tant que stagiaire pour pouvoir postuler sur une offre de stage.');
+            if(!auth?.user)
+            history.push('/login');
+        } else {
+            toast && toast("Vous devez être connecté en tant qu'entreprise pour pouvoir contacter le candidat d'une demande de stage.");
+            if(!auth?.user)
+            history.push('/login');
+        }
+    }
+
     return(
         <div data-testid='CardDerniersAnnonces' style={{width: '100%'}}>
         <Wrapper className='card' style={{height: '100%'}} >
@@ -88,7 +122,9 @@ const CardDernieresAnnonces: React.FC<Props> =({type,offreDemande,cardType})=>{
                     >
                         Détails
                     </Button>
-                    <Button className='actionbutton2 button'  variant="contained" size="medium" name='buttonPostuler' >
+                    <Button className='actionbutton2 button'  variant="contained" size="medium" name='buttonPostuler' 
+                    onClick={handlePostulerContacter}
+                    >
                         {type===Appel.OFFRE? 'Postuler' : 'Contacter candidat'}
                     </Button>
                 </CardActions>

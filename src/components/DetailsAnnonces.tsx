@@ -7,23 +7,26 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { fetchUtilisateur } from '../Api';
-import { Appel } from '../Enum';
+import { fetchUtilisateur, updateOffreDemande } from '../Api';
+import { AccessLevel, Appel } from '../Enum';
 import { OffresDemandesType, UtilisateursType } from '../Types';
 import AppelAction from './AppelAction';
 import ListRegions from './ListRegions';
 import ListSecteurs from './ListSecteurs';
+import useAuth from './auth/useAuth';
 
 type Props = {
     history: any,
-    type: Appel
+    type: Appel,
+    toast: (text: string)=> void
 };
 
-const DetailsAnnonces: React.FC<Props> =({history, type})=>{
+const DetailsAnnonces: React.FC<Props> =({history, type, toast})=>{
     const [selectedSecteurID, setSelectedSecteurID] = useState<string | undefined>(undefined);
     const [selectedRegionID, setSelectedRegionID] = useState<string | undefined>(undefined);
     const [offreDemande, setOffreDemande]=useState<OffresDemandesType>(history.location.state.data);
     const [auteur, setAuteur] = useState<UtilisateursType | undefined>(undefined);
+    const auth = useAuth();
 
     useEffect(()=>{
         getAuteur();
@@ -54,6 +57,30 @@ const DetailsAnnonces: React.FC<Props> =({history, type})=>{
             day = '0' + day;
     
         return [year, month, day].join('-');
+    }
+
+    const handlePostulerContacter =()=>{
+        if(auth?.user?.NiveauAcces===AccessLevel.stagiaire && type===Appel.OFFRE){
+            let communication= {
+                Date: new Date(),
+                EnvoyeParID: auth.user._id,
+                Message: 'Postulation',
+                NbMessages: 0,
+            };
+            offreDemande?.Communications.push(communication);
+            offreDemande && updateOffreDemande(offreDemande);   
+
+        } else if ( auth?.user?.NiveauAcces===AccessLevel.entreprise && type===Appel.DEMANDE){
+            console.log('contacter candidat');
+        } else if (type===Appel.OFFRE && auth?.user?.NiveauAcces!==AccessLevel.stagiaire) {
+            toast && toast('Vous devez être connecté en tant que stagiaire pour pouvoir postuler sur une offre de stage.');
+            if(!auth?.user)
+            history.push('/login');
+        } else {
+            toast && toast("Vous devez être connecté en tant qu'entreprise pour pouvoir contacter le candidat d'une demande de stage.");
+            if(!auth?.user)
+            history.push('/login');
+        }
     }
 
 
@@ -119,7 +146,9 @@ const DetailsAnnonces: React.FC<Props> =({history, type})=>{
                                                         </Grid>
                                                     </Grid>
                                                     <Grid item xs={12}>
-                                                        <Button variant="contained" color="primary" fullWidth className='button'>
+                                                        <Button variant="contained" color="primary" fullWidth className='button'
+                                                        onClick={handlePostulerContacter}
+                                                        >
                                                             {type===Appel.OFFRE?'Postuler':'Contacter le candidat'}
                                                         </Button> 
                                                     </Grid>

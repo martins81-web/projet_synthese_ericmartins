@@ -144,7 +144,12 @@ const DashboardCardDemande: React.FC<Props> =({demande, type,updateDemande})=>{
                     <Grid container justify='space-between'>
                         <Grid item>
                             <Button variant="contained" color="primary" size="small"   
-                                style={{textTransform: 'none', borderRadius: '0'}}>
+                                style={{textTransform: 'none', borderRadius: '0'}}
+                                onClick={()=>history.push({
+                                    pathname: '/dashboard/details/demande/'+demande._id,
+                                    state: {data: demande, auteur: auteur}
+                                })}
+                                >
                                 Détails
                             </Button>
                         </Grid>
@@ -169,7 +174,7 @@ const DashboardCardDemande: React.FC<Props> =({demande, type,updateDemande})=>{
                                             offreDemandeUpdated(demande);
                                         }}
                                     >
-                                        Acepter
+                                        Accepter
                                     </Button>
                                 </Grid>
                                 </Grid>

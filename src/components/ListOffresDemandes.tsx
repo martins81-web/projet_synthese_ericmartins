@@ -14,10 +14,12 @@ type Props = {
     type: Appel
     selectedSecteurID?: string| undefined, 
     selectedRegionID?:  string| undefined,
-    recherche: string
+    recherche: string,
+    toast: (text: string)=> void
+
 };
 
-const ListOffresDemandes: React.FC<Props> =({type, selectedSecteurID, selectedRegionID,recherche})=>{
+const ListOffresDemandes: React.FC<Props> =({type, selectedSecteurID, selectedRegionID,recherche, toast})=>{
     const [offresDemandes, setOffresDemandes] = useState<OffresDemandesType[]>([]);
     useEffect(()=>{
         getOffresDemandes();
@@ -42,7 +44,7 @@ const ListOffresDemandes: React.FC<Props> =({type, selectedSecteurID, selectedRe
                 offreDemande.SecteurActivite.includes(selectedSecteurID||"") && offreDemande.Region.includes(selectedRegionID||"") &&
                 offreDemande.Titre.toLowerCase().includes(recherche.toLowerCase()) && offreDemande.Type===type &&
                 <Grid item xs={12} key={offreDemande._id}>
-                    <CardDernieresAnnonces type={type} offreDemande={offreDemande}/>
+                    <CardDernieresAnnonces type={type} offreDemande={offreDemande}  toast={(text)=>toast(text)}/>
                 </Grid>
             ))}
         </Grid>

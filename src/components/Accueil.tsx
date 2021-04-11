@@ -13,10 +13,10 @@ const Accueil: React.FC<Props> =({toast})=>{
 
     return(
         <div data-testid="accueil-1">
-            <OffresVedettes />
-            <DerniersAnnonces type={Appel.OFFRE}/> 
+            <OffresVedettes toast={(text)=>toast(text)}/>
+            <DerniersAnnonces type={Appel.OFFRE} toast={(text)=>toast(text)}/> 
             <AppelAction type={Appel.OFFRE} toast={toast('offre')}/>
-            <DerniersAnnonces type={Appel.DEMANDE}/> 
+            <DerniersAnnonces type={Appel.DEMANDE} toast={(text)=>toast(text)}/> 
             <AppelAction type={Appel.DEMANDE} toast={toast('demande')}/> 
 
         </div>

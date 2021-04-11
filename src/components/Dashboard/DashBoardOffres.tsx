@@ -94,12 +94,16 @@ const DashboardOffres: React.FC<Props> =()=>{
             </Grid>
             
             <Grid item xs={12}>
-                {offres ? 
-                    offres.map(offre =>(
-                        offre.Titre.toLowerCase().includes(recherche.toLowerCase())&&
-                        <DashboardCardOffre key={offre._id} offre={offre} updateOffre={()=>getOffres(vedette)}/>
-                        )):null
-                    }
+                <Grid container spacing={3}>
+                    {offres ? 
+                        offres.map(offre =>(
+                            offre.Titre.toLowerCase().includes(recherche.toLowerCase())&&
+                            <Grid item xs={12}>
+                                <DashboardCardOffre key={offre._id} offre={offre} updateOffre={()=>getOffres(vedette)}/>
+                            </Grid>
+                            )):null
+                        }
+                </Grid>
             </Grid>
         </Grid>
       

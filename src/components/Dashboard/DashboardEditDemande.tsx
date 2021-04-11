@@ -55,7 +55,7 @@ const DashboardEditDemande: React.FC<Props> =({history})=>{
         <form onSubmit={(e)=>handleSave(e)}>
         <Grid container spacing={2} alignItems='center'>
             <Grid item xs={12}>
-                <Typography variant='h4'>Créer une demande de stage</Typography>
+                <Typography variant='h4'>Éditer la demande de stage</Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={5}>
                     <TextField

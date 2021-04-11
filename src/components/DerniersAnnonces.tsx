@@ -12,9 +12,10 @@ import CardDernieresAnnonces from './CardDernieresAnnonces';
 
 type Props = {
     type: Appel,
+    toast: (text: string)=> void
 };
 
-const DerniersAnnonces: React.FC<Props> =({type})=>{
+const DerniersAnnonces: React.FC<Props> =({type, toast})=>{
     const history= useHistory();
 
     const [offresDemandes, setOffresDemandes] = useState<OffresDemandesType[]>([]);
@@ -64,7 +65,7 @@ const DerniersAnnonces: React.FC<Props> =({type})=>{
                     offresDemandes.map(offreDemande=>(
                         <Grid item xs={12} sm={6} md={4} lg={3} key={offreDemande._id}>
                             <Grid container style={{height: '100%'}} >
-                                <CardDernieresAnnonces type={type} offreDemande={offreDemande} cardType='mini'/>
+                                <CardDernieresAnnonces type={type} offreDemande={offreDemande} cardType='mini' toast={(text)=>toast(text)}/>
                             </Grid>
                         </Grid>
                 ))

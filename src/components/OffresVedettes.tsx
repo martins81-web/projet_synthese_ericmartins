@@ -9,11 +9,11 @@ import CardDernieresAnnonces from './CardDernieresAnnonces';
 
 
 type Props = {
-    
+    toast: (text: string)=> void
 };
 
 //section offre vedettes
-const OffresVedettes: React.FC<Props> =()=>{
+const OffresVedettes: React.FC<Props> =({toast})=>{
     const [offres, setOffres] = useState<OffresDemandesType[]>([]);
     
     useEffect(()=>{
@@ -51,7 +51,7 @@ const OffresVedettes: React.FC<Props> =()=>{
                             <Grid container spacing={2} alignItems='stretch' justify='center'>
                                 {offres.length>0 && offres.map(offre=>(
                                     <Grid item key={offre._id} xs={12} sm={6} md={3} lg={3} xl={3} style={{display: 'flex'}}>
-                                        <CardDernieresAnnonces type={Appel.OFFRE}  offreDemande={offre} cardType='mini'/>
+                                        <CardDernieresAnnonces type={Appel.OFFRE}  offreDemande={offre} cardType='mini' toast={(text)=>toast(text)}/>
                                     </Grid>
                                 ))}
                                 
