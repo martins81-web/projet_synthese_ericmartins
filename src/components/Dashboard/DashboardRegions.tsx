@@ -21,9 +21,12 @@ import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import SearchIcon from '@material-ui/icons/Search';
 import { useEffect, useState } from 'react';
+import useAuth from '../auth/useAuth';
 
 import { addRegion, fetchRegions, updateRegion } from '../../Api';
 import { RegionsType } from '../../Types';
+import { AccessLevel } from '../../Enum';
+import DashBoardNoRights from './DashboardNoRights';
 
 type Props = {
     
@@ -32,6 +35,8 @@ type Props = {
 //Liste des regions et respective crud dans le dashboard
 
 const DashboardSecteurs: React.FC<Props> =()=>{
+    const auth = useAuth();
+
     const [regions, setRegions] = useState<RegionsType[]>([]);
     const [edit, setEdit] = useState<RegionsType | undefined >(undefined);
     const [oldValue, setOldValue] = useState<string >('');
@@ -105,6 +110,9 @@ const DashboardSecteurs: React.FC<Props> =()=>{
   }
 
     return(
+        auth?.user?.NiveauAcces!==AccessLevel.admin?
+        <DashBoardNoRights/>
+        :
         <FormGroup >
         <Grid container justify='center' style={{marginBottom: '100px'}}>
             <Grid item style={{padding: '20px', backgroundColor: 'whitesmoke'}}>

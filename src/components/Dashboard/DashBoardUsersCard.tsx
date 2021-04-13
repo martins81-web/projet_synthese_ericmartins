@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import { UtilisateursType } from '../../Types';
 import useAuth from '../auth/useAuth';
+import { AccessLevel } from '../../Enum';
 
 type Props = {
     user: UtilisateursType;
@@ -21,7 +22,7 @@ const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
     const handleEdit = (user: UtilisateursType) =>{
 
         history.push({
-            pathname: '/dashboard/edit/user/'+user._id,
+            pathname: '/dashboard/edit/'+(user.NiveauAcces===AccessLevel.admin?'admin':user.NiveauAcces===AccessLevel.stagiaire? 'candidat':'entreprise')+'/'+user._id,
             state: {data: user}
         });
     }
@@ -30,7 +31,7 @@ const DashBoardUsersCard: React.FC<Props> =({user, supprimer,usersType})=>{
         <Wrapper>
           <Card variant="outlined" className='card'  
           onClick={()=>{history.push({
-              pathname:'/dashboard/ficheUser/'+user._id,
+              pathname:'/dashboard/'+(user.NiveauAcces===AccessLevel.admin?'admin':user.NiveauAcces===AccessLevel.stagiaire? 'candidat':'entreprise')+'/'+user._id,
               state: {data: user}
                 })}}   
                 style={{display: 'flex',justifyContent: 'space-between', flexDirection: 'column', height: '100%', width:'100%'}}   

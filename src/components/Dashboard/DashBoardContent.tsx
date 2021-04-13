@@ -1,5 +1,6 @@
 import { useHistory } from 'react-router';
 import { LastLocationProvider } from 'react-router-last-location';
+import useAuth from '../auth/useAuth';
 
 import ProtectedDashboardRoutes from '../auth/ProtectedDashboardRoutes';
 import DashboardAccueil from './DashboardAccueil';
@@ -19,16 +20,19 @@ import DashboardSecteurs from './DashboardSecteurs';
 import DashBoardUsers from './DashBoardUsers';
 
 
+
 type Props = {
 };
 
 //Routage du contenu dans le dashboard
 const DashboardContent: React.FC<Props> =()=>{
     const history = useHistory();
-    //const auth = useAuth();
+    const auth = useAuth();
     return(
         <div  style={{backgroundColor: '#F8F8F8', padding: '20px'}}>  
             <LastLocationProvider>
+                {auth?.user ?
+                <>
                 <ProtectedDashboardRoutes path="/dashboard/accueil"><DashboardAccueil/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/offres"><DashboardOffres/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/demandes"><DashboardDemandes/></ProtectedDashboardRoutes>
@@ -41,13 +45,19 @@ const DashboardContent: React.FC<Props> =()=>{
                 <ProtectedDashboardRoutes path="/dashboard/newUser"><DashboardNouveauUser/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/newOffre"><DashboardNouvelleOffre/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/newDemande"><DashboardNouvelleDemande/></ProtectedDashboardRoutes>
-                <ProtectedDashboardRoutes path="/dashboard/edit/user/:id"><DashboardEditUsers history={history}/></ProtectedDashboardRoutes>
+                <ProtectedDashboardRoutes path="/dashboard/edit/candidat/:id"><DashboardEditUsers history={history}/></ProtectedDashboardRoutes>
+                <ProtectedDashboardRoutes path="/dashboard/edit/entreprise/:id"><DashboardEditUsers history={history}/></ProtectedDashboardRoutes>
+                <ProtectedDashboardRoutes path="/dashboard/edit/admin/:id"><DashboardEditUsers history={history}/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/edit/offre/:id"><DashboardEditOffre history={history}/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/edit/demande/:id"><DashboardEditDemande history={history}/></ProtectedDashboardRoutes>
-                <ProtectedDashboardRoutes path="/dashboard/ficheUser/:id"><DashboardFicheUser  history={history}/></ProtectedDashboardRoutes>
+                <ProtectedDashboardRoutes path="/dashboard/candidat/:id"><DashboardFicheUser  history={history}/></ProtectedDashboardRoutes>
+                <ProtectedDashboardRoutes path="/dashboard/entreprise/:id"><DashboardFicheUser  history={history}/></ProtectedDashboardRoutes>
+                <ProtectedDashboardRoutes path="/dashboard/admin/:id"><DashboardFicheUser  history={history}/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/details/offre/:id"><DashBoardOffreDemandeDetails  history={history}/></ProtectedDashboardRoutes>
                 <ProtectedDashboardRoutes path="/dashboard/details/demande/:id"><DashBoardOffreDemandeDetails  history={history}/></ProtectedDashboardRoutes>
-
+                </>
+                : 'loading...'
+                }
             </LastLocationProvider>
         </div>
     )

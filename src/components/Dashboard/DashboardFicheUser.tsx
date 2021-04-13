@@ -1,6 +1,6 @@
 import { faEdit, faLevelDownAlt, faTimes, faUserGraduate, faUserNinja, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Grid, TextField, Typography } from '@material-ui/core';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -8,14 +8,17 @@ import { updateUtilisateur } from '../../Api';
 import { AccessLevel } from '../../Enum';
 import { UtilisateursType } from '../../Types';
 import useAuth from '../auth/useAuth';
+import DashBoardNoRights from './DashboardNoRights';
+import SendIcon from '@material-ui/icons/Send';
 
 type Props = {
-  history: any
+  history?: any,
+  utilisateur?: UtilisateursType
 };
 
-const DashBoardFicheUser: React.FC<Props> =({history})=>{
+const DashBoardFicheUser: React.FC<Props> =({history,utilisateur})=>{
     const auth = useAuth();
-    const [user, ] = useState<UtilisateursType>(history.location.state.data);
+    const [user, ] = useState<UtilisateursType>(history?.location?.state?.data||utilisateur);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [update, setUpdate]= useState<String>('');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -24,7 +27,7 @@ const DashBoardFicheUser: React.FC<Props> =({history})=>{
     const handleEdit = (user: UtilisateursType) =>{
 
         history.push({
-            pathname: '/dashboard/edit/user/'+user._id,
+            pathname: '/dashboard/edit/'+(user.NiveauAcces===AccessLevel.admin?'admin':user.NiveauAcces===AccessLevel.stagiaire? 'candidat':'entreprise')+'/'+user._id,
             state: {data: user}
         });
     }
@@ -52,8 +55,16 @@ const DashBoardFicheUser: React.FC<Props> =({history})=>{
     }
 
     return(
+        auth?.user?.NiveauAcces!==AccessLevel.admin && !utilisateur ?
+        <DashBoardNoRights/>
+        :
+        history?.location?.state?.data === undefined && !utilisateur ?
+        <Typography>Vous ne pouvez pas accèder a cette page directement!</Typography>
+        :
         <Wrapper>
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
+              { !utilisateur &&
+              <>
                 <Grid item xs={12}>
                     <Grid container spacing={2} alignItems='flex-end'> 
                         <Grid item>
@@ -101,8 +112,11 @@ const DashBoardFicheUser: React.FC<Props> =({history})=>{
                         }
                     </Grid>
                 </Grid>
+                </>
+                }
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
+                        {!utilisateur &&
                         <Grid item xs={12} style={{borderTop: '5px solid #3e99df', marginTop: '20px', marginBottom: '20px', padding: '0'}}>
                             <Grid container  style={{borderBottom: '2px solid black', marginTop: '15px'}}>
                                 <Grid item>
@@ -121,6 +135,7 @@ const DashBoardFicheUser: React.FC<Props> =({history})=>{
                                 </Grid>
                             </Grid>
                         </Grid>
+                        }
                         {user?.NiveauAcces===AccessLevel.stagiaire ?
                         <>
                         <Grid item xs={12} sm={4} className='background'>
@@ -135,6 +150,12 @@ const DashBoardFicheUser: React.FC<Props> =({history})=>{
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
                             {user?.Ecole}
+                        </Grid>
+                        <Grid item xs={12} sm={4} className='background'>
+                            <b>Curriculum Vitae:</b>
+                        </Grid>
+                        <Grid item xs={12} sm={8} className='background'>
+                            {user?.CV}
                         </Grid>
                         </> : user?.NiveauAcces===AccessLevel.entreprise ?
                         <>
@@ -180,6 +201,31 @@ const DashBoardFicheUser: React.FC<Props> =({history})=>{
                         </Grid>
                     </Grid>
   
+                </Grid>
+                <Grid item xs={12} style={{marginTop: '20px'}}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="outlined-multiline-static"
+                                label="Communiquer avec le candidat"
+                                multiline
+                                rows={8}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Grid container justify='flex-end'>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    endIcon={<SendIcon/>}
+                                >
+                                    Envoyer
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </Grid>
           </Grid>
         </Wrapper>

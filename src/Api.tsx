@@ -137,6 +137,25 @@ export const fetchUtilisateur = async (id: string): Promise<UtilisateursType> =>
   
 };
 
+export const fetchPlusieursUtilisateurs = async (ids: string[]): Promise<UtilisateursType[]> => {
+  let requests: any[]= [];
+    let responses: any[]= [];
+    console.log(ids);
+    ids.map( id=>{
+        console.log(id);
+        requests.push(fetch(ENDPOINT+"utilisateurs/"+id)
+            //Add response to array
+            .then(response => response.json())
+            .then((responseJSON) => responses.push(responseJSON))
+            .catch(err => console.log(err)));
+          })
+    //Await all requests
+    await Promise.all(requests);
+
+    //return all responses
+    return responses;
+};
+
 
 export const updateUtilisateur = async (user: UtilisateursType) : Promise<string> => {
   //const {currentIndustry, ...filteredObject} = myObject;
@@ -166,3 +185,4 @@ export const addUtilisateur = async (utilisateur: UtilisateursType) : Promise<st
 
     return added.json();
 }
+

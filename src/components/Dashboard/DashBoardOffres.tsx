@@ -41,9 +41,9 @@ const DashboardOffres: React.FC<Props> =()=>{
             offres=offres.filter(offre=>offre.Vedette===true)
         }
         //si stagiaire tu vois toutes les offres validées
-        /* if(auth?.user?.NiveauAcces===AccessLevel.entreprise){
+        if(auth?.user?.NiveauAcces===AccessLevel.stagiaire){
             offres= offres.filter(offre=> offre.Valide===true)
-        }  */
+        }  
         //console.log(offres);
         setOffres(offres);  
     }
@@ -55,6 +55,7 @@ const DashboardOffres: React.FC<Props> =()=>{
    
 
     return(
+       
         <>
             <Grid container spacing={3} alignItems='center' justify='center' >
                 <Grid item>
@@ -98,8 +99,8 @@ const DashboardOffres: React.FC<Props> =()=>{
                     {offres ? 
                         offres.map(offre =>(
                             offre.Titre.toLowerCase().includes(recherche.toLowerCase())&&
-                            <Grid item xs={12}>
-                                <DashboardCardOffre key={offre._id} offre={offre} updateOffre={()=>getOffres(vedette)}/>
+                            <Grid item xs={12} key={offre._id}>
+                                <DashboardCardOffre  offre={offre} updateOffre={()=>getOffres(vedette)}/>
                             </Grid>
                             )):null
                         }

@@ -12,6 +12,7 @@ import useAuth from '../auth/useAuth';
 import SelectEntreprise from '../Selects/SelectEntreprise';
 import SelectRegion from '../Selects/SelectRegion';
 import SelectSecteur from '../Selects/SelectSecteur';
+import DashBoardNoRights from './DashboardNoRights';
 
 type Props = {
     history: any
@@ -21,7 +22,7 @@ type Props = {
 
 const DashboardEditOffre: React.FC<Props> =({history})=>{
     const auth = useAuth();
-    const [offre, setOffre]=useState<OffresDemandesType>(history.location.state.data) 
+    const [offre, setOffre]=useState<OffresDemandesType>(history?.location?.state?.data) 
 
     const [, setUpdate]= useState<String>('');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -58,6 +59,12 @@ const DashboardEditOffre: React.FC<Props> =({history})=>{
       }
   
     return(
+        auth?.user?.NiveauAcces===AccessLevel.stagiaire?
+        <DashBoardNoRights/>
+        :
+        history?.location?.state?.data === undefined ?
+        <Typography>Vous ne pouvez pas accèder a cette page directement!</Typography>
+        :
     <form onSubmit={(e)=>handleSave(e)}>
         <Grid container spacing={3} alignItems='center'>
             <Grid item xs={12}>

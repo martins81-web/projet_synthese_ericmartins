@@ -67,11 +67,14 @@ const OffresVedettes: React.FC<Props> =({toast})=>{
 export default OffresVedettes;
 
 export const Wrapper = styled.div`
-background-color: #4d6d81;
+
+background: rgb(63,94,251);
+background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(70,230,252,1) 100%);
+
 padding-bottom: 50px;
 overflow: hidden;
 .title{
-    color: #e1e1e1;
+    color: white	;
     font-weight: bold;
     padding-top: 50px;
     padding-bottom: 50px;

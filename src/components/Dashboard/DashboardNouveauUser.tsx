@@ -16,9 +16,12 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useLastLocation } from 'react-router-last-location';
+import useAuth from '../auth/useAuth';
 
 import { addUtilisateur } from '../../Api';
 import { UtilisateursType } from '../../Types';
+import DashBoardNoRights from './DashboardNoRights';
+import { AccessLevel } from '../../Enum';
 
 type Props = {
 };
@@ -39,6 +42,7 @@ interface State {
 //Formulaire de création d'un nouveau utilisateur
 const DashboardNouveauUser: React.FC<Props> =()=>{
     const history= useHistory();
+    const auth = useAuth();
 
     const [, setUpdate]= useState<String>('');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -149,6 +153,9 @@ const DashboardNouveauUser: React.FC<Props> =()=>{
       }
 
     return(
+        auth?.user?.NiveauAcces!==AccessLevel.admin?
+        <DashBoardNoRights/>
+        :
     <form onSubmit={(e)=>handleCreation(e)}>
         <Grid container spacing={3} >
             <Grid item xs={12} >

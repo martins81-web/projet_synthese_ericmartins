@@ -110,7 +110,8 @@ function App() {
         <Route path="/accueil/Demandes"><OffresDemandes type={Appel.DEMANDE} recherche={recherche} toast={(text)=> customToast(text)}/></Route>
         <Route path="/accueil/demande/:id"><DetailsAnnonces history={history} type={Appel.DEMANDE} toast={(text)=> customToast(text)}/></Route> 
         <Route exact path="/merci" component={FormSubmittedMerci}></Route>
-        <PrivateRoute path="/dashboard/"><Dashboard logout={logout}/></PrivateRoute>
+        <PrivateRoute path="/dashboard/"><Dashboard logout={logout}/></PrivateRoute>:
+      
         <ProtectedLogin path="/login" ><Login login={true} toast={loginToast}/></ProtectedLogin>
         <ProtectedLogin path="/register" ><Login login={false}/></ProtectedLogin> 
         <Route path="/notFound" component={NotFound} />

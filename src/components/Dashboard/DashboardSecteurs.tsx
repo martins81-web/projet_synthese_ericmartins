@@ -23,7 +23,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import { useEffect, useState } from 'react';
 
 import { addSecteurActivite, fetchSecteursActivite, updateSecteurActivite } from '../../Api';
+import { AccessLevel } from '../../Enum';
 import { SecteursActiviteType } from '../../Types';
+import useAuth from '../auth/useAuth';
+import DashBoardNoRights from './DashboardNoRights';
 
 type Props = {
     
@@ -31,6 +34,8 @@ type Props = {
 
 //Liste des secteurs et respective crud dans le dashboard
 const DashboardSecteurs: React.FC<Props> =()=>{
+    const auth = useAuth();
+
     const [secteursActivites, setSecteursActivites] = useState<SecteursActiviteType[]>([]);
     const [edit, setEdit] = useState<SecteursActiviteType | undefined >(undefined);
     const [oldValue, setOldValue] = useState<string >('');
@@ -105,6 +110,9 @@ const DashboardSecteurs: React.FC<Props> =()=>{
   }
 
     return(
+        auth?.user?.NiveauAcces!==AccessLevel.admin?
+        <DashBoardNoRights/>
+        :
         <FormGroup >
         <Grid container justify='center' style={{marginBottom: '100px'}}>
             <Grid item style={{padding: '20px', backgroundColor: 'whitesmoke'}}>

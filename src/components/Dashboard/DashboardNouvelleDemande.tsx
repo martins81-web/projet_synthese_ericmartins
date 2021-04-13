@@ -14,6 +14,8 @@ import SelectRegion from '../Selects/SelectRegion';
 import SelectRemuneration from '../Selects/SelectRemuneration';
 import SelectSecteur from '../Selects/SelectSecteur';
 import SelectStagiaire from '../Selects/SelectStagiaire';
+import DashBoardNoRights from './DashboardNoRights';
+import { toast } from 'react-toastify';
 
 type Props = {
 };
@@ -113,7 +115,7 @@ const DashboardNouvelleDemande: React.FC<Props> =()=>{
             AutresFormations: values.AutresFormations,
             CompetencesAcquises: values.CompetencesAcquises,
             DescriptionPosteRecherche: "",
-            Remuneration: "",
+            Remuneration: values.Remuneration,
             DateParution: values.DateParution,
             AutresInformations: "",
             Actif: true,
@@ -144,11 +146,15 @@ const DashboardNouvelleDemande: React.FC<Props> =()=>{
         } catch (e) {
         } finally {
             setUpdatingDemande(false);
-            history.push(lastLocation?.pathname||'/dashboard/')
+            toast.success("La demande de stage a été ajoutée avec succès!!!");
+            history.push('/dashboard/demandes');
         }
       }
 
     return(
+        auth?.user?.NiveauAcces===AccessLevel.entreprise?
+        <DashBoardNoRights/>
+        :
     <form onSubmit={(e)=>handleCreation(e)}>
         <Grid container spacing={2} alignItems='center'>
             <Grid item xs={12}>

@@ -9,6 +9,8 @@ import useAuth from '../auth/useAuth';
 import { fetchUtilisateurs, updateUtilisateur } from '../../Api';
 import { UtilisateursType } from '../../Types';
 import DashBoardUsersCard from './DashBoardUsersCard';
+import DashBoardNoRights from './DashboardNoRights';
+import { AccessLevel } from '../../Enum';
 
 type Props = {
     usersType: string
@@ -50,6 +52,9 @@ const DashboardCandidats: React.FC<Props> =({usersType})=>{
     }
     
     return(
+        auth?.user?.NiveauAcces!==AccessLevel.admin?
+        <DashBoardNoRights/>
+        :
         <Wrapper>     
             <Grid container direction='column' spacing={3} alignItems='center' >
                 <Grid item>

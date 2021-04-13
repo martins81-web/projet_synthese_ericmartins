@@ -1,6 +1,6 @@
 import { faLevelDownAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Container } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 
 import { fetchOffresDemandes } from '../../Api';
@@ -70,11 +70,15 @@ const DashboardAccueil: React.FC<Props> =()=>{
                             <FontAwesomeIcon icon={faLevelDownAlt}  size='lg' style={{position: 'absolute', top: '10px'}}/>
                         </Grid>
                         <Grid item xs={12}>
+                            <Grid container spacing={2}>
                             {
                             demandes.map(demande=>(
-                                <DashboardCardDemande demande={demande} type='attente' key={demande._id} updateDemande={getDemandes} />
+                                <Grid item key={demande._id}>
+                                    <DashboardCardDemande demande={demande} type='attente'  updateDemande={getDemandes} />
+                                </Grid>
                             ))
                             }
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid> :null
@@ -89,11 +93,15 @@ const DashboardAccueil: React.FC<Props> =()=>{
                             <FontAwesomeIcon icon={faLevelDownAlt}  size='lg'  style={{position: 'absolute', top: '10px'}}/>
                         </Grid>
                         <Grid item xs={12}>
+                            <Grid container spacing={2}>
                             {
                             offres.map(offre=>(
-                                <DashboardCardOffre offre={offre} type='attente' key={offre._id} updateOffre={getOffres}/>            
+                                <Grid item key={offre._id}>
+                                    <DashboardCardOffre offre={offre} type='attente'  updateOffre={getOffres}/>    
+                                </Grid>    
                             ))
                             }
+                            </Grid>
                         </Grid>
                     </Grid> 
                 </Grid> :

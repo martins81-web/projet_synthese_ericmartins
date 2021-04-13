@@ -105,15 +105,10 @@ const Dashboard: React.FC<Props> =({logout})=>{
          history.push('/dashboard/accueil');
          location='/dashboard/accueil';
         }
-        // eslint-disable-next-line array-callback-return
-        menuItems.map(item =>{
-            if (location === item.link) {
-             setMenuItemSelected(item.name);
-             history.push(location);
-            }         
-        })
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      getUser();
+        updateMenu();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        getUser();
       },[])
 
       const getUser= async()=>{
@@ -124,6 +119,31 @@ const Dashboard: React.FC<Props> =({logout})=>{
         //console.log(user);
         setUser(user);
     } 
+
+    const updateMenu =()=>{
+        let location = history.location.pathname;
+        // eslint-disable-next-line array-callback-return
+        menuItems.map(item =>{
+            if (location === item.link) {
+             setMenuItemSelected(item.name);
+             history.push(location);
+            } else if(location.includes('ffre') && item.name===Menu.offres){
+                setMenuItemSelected(item.name);
+            }
+            else if(location.includes('emande') && item.name===Menu.demandes){
+                setMenuItemSelected(item.name);
+            }
+            else if(location.includes('candidat') && item.name===Menu.candidats){
+                setMenuItemSelected(item.name);
+            }
+            else if(location.includes('entreprise') && item.name===Menu.entreprises){
+                setMenuItemSelected(item.name);
+            }
+            else if(location.includes('admin') && item.name===Menu.admins){
+                setMenuItemSelected(item.name);
+            }
+        })
+    }
 
     return(
       
@@ -138,7 +158,7 @@ const Dashboard: React.FC<Props> =({logout})=>{
                     borderBottom:  '7px solid #a0c3da'}}
                     >
                         <Grid item style={{ padding: matchesSM? '0px' :matchesMD? '10px':'30px'}}>
-                            <Grid container justify='center' spacing={matchesSM? 0: 2} alignItems='center'>
+                            <Grid container className='logo' justify='center' spacing={matchesSM? 0: 2} alignItems='center' onClick={()=>history.push("/accueil")}>
                                 <Grid item>
                                     <GestureIcon style={{color: 'white', fontSize: '3rem'}}/>
                                 </Grid>
@@ -253,7 +273,7 @@ const Dashboard: React.FC<Props> =({logout})=>{
                             :
                             <Grid container direction='column'>
                                 <Grid item xs>
-                                    <DashboardContent/>
+                                    <DashboardContent />
                                 </Grid>
                             </Grid>
                             }
@@ -277,6 +297,9 @@ export const Wrapper = styled.div`
  .listItem:hover{
      background-color: #70aedd !important
  }
-    
+
+.logo:hover{
+    cursor: pointer;
+ }
     
 `

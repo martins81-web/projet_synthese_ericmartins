@@ -6,6 +6,7 @@ import { differenceInWeeks } from 'date-fns';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useLastLocation } from 'react-router-last-location';
+import { toast } from 'react-toastify';
 
 import { addOffreDemande } from '../../Api';
 import { AccessLevel } from '../../Enum';
@@ -14,6 +15,7 @@ import useAuth from '../auth/useAuth';
 import SelectEntreprise from '../Selects/SelectEntreprise';
 import SelectRegion from '../Selects/SelectRegion';
 import SelectSecteur from '../Selects/SelectSecteur';
+import DashBoardNoRights from './DashboardNoRights';
 
 type Props = {
 };
@@ -144,11 +146,15 @@ const DashboardNouvelleOffre: React.FC<Props> =()=>{
         } catch (e) {
         } finally {
             setUpdatingOffre(false);
-            history.push(lastLocation?.pathname||'/dashboard/')
+            toast.success("L'offre de stage a été ajoutée avec succès!!!");
+            history.push('/dashboard/offres')
         }
       }
 
     return(
+        auth?.user?.NiveauAcces===AccessLevel.stagiaire?
+        <DashBoardNoRights/>
+        :
     <form onSubmit={(e)=>handleCreation(e)}>
         <Grid container spacing={3} alignItems='center'>
             <Grid item xs={12}>

@@ -10,6 +10,7 @@ import {
     Select,
     Switch,
     TextField,
+    Typography,
 } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import Input from '@material-ui/core/Input';
@@ -22,6 +23,7 @@ import { AccessLevel } from '../../Enum';
 import { SecteursActiviteType, UtilisateursType } from '../../Types';
 import useAuth from '../auth/useAuth';
 import SelectRegion from '../Selects/SelectRegion';
+import DashBoardNoRights from './DashboardNoRights';
 
 type Props = {
     history: any
@@ -69,7 +71,7 @@ const DashboardEditUsers: React.FC<Props> =({history})=>{
 
 const classes = useStyles();
   
-const [user, setUser] = useState<UtilisateursType>(history.location.state.data);
+const [user, setUser] = useState<UtilisateursType>(history?.location?.state?.data);
 const [secteursActivites, setSecteursActivites] = useState<SecteursActiviteType[]>([]);
 const [update, setUpdate]= useState<String>('');
 const [updatingUser, setUpdatingUser] = useState(true);
@@ -145,6 +147,12 @@ async function userUpdated() {
   }
 
  return(
+        auth?.user?.NiveauAcces!==AccessLevel.admin?
+            <DashBoardNoRights/>
+        :
+        history?.location?.state?.data === undefined ?
+        <Typography>Vous ne pouvez pas accèder a cette page directement!</Typography>
+        :
         <>  { auth?.user?.NiveauAcces===AccessLevel.admin ?
             <Grid container>
                 <FormControlLabel

@@ -3,10 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Grid, InputAdornment, TextField, Typography } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 
 import { fetchOffresDemandes } from '../../Api';
 import { AccessLevel } from '../../Enum';
-import { OffresDemandesType } from '../../Types';
+import { OffresDemandesType, UtilisateursType } from '../../Types';
 import useAuth from '../auth/useAuth';
 import DashboardCardDemande from './DashboardCardDemande';
 
@@ -17,14 +18,17 @@ type Props = {
 
 const DashboardDemandes: React.FC<Props> =()=>{
     const auth = useAuth();
+    const history = useHistory();
+
     const [demandes, setDemandes] = useState<OffresDemandesType[]>([]);
     const [recherche, setRecherche]= useState<String>('');
-
+    const [connectedUser]=useState<UtilisateursType | undefined >(auth?.user || undefined);
     useEffect(()=>{
         getDemandes();
-      
+       
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
+
       //cherche les demandes dans l'api
     const getDemandes = async () => {
         let demandes : OffresDemandesType[] | undefined = await fetchOffresDemandes();
@@ -40,10 +44,15 @@ const DashboardDemandes: React.FC<Props> =()=>{
             demandes= demandes.filter(demande=> demande.Valide===true)
         } 
         setDemandes(demandes);  
+
+      
+        console.log(auth?.user?.NiveauAcces)
+
     }
 
 
     return(
+    
         <>
          <Grid container spacing={3} alignItems='center' justify='center' >
                 <Grid item>
@@ -75,17 +84,16 @@ const DashboardDemandes: React.FC<Props> =()=>{
             </Grid>
             
             <Grid item xs={12}>
-                {demandes ? 
+                {demandes? 
                     demandes.map(demande =>(
-                        demande.Titre.toLowerCase().includes(recherche.toLowerCase())&&
-                        <DashboardCardDemande demande={demande} key={demande._id} updateDemande={()=>getDemandes()}/>
-                        
+                        demande.Titre.toLowerCase().includes(recherche.toLowerCase())  &&
+                            <DashboardCardDemande demande={demande} key={demande._id} updateDemande={()=>getDemandes()}/>
                         )):null
                     }
             </Grid>
         </Grid>
       
-        </>
+        </> 
     )
 }
 

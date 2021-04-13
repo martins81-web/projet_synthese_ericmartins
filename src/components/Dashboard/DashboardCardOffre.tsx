@@ -147,16 +147,27 @@ const DashboardCardOffre: React.FC<Props> =({offre,type, updateOffre})=>{
                 </CardContent>
                 <CardActions>
                     <Grid container justify='space-between'>
-                        <Grid item >
-                            <Button variant="contained" color="primary" size="small"   
-                                style={{textTransform: 'none', borderRadius: '0'}}
-                                onClick={()=>history.push({
-                                    pathname: '/dashboard/details/offre/'+offre._id,
-                                    state: {data: offre,auteur: auteur}
-                                })}
-                                >
-                                Détails
-                            </Button>
+                        <Grid item>
+                            <Grid container spacing={2} alignItems='center'>
+                                <Grid item> 
+                                    <Button variant="contained" color="primary" size="small"   
+                                        style={{textTransform: 'none', borderRadius: '0'}}
+                                        onClick={()=>history.push({
+                                            pathname: '/dashboard/details/offre/'+offre._id,
+                                            state: {data: offre,auteur: auteur}
+                                        })}
+                                        >
+                                        Détails
+                                    </Button>
+                                </Grid>
+                                {type!=='attente' && offre.Communications.length>0 && auth?.user?.NiveauAcces!==AccessLevel.stagiaire &&
+                                <Grid item>
+                                        <Typography style={{color: 'firebrick', fontWeight: 'bold'}}>
+                                            {offre.Communications.length + ' candidats intéressé' + (offre.Communications.length>1 ? 's': '')}  
+                                        </Typography>
+                                </Grid>
+                                }
+                            </Grid>
                         </Grid>
                         <Grid item>
                         {type==='attente' ?

@@ -71,7 +71,10 @@ const DetailsAnnonces: React.FC<Props> =({history, type, toast})=>{
             offreDemande && updateOffreDemande(offreDemande);   
 
         } else if ( auth?.user?.NiveauAcces===AccessLevel.entreprise && type===Appel.DEMANDE){
-            console.log('contacter candidat');
+            history.push({
+                pathname: '/dashboard/details/demande/'+offreDemande?._id,
+                state: {data: offreDemande}
+            })
         } else if (type===Appel.OFFRE && auth?.user?.NiveauAcces!==AccessLevel.stagiaire) {
             toast && toast('Vous devez être connecté en tant que stagiaire pour pouvoir postuler sur une offre de stage.');
             if(!auth?.user)

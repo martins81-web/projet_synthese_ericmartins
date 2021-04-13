@@ -1,15 +1,17 @@
-import { faArrowAltCircleLeft, faArrowAltCircleRight, faEdit, faLevelDownAlt, faTimes, faUserGraduate, faUserNinja, faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faInfoCircle, faLevelDownAlt, faTimes, faUserGraduate, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Grid, IconButton, Paper, Typography,Tooltip, TextField } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import SendIcon from '@material-ui/icons/Send';
 
-import { updateUtilisateur, updateOffreDemande, fetchRegion, fetchSecteur } from '../../Api';
+import {  updateOffreDemande, fetchRegion, fetchSecteur, fetchPlusieursUtilisateurs } from '../../Api';
 import { AccessLevel } from '../../Enum';
 import { UtilisateursType, OffresDemandesType, RegionsType, SecteursActiviteType } from '../../Types';
 import useAuth from '../auth/useAuth';
 import { useLastLocation } from 'react-router-last-location';
-import userEvent from '@testing-library/user-event';
+import DashBoardFicheUser from './DashboardFicheUser';
+import { toast } from 'react-toastify';
 
 type Props = {
   history: any
@@ -19,18 +21,22 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
     const auth = useAuth();
     const lastLocation = useLastLocation();
 
-    const [offreDemande, ] = useState<OffresDemandesType>(history.location.state.data);
-    const [auteur, ] = useState<UtilisateursType>(history.location.state.auteur);
+    const [offreDemande, ] = useState<OffresDemandesType>(history?.location?.state?.data);
+    const [auteur, ] = useState<UtilisateursType>(history?.location?.state?.auteur);
     const [region, setRegion] = useState<RegionsType | undefined>(undefined);
     const [secteur, setSecteur] = useState<SecteursActiviteType | undefined>(undefined);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [update, setUpdate]= useState<String>('');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [updatingOffreDemande, setUpdatingOffreDemande] = useState(true);
+    const [candidatsPostule, setCandidatsPostule] = useState<UtilisateursType[]>([]);
+    const [detailsCandidats, setDetailsCandidats] = useState<UtilisateursType | 'closed' >('closed');
 
     useEffect(()=>{
-        getRegion(offreDemande.Region);
-        getSecteur(offreDemande.SecteurActivite);
+        getRegion(offreDemande?.Region);
+        getSecteur(offreDemande?.SecteurActivite);
+        getUsersPostule();
+        console.log(offreDemande?.Type)
       },[])
 
     const handleEdit = (offreDemande: OffresDemandesType) =>{
@@ -58,6 +64,7 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
     const handleSupprimer =()=>{
         offreDemande.Supprime=true;
         offreDemandeUpdated(offreDemande);
+        history.push(lastLocation);
     }
 
     const getRegion=async(id:string)=>{
@@ -68,6 +75,15 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
     const getSecteur=async(id:string)=>{
         let secteur: SecteursActiviteType| undefined = await fetchSecteur(id); 
         setSecteur(secteur);
+        console.log('secteur',secteur)
+    }
+
+    const getUsersPostule =async()=>{
+        let candidatsID: string[]=[]; 
+        candidatsID= offreDemande?.Communications.map(communication=>{return communication.EnvoyeParID});
+        let candidats: UtilisateursType [] | undefined = await fetchPlusieursUtilisateurs(candidatsID); 
+        setCandidatsPostule(candidats);
+        console.log(candidats)
     }
 
     function formatDate(date:Date) {
@@ -84,14 +100,39 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
         return [year, month, day].join('-');
     }
 
+    const handlePostuler =()=>{
+        let communication= {
+            Date: new Date(),
+            EnvoyeParID: auth?.user?._id || '',
+            Message: 'Postulation',
+            NbMessages: 0,
+        };
+
+        let dejaPostule=offreDemande?.Communications.find(communication=>communication.EnvoyeParID===auth?.user?._id);
+
+
+        if(!dejaPostule){
+            offreDemande?.Communications.push(communication);
+            toast && toast.success("Vos informations ont été envoyé à l'entreprise!");
+            offreDemande && updateOffreDemande(offreDemande);
+        }  else {
+            toast && toast.error('Vous avez déjà postulé pour cette offre de stage.');
+        } 
+    }
+   
+
+
     return(
+        history?.location?.state?.data === undefined ?
+        <Typography>Vous ne pouvez pas accèder a cette page directement!</Typography>
+        :
         <Wrapper>
           <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Grid container spacing={2} alignItems='flex-end'> 
                         <Grid item>
                             <Typography variant='h4'>
-                                {offreDemande.Type==='offre' ? "Détails de l'offre": "Détails de la demande"}
+                                {offreDemande.Type==='demande' ? "Détails de la demande" : candidatsPostule.length>0?"Détails de l'offre et candidats intéressés":  "Détails de l'offre"}
                             </Typography>
                         </Grid>
                         <Grid item>
@@ -101,14 +142,14 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                 </Grid>
                 <Grid item xs={12}>
                         <Button variant="contained" size="small" style={{color:'white',backgroundColor:'dimGray'}}
-                        onClick={()=>history.push(lastLocation?.pathname)}
+                        onClick={()=>history.push(lastLocation?.pathname === undefined ? '/dashboard/'+offreDemande?.Type+"s" : lastLocation?.pathname==='/dashboard/accueil' ? lastLocation?.pathname : '/dashboard/'+offreDemande?.Type+"s")}
                         >
-                            {lastLocation?.pathname==='/dashboard/accueil'? "Retour à l'accueil": "Retour à liste des "+offreDemande.Type+"s"}
+                            {lastLocation?.pathname==='/dashboard/accueil'? "Retour à l'accueil": "Retour à liste des "+offreDemande?.Type+"s"}
                         </Button>
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container justify='flex-end' spacing={1}>
-                        { (lastLocation?.pathname==='/dashboard/offres' || lastLocation?.pathname==='/dashboard/demandes') 
+                        { (lastLocation?.pathname==='/dashboard/offres' || lastLocation?.pathname==='/dashboard/demandes' || lastLocation?.pathname=== undefined) 
                         ?
                         ((auth?.user?.NiveauAcces!==AccessLevel.entreprise && offreDemande.Type==='demande')||
                         (auth?.user?.NiveauAcces!==AccessLevel.stagiaire && offreDemande.Type==='offre')) && 
@@ -158,6 +199,19 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                         </Grid>
                          </> 
                         }
+                         { auth?.user?.NiveauAcces=== AccessLevel.stagiaire && offreDemande?.Type==='offre'  && 
+                            <Grid item xs={12} style={{marginTop: '20px'}}>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12}>
+                                        <Button color='primary'  variant="contained" size="medium" name='buttonPostuler' 
+                                        onClick={handlePostuler}
+                                    >
+                                        Postuler
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            }
                     </Grid>
                 </Grid>
                  <Grid item xs={12}>
@@ -186,7 +240,7 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                             <b>Nom entreprise:</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {auteur.NomEntreprise}
+                            {auteur?.NomEntreprise}
                         </Grid>
                         <Grid item xs={12} sm={4} className='background'>
                             <b>Secteur activité:</b>
@@ -198,13 +252,13 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                             <b>Courriel:</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {auteur.Courriel}
+                            {auteur?.Courriel}
                         </Grid>
                         <Grid item xs={12} sm={4} className='background'>
                             <b> Téléphone:</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {auteur.Telephone}
+                            {auteur?.Telephone}
                         </Grid>
                         </> 
                         : 
@@ -214,20 +268,20 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                                 <b>Prénom et Nom:</b>
                             </Grid>
                             <Grid item xs={12} sm={8} className='background'>
-                                {auteur.Prenom+" "+auteur.Nom}
+                                {auteur?.Prenom+" "+auteur?.Nom}
                             </Grid>
                             
                             <Grid item xs={12} sm={4} className='background'>
                                 <b>Téléphone:</b>
                             </Grid>
                             <Grid item xs={12} sm={8} className='background'>
-                                {auteur.Telephone}
+                                {auteur?.Telephone}
                             </Grid>
                             <Grid item xs={12} sm={4} className='background'>
                                 <b>Courriel:</b>
                             </Grid>
                             <Grid item xs={12} sm={8} className='background'>
-                                {auteur.Courriel}
+                                {auteur?.Courriel}
                             </Grid>
                         </>
                         }
@@ -235,7 +289,7 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                             <b>Ville:</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {offreDemande.Ville}
+                            {offreDemande?.Ville}
                         </Grid>
                         <Grid item xs={12} sm={4} className='background'>
                             <b>Region:</b>
@@ -248,41 +302,41 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                             <b>Date parution:</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {formatDate(offreDemande.DateParution)}
+                            {formatDate(offreDemande?.DateParution)}
                         </Grid>
                         <Grid item xs={12} sm={4} className='background'>
                             <b>Date de début:</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {formatDate(offreDemande.DateDebut)}
+                            {formatDate(offreDemande?.DateDebut)}
                         </Grid>
                         <Grid item xs={12} sm={4} className='background'>
                             <b>Date de fin:</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {formatDate(offreDemande.DateFin)}
+                            {formatDate(offreDemande?.DateFin)}
                         </Grid>
                         <Grid item xs={12} sm={4} className='background'>
                             <b>Dureé:</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {offreDemande.DureeSemaines+" semaines"}
+                            {offreDemande?.DureeSemaines+" semaines"}
                         </Grid>
 
     
-                        { offreDemande.Type==='demande' &&
+                        { offreDemande?.Type==='demande' &&
                         <>
                         <Grid item xs={12} sm={4} className='background'>
                             <b>Formation:</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {offreDemande.ProgrammesSuivi}
+                            {offreDemande?.ProgrammesSuivi}
                         </Grid>
                         <Grid item xs={12} sm={4} className='background'>
                             <b>Établissement scolaire:</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {auteur.Ecole}
+                            {auteur?.Ecole}
                         </Grid>
                         </>
                         }
@@ -290,23 +344,109 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                             <b>Description:</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {offreDemande.Description}
+                            {offreDemande?.Description}
                         </Grid>
                         <Grid item xs={12} sm={4} className='background'>
-                            <b>{offreDemande.Type==='offre'? 'Competences recherches:' : 'Competences Acquises:'}</b>
+                            <b>{offreDemande?.Type==='offre'? 'Competences recherches:' : 'Competences Acquises:'}</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {offreDemande.Type==='offre'? offreDemande.CompetencesRecherches: offreDemande.CompetencesAcquises}
+                            {offreDemande?.Type==='offre'? offreDemande?.CompetencesRecherches: offreDemande?.CompetencesAcquises}
                         </Grid>
                         <Grid item xs={12} sm={4} className='background'>
                             <b>Rémuneration</b>
                         </Grid>
                         <Grid item xs={12} sm={8} className='background'>
-                            {offreDemande.Remuneration}
+                            {offreDemande?.Remuneration}
                         </Grid>
                     </Grid> 
                 </Grid> 
+                <Grid item xs={12}>
+                    { auth?.user?.NiveauAcces!== AccessLevel.stagiaire && offreDemande?.Type==='offre' && candidatsPostule.length>0 &&
+                    <Grid container style={{borderTop: '5px solid #3e99df', marginTop: '40px', padding: '0'}} spacing={4}>
+                        <Grid item xs={12}>
+                            <Typography variant='h4'>Candidats intéressés</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                                {candidatsPostule.length>0 &&
+                                candidatsPostule.map(candidat=>
+                                    <>
+                                    <Grid item xs={12} key={candidat._id}>
+                                        <Paper elevation={3}  >
+                                            <Grid container style={{borderBottom: '3px solid black'}} justify='space-between' alignItems='flex-end'>
+                                                <Grid item>
+                                                    <Grid container spacing={2} style={{padding: '10px'}}> 
+                                                        <Grid item style={{paddingBottom: '0px'}}>
+                                                            <FontAwesomeIcon 
+                                                            icon={faUserGraduate} 
+                                                            size="2x"  />
+                                                        </Grid>
+                                                        <Grid item>
+                                                            <Typography variant='h6' style={{fontWeight: 'bold'}}>
+                                                                {candidat?.Prenom+" "+candidat?.Nom}
+                                                            </Typography>
+                                                        </Grid>  
+                                                       
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid item style={{paddingBottom: '0px'}}>
+                                                        <Tooltip  title="Détails du candidat">
+                                                            <IconButton onClick={detailsCandidats===candidat? ()=>setDetailsCandidats('closed') : ()=>setDetailsCandidats(candidat)}>
+                                                                <FontAwesomeIcon style={{color:'DodgerBlue'}}
+                                                                icon={faInfoCircle} 
+                                                                size="lg"  />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                </Grid>
+                                            </Grid>
+                                        </Paper>
+                                    </Grid>
+                                    { detailsCandidats === candidat &&
+                                    <Grid item xs={12} key={candidat._id} > 
+                                        <Paper elevation={3} style={{padding:'10px'}} >
+                                            <DashBoardFicheUser utilisateur={candidat}/> 
+                                        </Paper>
+                                    </Grid>
+                                    }
+                                    </>
+                                )
+                                }
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    }
+                </Grid>
+                { auth?.user?.NiveauAcces!== AccessLevel.stagiaire && offreDemande?.Type==='demande'  && 
+                <Grid item xs={12} style={{marginTop: '20px'}}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                id="outlined-multiline-static"
+                                label="Communiquer avec le candidat"
+                                multiline
+                                rows={8}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Grid container justify='flex-end'>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    endIcon={<SendIcon/>}
+                                >
+                                    Envoyer
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                }
+
+               
           </Grid>
+          
         </Wrapper>
     )
 }

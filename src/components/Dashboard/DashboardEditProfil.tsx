@@ -102,6 +102,7 @@ const Field = (defaultValue: string, label: string, key: string) => {
             required
             type={label==='Téléphone'? "tel" : label==='Courriel'? 'email' :'text'}
             inputProps={{ className: classes.input,pattern: label==='Téléphone'? "[0-9]{3}[0-9]{3}[0-9]{4}": null }}
+            helperText={label==='Téléphone'&& 'Le téléphone doit avoir 10 chiffres!'}
         />
     )
 }
