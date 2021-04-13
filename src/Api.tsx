@@ -140,9 +140,9 @@ export const fetchUtilisateur = async (id: string): Promise<UtilisateursType> =>
 export const fetchPlusieursUtilisateurs = async (ids: string[]): Promise<UtilisateursType[]> => {
   let requests: any[]= [];
     let responses: any[]= [];
-    console.log(ids);
+    // eslint-disable-next-line array-callback-return
     ids.map( id=>{
-        console.log(id);
+      
         requests.push(fetch(ENDPOINT+"utilisateurs/"+id)
             //Add response to array
             .then(response => response.json())

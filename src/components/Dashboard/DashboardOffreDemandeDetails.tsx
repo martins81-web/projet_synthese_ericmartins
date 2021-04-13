@@ -36,7 +36,7 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
         getRegion(offreDemande?.Region);
         getSecteur(offreDemande?.SecteurActivite);
         getUsersPostule();
-        console.log(offreDemande?.Type)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
 
     const handleEdit = (offreDemande: OffresDemandesType) =>{
@@ -75,7 +75,6 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
     const getSecteur=async(id:string)=>{
         let secteur: SecteursActiviteType| undefined = await fetchSecteur(id); 
         setSecteur(secteur);
-        console.log('secteur',secteur)
     }
 
     const getUsersPostule =async()=>{

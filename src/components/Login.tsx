@@ -86,8 +86,8 @@ const Login: React.FC<Props> =({login,toast})=>{
 
     const handleConnection = async (e:any) => {
         e.preventDefault();
-        //console.log('email:', values.email);
-        //console.log('password:', values.password);
+        //
+        //
         const utilisateurs : UtilisateursType[] | undefined = await fetchUtilisateurs();
         const utilisateur=utilisateurs.find(utilisateur => utilisateur.Courriel===values.email && utilisateur.MotdePasse===values.password);
    
@@ -167,7 +167,7 @@ const Login: React.FC<Props> =({login,toast})=>{
                 nomEntreprise: ''
             };
             setValues(values);
-            console.log(values);
+            
             setAddedUtilisateur(true);
         }
       }

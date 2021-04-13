@@ -1,6 +1,6 @@
 import { faLevelDownAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Grid, Typography, Container } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 
 import { fetchOffresDemandes } from '../../Api';
@@ -31,7 +31,6 @@ const DashboardAccueil: React.FC<Props> =()=>{
     const getDemandes = async () => {
         let demandes : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         demandes = demandes.filter(demande=> demande.Supprime===false && demande.Type==='demande' && demande.Valide===false);
-        //console.log(demandes);
         setDemandes(demandes);  
     }
 
@@ -39,7 +38,6 @@ const DashboardAccueil: React.FC<Props> =()=>{
     const getOffres = async () => {
         let offres : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         offres = offres.filter(offre=> offre.Supprime===false && offre.Type==='offre' && offre.Valide===false);
-        console.log(offres);
         setOffres(offres);  
     }
 

@@ -19,7 +19,7 @@ const NousJoindre: React.FC<Props> =()=>{
             <Grid container spacing={3} className='contactForm' >
               <Grid item xs={12}>
                 <Typography variant='h3'>Nous joindre</Typography> 
-                <p>Écrivez nous si vouz avez un problème, une question ou une sugestion.</p>
+                <p>Écrivez-nous si vous avez un problème, une question ou une suggestion.</p>
               </Grid>
               <Grid item xs={12}>
                 <Grid container spacing={3}>

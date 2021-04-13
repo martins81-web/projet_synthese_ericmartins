@@ -3,11 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Grid, InputAdornment, TextField, Typography } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
 
 import { fetchOffresDemandes } from '../../Api';
 import { AccessLevel } from '../../Enum';
-import { OffresDemandesType, UtilisateursType } from '../../Types';
+import { OffresDemandesType } from '../../Types';
 import useAuth from '../auth/useAuth';
 import DashboardCardDemande from './DashboardCardDemande';
 
@@ -18,11 +17,9 @@ type Props = {
 
 const DashboardDemandes: React.FC<Props> =()=>{
     const auth = useAuth();
-    const history = useHistory();
 
     const [demandes, setDemandes] = useState<OffresDemandesType[]>([]);
     const [recherche, setRecherche]= useState<String>('');
-    const [connectedUser]=useState<UtilisateursType | undefined >(auth?.user || undefined);
     useEffect(()=>{
         getDemandes();
        
@@ -34,7 +31,6 @@ const DashboardDemandes: React.FC<Props> =()=>{
         let demandes : OffresDemandesType[] | undefined = await fetchOffresDemandes();
         //filtre les demandes qui ne sont pas supprimées
         demandes = demandes.filter(demande=> demande.Supprime===false && demande.Type==='demande');
-        console.log(demandes);
         //si stagiaire tu vois tes demandes
         if(auth?.user?.NiveauAcces===AccessLevel.stagiaire){
             demandes= demandes.filter(demande=> demande.Auteur===auth?.user?._id)
@@ -46,7 +42,6 @@ const DashboardDemandes: React.FC<Props> =()=>{
         setDemandes(demandes);  
 
       
-        console.log(auth?.user?.NiveauAcces)
 
     }
 

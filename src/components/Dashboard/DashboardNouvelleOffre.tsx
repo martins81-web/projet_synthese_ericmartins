@@ -5,7 +5,6 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import { differenceInWeeks } from 'date-fns';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useLastLocation } from 'react-router-last-location';
 import { toast } from 'react-toastify';
 
 import { addOffreDemande } from '../../Api';
@@ -48,7 +47,6 @@ const DashboardNouvelleOffre: React.FC<Props> =()=>{
     const [, setUpdate]= useState<String>('');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [updatingOffre, setUpdatingOffre] = useState(true);
-    const lastLocation = useLastLocation();
 
     const [values, setValues] = useState<State>({
         Titre: "",
