@@ -31,6 +31,7 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
     const [updatingOffreDemande, setUpdatingOffreDemande] = useState(true);
     const [candidatsPostule, setCandidatsPostule] = useState<UtilisateursType[]>([]);
     const [detailsCandidats, setDetailsCandidats] = useState<UtilisateursType | 'closed' >('closed');
+    const [message, setMessage] = useState<string>("");
 
     useEffect(()=>{
         getRegion(offreDemande?.Region);
@@ -374,19 +375,21 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                                         <Paper elevation={3}  >
                                             <Grid container style={{borderBottom: '3px solid black'}} justify='space-between' alignItems='flex-end'>
                                                 <Grid item>
-                                                    <Grid container spacing={2} style={{padding: '10px'}}> 
-                                                        <Grid item style={{paddingBottom: '0px'}}>
-                                                            <FontAwesomeIcon 
-                                                            icon={faUserGraduate} 
-                                                            size="2x"  />
+                                                    <IconButton size='small' onClick={detailsCandidats===candidat? ()=>setDetailsCandidats('closed') : ()=>setDetailsCandidats(candidat)}> 
+                                                        <Grid container spacing={2} style={{padding: '10px'}} > 
+                                                            <Grid item style={{paddingBottom: '0px'}}>
+                                                                <FontAwesomeIcon style={{color:'MidnightBlue'}}
+                                                                icon={faUserGraduate} 
+                                                                size="2x"  />
+                                                            </Grid>
+                                                            <Grid item>
+                                                                <Typography variant='h6' style={{fontWeight: 'bold'}}>
+                                                                    {candidat?.Prenom+" "+candidat?.Nom}
+                                                                </Typography>
+                                                            </Grid>  
+                                                        
                                                         </Grid>
-                                                        <Grid item>
-                                                            <Typography variant='h6' style={{fontWeight: 'bold'}}>
-                                                                {candidat?.Prenom+" "+candidat?.Nom}
-                                                            </Typography>
-                                                        </Grid>  
-                                                       
-                                                    </Grid>
+                                                    </IconButton>
                                                 </Grid>
                                                 <Grid item style={{paddingBottom: '0px'}}>
                                                         <Tooltip  title="Détails du candidat">
@@ -401,7 +404,7 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                                         </Paper>
                                     </Grid>
                                     { detailsCandidats === candidat &&
-                                    <Grid item xs={12} key={candidat._id} > 
+                                    <Grid item xs={12} > 
                                         <Paper elevation={3} style={{padding:'10px'}} >
                                             <DashBoardFicheUser utilisateur={candidat}/> 
                                         </Paper>
@@ -415,18 +418,29 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                     </Grid>
                     }
                 </Grid>
-                { auth?.user?.NiveauAcces!== AccessLevel.stagiaire && offreDemande?.Type==='demande'  && 
-                <Grid item xs={12} style={{marginTop: '20px'}}>
+               
+          </Grid>
+          { auth?.user?.NiveauAcces!== AccessLevel.stagiaire && offreDemande?.Type==='demande'  && 
+
+        <form method="post" action={"mailto:"+auteur?.Courriel+"?subject=" + (auth?.user?.NiveauAcces===AccessLevel.admin? "Message de l'administrateur de la plateforme eStage" : "eStage: Demande d'informations de la part de l'entreprise ")+ auth?.user?.NomEntreprise} >
+
+          <Grid container style={{marginTop: '20px'}}>
+              <Grid item xs={12} >
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
+                            
                             <TextField
                                 fullWidth
-                                id="outlined-multiline-static"
+                                id="message"
                                 label="Communiquer avec le candidat"
+                                name="body"
                                 multiline
                                 rows={8}
                                 variant="outlined"
+                                value={message}
+                                onChange={(e)=>setMessage(e.target.value)}
                             />
+                            
                         </Grid>
                         <Grid item xs={12}>
                             <Grid container justify='flex-end'>
@@ -434,6 +448,8 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                                     variant="contained"
                                     color="primary"
                                     endIcon={<SendIcon/>}
+                                    type='submit'
+                                    
                                 >
                                     Envoyer
                                 </Button>
@@ -441,11 +457,10 @@ const DashBoardOffreDemandeDetails: React.FC<Props> =({history})=>{
                         </Grid>
                     </Grid>
                 </Grid>
-                }
-
-               
           </Grid>
-          
+          </form>
+
+          }
         </Wrapper>
     )
 }

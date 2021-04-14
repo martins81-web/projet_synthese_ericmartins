@@ -30,7 +30,6 @@ const OffresVedettes: React.FC<Props> =({toast})=>{
         offres.sort((a, b) => (a.DateParution < b.DateParution) ? 1 : -1);
         // Garde juste les 4 offre vedettes les plus récentes
         offres.splice(4,offres.length-4);
-        console.log(offres);
         setOffres(offres);  
     }
     

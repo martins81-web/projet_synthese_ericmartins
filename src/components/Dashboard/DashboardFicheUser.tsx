@@ -202,17 +202,24 @@ const DashBoardFicheUser: React.FC<Props> =({history,utilisateur})=>{
                     </Grid>
   
                 </Grid>
-                <Grid item xs={12} style={{marginTop: '20px'}}>
+          </Grid>
+        <form method="post" action={"mailto:"+user?.Courriel+"?subject=" + (auth?.user?.NiveauAcces===AccessLevel.admin? "Message de l'administrateur de la plateforme eStage" : "eStage: Demande d'informations de la part de l'entreprise ")+ auth?.user?.NomEntreprise}  >
+
+          <Grid container style={{marginTop: '20px'}}>
+              <Grid item xs={12} >
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
+                            
                             <TextField
                                 fullWidth
                                 id="outlined-multiline-static"
                                 label="Communiquer avec le candidat"
+                                name="body"
                                 multiline
                                 rows={8}
                                 variant="outlined"
                             />
+                            
                         </Grid>
                         <Grid item xs={12}>
                             <Grid container justify='flex-end'>
@@ -220,6 +227,7 @@ const DashBoardFicheUser: React.FC<Props> =({history,utilisateur})=>{
                                     variant="contained"
                                     color="primary"
                                     endIcon={<SendIcon/>}
+                                    type='submit'
                                 >
                                     Envoyer
                                 </Button>
@@ -228,6 +236,8 @@ const DashBoardFicheUser: React.FC<Props> =({history,utilisateur})=>{
                     </Grid>
                 </Grid>
           </Grid>
+          </form>
+
         </Wrapper>
     )
 }

@@ -38,7 +38,6 @@ const DerniersAnnonces: React.FC<Props> =({type, toast})=>{
          // Garde juste les 4 offre vedettes les plus récentes
          offresDemandes.splice(4,offresDemandes.length-4);
 
-        console.log(offresDemandes);
         setOffresDemandes(offresDemandes);  
     }
 
