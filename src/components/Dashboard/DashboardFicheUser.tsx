@@ -1,6 +1,7 @@
 import { faEdit, faLevelDownAlt, faTimes, faUserGraduate, faUserNinja, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Grid, TextField, Typography } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -9,7 +10,6 @@ import { AccessLevel } from '../../Enum';
 import { UtilisateursType } from '../../Types';
 import useAuth from '../auth/useAuth';
 import DashBoardNoRights from './DashboardNoRights';
-import SendIcon from '@material-ui/icons/Send';
 
 type Props = {
   history?: any,
@@ -213,7 +213,7 @@ const DashBoardFicheUser: React.FC<Props> =({history,utilisateur})=>{
                             <TextField
                                 fullWidth
                                 id="outlined-multiline-static"
-                                label="Communiquer avec le candidat"
+                                label={user?.NiveauAcces===AccessLevel.stagiaire? "Communiquer avec le candidat":"Communiquer avec l'entreprise"}
                                 name="body"
                                 multiline
                                 rows={8}
