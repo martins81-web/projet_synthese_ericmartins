@@ -203,7 +203,7 @@ const DashBoardFicheUser: React.FC<Props> =({history,utilisateur})=>{
   
                 </Grid>
           </Grid>
-        <form method="post" action={"mailto:"+user?.Courriel+"?subject=" + (auth?.user?.NiveauAcces===AccessLevel.admin? "Message de l'administrateur de la plateforme eStage" : "eStage: Demande d'informations de la part de l'entreprise ")+ auth?.user?.NomEntreprise ?  auth?.user?.NomEntreprise :''}  >
+        <form method="post" action={"mailto:"+user?.Courriel+"?subject=" + (auth?.user?.NiveauAcces===AccessLevel.admin? "Message de l'administrateur de la plateforme eStage" : "eStage: Demande d'informations de la part de l'entreprise ")}  >
 
           <Grid container style={{marginTop: '20px'}}>
               <Grid item xs={12} >
